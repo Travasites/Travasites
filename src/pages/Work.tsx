@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, ExternalLink, TrendingUp } from "lucide-react";
+import { ArrowRight, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { fadeInUp, stagger } from "@/lib/animations";
 
 const projects = [
   {
@@ -42,21 +44,17 @@ const gradients = {
   "gradient-4": "from-orange-500 to-pink-500"
 };
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0 }
-};
-
-const stagger = {
-  visible: { transition: { staggerChildren: 0.1 } }
-};
-
 const Work = () => {
+  usePageMeta({
+    title: 'Our Work | Blue Forge',
+    description: 'Featured projects and case studies showcasing Blue Forge expertise.',
+  });
+
   return (
     <Layout>
       {/* Hero */}
       <section className="py-24 bg-hero-gradient relative overflow-hidden">
-        <div className="absolute inset-0 bg-glow" />
+        <div className="absolute inset-0 bg-glow" aria-hidden="true" />
         <div className="container mx-auto px-6 relative z-10">
           <motion.div 
             className="max-w-3xl mx-auto text-center"

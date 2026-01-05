@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   LayoutDashboard, 
   Image, 
@@ -21,50 +22,118 @@ import {
   Copy,
   Loader2,
   Trash2,
-  Clock
+  Clock,
+  Coins,
+  LogOut,
+  Zap
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { useCredits } from "@/hooks/useCredits";
+import { supabase } from "@/integrations/supabase/client";
 
 const sidebarItems = [
   { icon: LayoutDashboard, label: "Dashboard", id: "dashboard" },
-  { icon: Image, label: "Image AI", id: "image" },
-  { icon: FileText, label: "Content AI", id: "content" },
-  { icon: Type, label: "UI Copy AI", id: "uicopy" },
-  { icon: Bot, label: "App Helper", id: "helper" },
+  { icon: Image, label: "Image AI", id: "image-ai", credits: 5 },
+  { icon: FileText, label: "Content AI", id: "content-ai", credits: 1 },
+  { icon: Type, label: "UI Copy AI", id: "ui-copy", credits: 1 },
+  { icon: Bot, label: "App Helper", id: "app-helper", credits: 2 },
   { icon: FolderOpen, label: "Projects", id: "projects" },
   { icon: Settings, label: "Settings", id: "settings" },
 ];
 
-const sampleOutputs = {
-  image: "🎨 Generated a stunning hero image with futuristic blue gradient...",
-  content: "📝 Created a compelling blog post about AI in web development...",
-  uicopy: "✨ Generated 5 variations of CTA button text...",
-  helper: "🤖 Here's a React component for a responsive navbar..."
+const toolDescriptions: Record<string, { title: string; desc: string; placeholder: string }> = {
+  "image-ai": {
+    title: "Generate Images",
+    desc: "Create AI-powered images from text descriptions",
+    placeholder: "Describe the image you want to create..."
+  },
+  "content-ai": {
+    title: "Create Content",
+    desc: "Generate blog posts, articles, marketing copy and more",
+    placeholder: "What content would you like to create?"
+  },
+  "ui-copy": {
+    title: "Write UI Copy",
+    desc: "Generate button text, error messages, tooltips and more",
+    placeholder: "Describe the UI element you need copy for..."
+  },
+  "app-helper": {
+    title: "App Helper",
+    desc: "Get coding assistance and architecture advice",
+    placeholder: "What do you need help with?"
+  },
+  "advanced-ai": {
+    title: "Advanced AI",
+    desc: "Complex reasoning and analysis tasks",
+    placeholder: "Describe your complex task..."
+  }
 };
+
+interface Project {
+  id: string;
+  name: string;
+  type: string;
+  content: { prompt?: string; output?: string; model?: string } | null;
+  created_at: string;
+  updated_at: string;
+}
 
 const AIStudio = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { user, loading: authLoading, signOut } = useAuth();
+  const { credits, usage, loading: creditsLoading, refreshCredits } = useCredits();
+  
   const [activeTab, setActiveTab] = useState("dashboard");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [output, setOutput] = useState<string | null>(null);
-  const [recentProjects, setRecentProjects] = useState([
-    { id: 1, name: "Marketing Landing Page", time: "2 hours ago" },
-    { id: 2, name: "Product Descriptions", time: "1 day ago" },
-    { id: 3, name: "App UI Copy", time: "3 days ago" },
-  ]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loadingProjects, setLoadingProjects] = useState(true);
 
   usePageMeta({
     title: "AI Studio | Blue Forge",
     description: "Build with AI-powered tools. Generate images, content, UI copy, and more in one seamless platform.",
     canonical: "https://blueforge.dev/ai-studio",
   });
+
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate("/auth", { replace: true });
+    }
+  }, [user, authLoading, navigate]);
+
+  // Fetch user projects
+  useEffect(() => {
+    if (user) {
+      fetchProjects();
+    }
+  }, [user]);
+
+  const fetchProjects = async () => {
+    if (!user) return;
+    
+    setLoadingProjects(true);
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("updated_at", { ascending: false })
+      .limit(10);
+
+    if (!error && data) {
+      setProjects(data as Project[]);
+    }
+    setLoadingProjects(false);
+  };
 
   // Keyboard shortcut: Cmd/Ctrl + Enter to submit
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -79,22 +148,62 @@ const AIStudio = () => {
   }, [handleKeyDown]);
 
   const handleGenerate = async () => {
-    if (!prompt.trim()) return;
+    if (!prompt.trim() || !user) return;
+    
+    const toolCost = sidebarItems.find(i => i.id === activeTab)?.credits || 1;
+    
+    if (credits && credits.credits_balance < toolCost) {
+      toast({
+        title: "Insufficient Credits",
+        description: `You need ${toolCost} credits for this action. Current balance: ${credits.credits_balance}`,
+        variant: "destructive",
+      });
+      return;
+    }
     
     setIsGenerating(true);
     setOutput(null);
     
-    // Simulate AI generation
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    const sampleOutput = sampleOutputs[activeTab as keyof typeof sampleOutputs] || "✅ Generation complete!";
-    setOutput(sampleOutput);
-    setIsGenerating(false);
-    
-    toast({
-      title: "Generation Complete",
-      description: "Your content has been generated successfully.",
-    });
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      const response = await supabase.functions.invoke("ai-generate", {
+        body: { 
+          tool: activeTab,
+          prompt: prompt,
+          projectName: `${activeTab}-${Date.now()}`
+        },
+      });
+
+      if (response.error) {
+        throw new Error(response.error.message || "Generation failed");
+      }
+
+      const result = response.data;
+      
+      if (result.error) {
+        throw new Error(result.error);
+      }
+      
+      setOutput(result.content);
+      refreshCredits();
+      fetchProjects();
+      
+      toast({
+        title: "Generation Complete",
+        description: `Used ${result.credits_used} credits. Remaining: ${result.credits_remaining}`,
+      });
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to generate content";
+      console.error("Generation error:", error);
+      toast({
+        title: "Generation Failed",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleCopyOutput = () => {
@@ -107,13 +216,56 @@ const AIStudio = () => {
     }
   };
 
-  const handleDeleteProject = (id: number) => {
-    setRecentProjects(prev => prev.filter(p => p.id !== id));
-    toast({
-      title: "Project Deleted",
-      description: "The project has been removed.",
-    });
+  const handleDeleteProject = async (id: string) => {
+    const { error } = await supabase
+      .from("projects")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete project.",
+        variant: "destructive",
+      });
+    } else {
+      setProjects(prev => prev.filter(p => p.id !== id));
+      toast({
+        title: "Project Deleted",
+        description: "The project has been removed.",
+      });
+    }
   };
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
+
+  const formatTimeAgo = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffMins < 60) return `${diffMins} min ago`;
+    if (diffHours < 24) return `${diffHours} hours ago`;
+    return `${diffDays} days ago`;
+  };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
 
   const renderContent = () => {
     if (activeTab === "dashboard") {
@@ -124,17 +276,24 @@ const AIStudio = () => {
           animate="visible"
           variants={staggerContainer}
         >
-          <motion.h2 variants={fadeInUp} className="text-2xl font-bold mb-6">
-            Welcome to AI Studio
-          </motion.h2>
+          <motion.div variants={fadeInUp} className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold">Welcome to AI Studio</h2>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/10 border border-primary/20">
+              <Coins className="w-5 h-5 text-primary" />
+              <span className="font-bold text-primary">
+                {creditsLoading ? "..." : credits?.credits_balance || 0}
+              </span>
+              <span className="text-sm text-muted-foreground">credits</span>
+            </div>
+          </motion.div>
           
           {/* Usage Stats */}
           <motion.div variants={fadeInUp} className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             {[
-              { label: "Generations", value: "127", color: "text-primary" },
-              { label: "Images", value: "45", color: "text-pink-500" },
-              { label: "Content", value: "62", color: "text-blue-500" },
-              { label: "Code", value: "20", color: "text-green-500" },
+              { label: "Total Generations", value: usage.length.toString(), color: "text-primary" },
+              { label: "Credits Used", value: usage.reduce((sum, u) => sum + u.credits_used, 0).toString(), color: "text-pink-500" },
+              { label: "Credits Balance", value: credits?.credits_balance?.toString() || "0", color: "text-green-500" },
+              { label: "Projects", value: projects.length.toString(), color: "text-blue-500" },
             ].map((stat, i) => (
               <div key={i} className="p-4 rounded-xl bg-secondary/50 border border-border">
                 <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
@@ -148,10 +307,10 @@ const AIStudio = () => {
             <h3 className="font-semibold mb-4">Quick Actions</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { title: "Image AI", desc: "Generate stunning images", icon: Image, color: "from-pink-500 to-purple-500", tab: "image" },
-                { title: "Content AI", desc: "Write compelling content", icon: FileText, color: "from-blue-500 to-cyan-500", tab: "content" },
-                { title: "UI Copy AI", desc: "Perfect interface text", icon: Type, color: "from-green-500 to-emerald-500", tab: "uicopy" },
-                { title: "App Helper", desc: "Get coding assistance", icon: Bot, color: "from-orange-500 to-yellow-500", tab: "helper" },
+                { title: "Image AI", desc: "Generate stunning images", icon: Image, color: "from-pink-500 to-purple-500", tab: "image-ai", credits: 5 },
+                { title: "Content AI", desc: "Write compelling content", icon: FileText, color: "from-blue-500 to-cyan-500", tab: "content-ai", credits: 1 },
+                { title: "UI Copy AI", desc: "Perfect interface text", icon: Type, color: "from-green-500 to-emerald-500", tab: "ui-copy", credits: 1 },
+                { title: "App Helper", desc: "Get coding assistance", icon: Bot, color: "from-orange-500 to-yellow-500", tab: "app-helper", credits: 2 },
               ].map((tool, i) => (
                 <motion.button
                   key={i}
@@ -165,6 +324,10 @@ const AIStudio = () => {
                   </div>
                   <h4 className="font-semibold mb-1 group-hover:text-primary transition-colors">{tool.title}</h4>
                   <p className="text-sm text-muted-foreground">{tool.desc}</p>
+                  <div className="flex items-center gap-1 mt-2 text-xs text-primary">
+                    <Zap className="w-3 h-3" />
+                    <span>{tool.credits} credit{tool.credits > 1 ? "s" : ""}</span>
+                  </div>
                 </motion.button>
               ))}
             </div>
@@ -173,21 +336,28 @@ const AIStudio = () => {
           {/* Recent Projects */}
           <motion.div variants={fadeInUp}>
             <h3 className="font-semibold mb-4">Recent Projects</h3>
-            {recentProjects.length > 0 ? (
+            {loadingProjects ? (
+              <div className="flex items-center justify-center p-8">
+                <Loader2 className="w-6 h-6 animate-spin text-primary" />
+              </div>
+            ) : projects.length > 0 ? (
               <div className="space-y-3">
-                {recentProjects.map((project) => (
+                {projects.map((project) => (
                   <div 
                     key={project.id} 
                     className="p-4 rounded-lg bg-secondary/50 flex items-center justify-between group"
                   >
                     <div className="flex items-center gap-3">
                       <FolderOpen className="w-5 h-5 text-muted-foreground" aria-hidden="true" />
-                      <span>{project.name}</span>
+                      <div>
+                        <span className="font-medium">{project.name}</span>
+                        <span className="ml-2 text-xs text-muted-foreground">({project.type})</span>
+                      </div>
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="text-xs text-muted-foreground flex items-center gap-1">
                         <Clock className="w-3 h-3" aria-hidden="true" />
-                        {project.time}
+                        {formatTimeAgo(project.updated_at)}
                       </span>
                       <button
                         onClick={() => handleDeleteProject(project.id)}
@@ -207,11 +377,122 @@ const AIStudio = () => {
               </div>
             )}
           </motion.div>
+
+          {/* Need More Credits */}
+          {credits && credits.credits_balance < 10 && (
+            <motion.div variants={fadeInUp} className="mt-8 p-6 rounded-xl bg-primary/5 border border-primary/20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-semibold mb-1">Running Low on Credits?</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Upgrade your plan for more credits and features.
+                  </p>
+                </div>
+                <Button asChild className="bg-accent-gradient text-accent-foreground">
+                  <Link to="/pricing">View Plans</Link>
+                </Button>
+              </div>
+            </motion.div>
+          )}
+        </motion.div>
+      );
+    }
+
+    if (activeTab === "settings") {
+      return (
+        <motion.div 
+          className="p-6 md:p-8"
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+        >
+          <motion.h2 variants={fadeInUp} className="text-2xl font-bold mb-6">Settings</motion.h2>
+          
+          <motion.div variants={fadeInUp} className="space-y-6">
+            <div className="p-6 rounded-xl bg-card border border-border">
+              <h3 className="font-semibold mb-4">Account</h3>
+              <p className="text-muted-foreground mb-4">Signed in as: {user.email}</p>
+              <Button variant="outline" onClick={handleSignOut}>
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl bg-card border border-border">
+              <h3 className="font-semibold mb-4">Subscription</h3>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium">Free Plan</p>
+                  <p className="text-sm text-muted-foreground">
+                    {credits?.credits_balance || 0} credits remaining
+                  </p>
+                </div>
+                <Button asChild className="bg-accent-gradient text-accent-foreground">
+                  <Link to="/pricing">Upgrade</Link>
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      );
+    }
+
+    if (activeTab === "projects") {
+      return (
+        <motion.div 
+          className="p-6 md:p-8"
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+        >
+          <motion.h2 variants={fadeInUp} className="text-2xl font-bold mb-6">Your Projects</motion.h2>
+          
+          {loadingProjects ? (
+            <div className="flex items-center justify-center p-12">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : projects.length > 0 ? (
+            <motion.div variants={fadeInUp} className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {projects.map((project) => (
+                <div key={project.id} className="p-6 rounded-xl bg-card border border-border hover:border-primary/30 transition-all group">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center">
+                      <FolderOpen className="w-5 h-5 text-primary" />
+                    </div>
+                    <button
+                      onClick={() => handleDeleteProject(project.id)}
+                      className="opacity-0 group-hover:opacity-100 p-2 rounded-lg hover:bg-destructive/10 transition-all"
+                      aria-label={`Delete ${project.name}`}
+                    >
+                      <Trash2 className="w-4 h-4 text-destructive" />
+                    </button>
+                  </div>
+                  <h3 className="font-semibold mb-1">{project.name}</h3>
+                  <p className="text-xs text-muted-foreground mb-2">{project.type}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {formatTimeAgo(project.updated_at)}
+                  </p>
+                </div>
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div variants={fadeInUp} className="p-12 rounded-xl bg-secondary/30 text-center">
+              <FolderOpen className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">No Projects Yet</h3>
+              <p className="text-muted-foreground mb-6">Start creating to save your projects here.</p>
+              <Button onClick={() => setActiveTab("content-ai")} className="bg-accent-gradient text-accent-foreground">
+                Create Your First Project
+              </Button>
+            </motion.div>
+          )}
         </motion.div>
       );
     }
 
     // Generator View
+    const toolInfo = toolDescriptions[activeTab] || { title: "AI Tool", desc: "Generate content", placeholder: "Enter your prompt..." };
+    const toolCost = sidebarItems.find(i => i.id === activeTab)?.credits || 1;
+
     return (
       <div className="flex flex-col h-full">
         {/* Canvas Area */}
@@ -237,7 +518,7 @@ const AIStudio = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="w-full max-w-2xl"
+                className="w-full max-w-3xl"
               >
                 <div className="p-6 rounded-xl bg-card border border-border">
                   <div className="flex items-center justify-between mb-4">
@@ -253,7 +534,9 @@ const AIStudio = () => {
                       </Button>
                     </div>
                   </div>
-                  <p className="text-lg">{output}</p>
+                  <div className="prose prose-sm dark:prose-invert max-w-none">
+                    <p className="whitespace-pre-wrap">{output}</p>
+                  </div>
                 </div>
               </motion.div>
             ) : (
@@ -267,18 +550,15 @@ const AIStudio = () => {
                 <div className="w-20 h-20 rounded-2xl bg-secondary flex items-center justify-center mx-auto mb-6">
                   <Sparkles className="w-10 h-10 text-primary" aria-hidden="true" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">
-                  {activeTab === "image" && "Generate Images"}
-                  {activeTab === "content" && "Create Content"}
-                  {activeTab === "uicopy" && "Write UI Copy"}
-                  {activeTab === "helper" && "App Helper"}
-                  {activeTab === "projects" && "Your Projects"}
-                  {activeTab === "settings" && "Settings"}
-                </h3>
-                <p className="text-muted-foreground max-w-md mb-4">
-                  Enter a prompt below to get started with AI-powered generation
-                </p>
-                <p className="text-xs text-muted-foreground">
+                <h3 className="text-xl font-semibold mb-2">{toolInfo.title}</h3>
+                <p className="text-muted-foreground max-w-md mb-4">{toolInfo.desc}</p>
+                <div className="flex items-center justify-center gap-4 text-sm">
+                  <span className="flex items-center gap-1 text-primary">
+                    <Zap className="w-4 h-4" />
+                    {toolCost} credit{toolCost > 1 ? "s" : ""} per generation
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-4">
                   <kbd className="px-2 py-1 rounded bg-secondary text-xs">⌘</kbd>
                   {" + "}
                   <kbd className="px-2 py-1 rounded bg-secondary text-xs">Enter</kbd>
@@ -296,16 +576,16 @@ const AIStudio = () => {
               <label htmlFor="prompt-input" className="sr-only">
                 Enter your prompt
               </label>
-              <input
+              <textarea
                 id="prompt-input"
-                type="text"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                placeholder="Enter your prompt..."
+                placeholder={toolInfo.placeholder}
                 disabled={isGenerating}
-                className="w-full h-14 px-6 rounded-xl bg-secondary border border-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring transition-colors disabled:opacity-50"
+                rows={2}
+                className="w-full px-6 py-4 rounded-xl bg-secondary border border-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring transition-colors disabled:opacity-50 resize-none"
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
+                  if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
                     e.preventDefault();
                     handleGenerate();
                   }
@@ -314,8 +594,8 @@ const AIStudio = () => {
             </div>
             <Button 
               onClick={handleGenerate}
-              disabled={!prompt.trim() || isGenerating}
-              className="h-14 px-8 bg-accent-gradient text-accent-foreground hover:shadow-glow disabled:opacity-50"
+              disabled={!prompt.trim() || isGenerating || (credits?.credits_balance || 0) < toolCost}
+              className="h-auto px-8 bg-accent-gradient text-accent-foreground hover:shadow-glow disabled:opacity-50"
             >
               {isGenerating ? (
                 <Loader2 className="w-5 h-5 animate-spin" aria-hidden="true" />
@@ -324,6 +604,14 @@ const AIStudio = () => {
               )}
               <span className="sr-only">Generate</span>
             </Button>
+          </div>
+          <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
+            <span>
+              Cost: <span className="text-primary font-medium">{toolCost} credit{toolCost > 1 ? "s" : ""}</span>
+            </span>
+            <span>
+              Balance: <span className="text-primary font-medium">{credits?.credits_balance || 0} credits</span>
+            </span>
           </div>
         </div>
       </div>
@@ -378,7 +666,12 @@ const AIStudio = () => {
         >
           <div className="p-4 border-b border-sidebar-border flex items-center justify-between">
             {!sidebarCollapsed && (
-              <span className="font-semibold text-sidebar-foreground">AI Studio</span>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-sidebar-foreground">AI Studio</span>
+                <span className="px-2 py-0.5 text-xs rounded-full bg-primary/20 text-primary">
+                  {credits?.credits_balance || 0}
+                </span>
+              </div>
             )}
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -411,10 +704,29 @@ const AIStudio = () => {
                 }`}
               >
                 <item.icon className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
-                {!sidebarCollapsed && <span className="text-sm">{item.label}</span>}
+                {!sidebarCollapsed && (
+                  <div className="flex items-center justify-between flex-1">
+                    <span className="text-sm">{item.label}</span>
+                    {item.credits && (
+                      <span className="text-xs opacity-60">{item.credits}c</span>
+                    )}
+                  </div>
+                )}
               </button>
             ))}
           </nav>
+
+          {/* Upgrade CTA */}
+          {!sidebarCollapsed && (
+            <div className="p-4 border-t border-sidebar-border">
+              <Button asChild size="sm" className="w-full bg-accent-gradient text-accent-foreground">
+                <Link to="/pricing">
+                  <Coins className="w-4 h-4 mr-2" />
+                  Get Credits
+                </Link>
+              </Button>
+            </div>
+          )}
         </motion.aside>
 
         {/* Main Content */}
@@ -432,6 +744,10 @@ const AIStudio = () => {
               </Button>
             </div>
             <div className="flex items-center gap-2">
+              <div className="hidden sm:flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm">
+                <Coins className="w-4 h-4" />
+                <span className="font-medium">{credits?.credits_balance || 0}</span>
+              </div>
               <Button size="sm" variant="ghost" className="hidden sm:flex">
                 <Save className="w-4 h-4 mr-2" aria-hidden="true" />
                 Save
