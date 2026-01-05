@@ -1,6 +1,10 @@
 import { ReactNode } from "react";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
+import { SkipToContent } from "./SkipToContent";
+import { ScrollProgress } from "./ScrollProgress";
+import { BackToTop } from "./BackToTop";
+import { PageTransition } from "./PageTransition";
 
 interface LayoutProps {
   children: ReactNode;
@@ -10,9 +14,16 @@ interface LayoutProps {
 export const Layout = ({ children, hideFooter = false }: LayoutProps) => {
   return (
     <div className="min-h-screen bg-background">
+      <SkipToContent />
       <Navbar />
-      <main className="pt-16">{children}</main>
+      <ScrollProgress />
+      <PageTransition>
+        <main id="main-content" className="pt-16" tabIndex={-1}>
+          {children}
+        </main>
+      </PageTransition>
       {!hideFooter && <Footer />}
+      <BackToTop />
     </div>
   );
 };
