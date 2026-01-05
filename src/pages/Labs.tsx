@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Beaker, Gamepad2, TrendingUp, Brain, AlertTriangle } from "lucide-react";
 import { Layout } from "@/components/Layout";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { fadeInUp, stagger } from "@/lib/animations";
 
 const experiments = [
   {
@@ -23,21 +25,17 @@ const experiments = [
   }
 ];
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0 }
-};
-
-const stagger = {
-  visible: { transition: { staggerChildren: 0.15 } }
-};
-
 const Labs = () => {
+  usePageMeta({
+    title: 'Labs | Blue Forge',
+    description: 'Explore experimental AI projects and prototypes from Blue Forge Labs.',
+  });
+
   return (
     <Layout>
       {/* Hero */}
       <section className="py-24 bg-hero-gradient relative overflow-hidden">
-        <div className="absolute inset-0 bg-glow" />
+        <div className="absolute inset-0 bg-glow" aria-hidden="true" />
         <div className="container mx-auto px-6 relative z-10">
           <motion.div 
             className="max-w-3xl mx-auto text-center"

@@ -8,7 +8,7 @@
 
 @layer base {
   :root {
-    /* Light mode (secondary) */
+    /* Light mode */
     --background: 220 20% 97%;
     --foreground: 220 50% 10%;
 
@@ -18,7 +18,7 @@
     --popover: 220 20% 100%;
     --popover-foreground: 220 50% 10%;
 
-    --primary: 220 60% 25%;
+    --primary: 190 100% 35%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 218 30% 92%;
@@ -27,43 +27,44 @@
     --muted: 218 25% 90%;
     --muted-foreground: 220 15% 45%;
 
-    --accent: 190 100% 45%;
-    --accent-foreground: 220 50% 7%;
+    --accent: 190 100% 35%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 220 20% 88%;
     --input: 220 20% 88%;
-    --ring: 190 100% 45%;
+    --ring: 190 100% 35%;
 
     --radius: 0.75rem;
 
-    /* Custom Blue Forge tokens */
-    --cyan: 190 100% 50%;
-    --cyan-glow: 190 100% 60%;
-    --teal: 175 60% 45%;
-    --navy: 220 50% 7%;
-    --steel: 218 32% 15%;
-    --slate: 218 25% 22%;
+    /* Custom Blue Forge tokens - Light mode */
+    --cyan: 190 100% 35%;
+    --cyan-glow: 190 100% 45%;
+    --teal: 175 60% 35%;
+    --navy: 220 50% 25%;
+    --steel: 218 32% 40%;
+    --slate: 218 25% 50%;
 
-    --gradient-hero: linear-gradient(135deg, hsl(220 50% 7%) 0%, hsl(218 32% 12%) 50%, hsl(220 45% 10%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(190 100% 50%) 0%, hsl(175 60% 45%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(218 32% 18%) 0%, hsl(218 32% 12%) 100%);
-    --gradient-glow: radial-gradient(ellipse at 50% 0%, hsl(190 100% 50% / 0.15) 0%, transparent 60%);
+    /* Light mode gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(220 30% 96%) 0%, hsl(218 40% 92%) 50%, hsl(220 35% 94%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(190 100% 35%) 0%, hsl(175 60% 35%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(220 20% 100%) 0%, hsl(218 25% 96%) 100%);
+    --gradient-glow: radial-gradient(ellipse at 50% 0%, hsl(190 100% 50% / 0.08) 0%, transparent 60%);
 
-    --shadow-glow: 0 0 40px hsl(190 100% 50% / 0.3);
-    --shadow-card: 0 4px 24px hsl(220 50% 5% / 0.4);
-    --shadow-elevated: 0 8px 32px hsl(220 50% 5% / 0.6);
+    --shadow-glow: 0 0 40px hsl(190 100% 50% / 0.15);
+    --shadow-card: 0 4px 24px hsl(220 50% 50% / 0.08);
+    --shadow-elevated: 0 8px 32px hsl(220 50% 50% / 0.12);
 
-    --sidebar-background: 218 32% 12%;
-    --sidebar-foreground: 220 20% 85%;
-    --sidebar-primary: 190 100% 50%;
-    --sidebar-primary-foreground: 220 50% 7%;
-    --sidebar-accent: 218 32% 18%;
-    --sidebar-accent-foreground: 220 20% 90%;
-    --sidebar-border: 218 25% 20%;
-    --sidebar-ring: 190 100% 50%;
+    --sidebar-background: 220 20% 98%;
+    --sidebar-foreground: 220 50% 20%;
+    --sidebar-primary: 190 100% 35%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 218 30% 94%;
+    --sidebar-accent-foreground: 220 50% 15%;
+    --sidebar-border: 220 20% 88%;
+    --sidebar-ring: 190 100% 35%;
   }
 
   .dark {
@@ -94,6 +95,24 @@
     --border: 218 25% 20%;
     --input: 218 25% 18%;
     --ring: 190 100% 50%;
+
+    /* Custom Blue Forge tokens - Dark mode */
+    --cyan: 190 100% 50%;
+    --cyan-glow: 190 100% 60%;
+    --teal: 175 60% 45%;
+    --navy: 220 50% 7%;
+    --steel: 218 32% 15%;
+    --slate: 218 25% 22%;
+
+    /* Dark mode gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(220 50% 7%) 0%, hsl(218 32% 12%) 50%, hsl(220 45% 10%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(190 100% 50%) 0%, hsl(175 60% 45%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(218 32% 18%) 0%, hsl(218 32% 12%) 100%);
+    --gradient-glow: radial-gradient(ellipse at 50% 0%, hsl(190 100% 50% / 0.15) 0%, transparent 60%);
+
+    --shadow-glow: 0 0 40px hsl(190 100% 50% / 0.3);
+    --shadow-card: 0 4px 24px hsl(220 50% 5% / 0.4);
+    --shadow-elevated: 0 8px 32px hsl(220 50% 5% / 0.6);
 
     --sidebar-background: 218 32% 8%;
     --sidebar-foreground: 220 20% 85%;
