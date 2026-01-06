@@ -7,13 +7,13 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Credit costs per tool (60% profit margin built in)
+// Credit costs per tool
 const CREDIT_COSTS: Record<string, number> = {
-  'content-ai': 1,      // Text generation
-  'ui-copy': 1,         // UI copy generation
-  'app-helper': 2,      // Code/app assistance
-  'image-ai': 5,        // Image generation
-  'advanced-ai': 3,     // Advanced reasoning
+  'content-ai': 1,
+  'ui-copy': 1,
+  'app-helper': 2,
+  'image-ai': 5,
+  'advanced-ai': 3,
 };
 
 // Model mapping per tool
@@ -21,7 +21,7 @@ const TOOL_MODELS: Record<string, string> = {
   'content-ai': 'google/gemini-2.5-flash',
   'ui-copy': 'google/gemini-2.5-flash-lite',
   'app-helper': 'google/gemini-2.5-flash',
-  'image-ai': 'google/gemini-2.5-flash-image',
+  'image-ai': 'google/gemini-2.5-flash-image-preview',
   'advanced-ai': 'google/gemini-2.5-pro',
 };
 
@@ -30,7 +30,7 @@ const SYSTEM_PROMPTS: Record<string, string> = {
   'content-ai': 'You are a professional content writer. Create engaging, well-structured content based on user prompts. Be creative, clear, and compelling.',
   'ui-copy': 'You are a UX writer specializing in UI microcopy. Create concise, user-friendly text for buttons, labels, tooltips, error messages, and onboarding flows.',
   'app-helper': 'You are an expert app development assistant. Help users with coding questions, architecture decisions, and best practices. Provide clear, actionable advice.',
-  'image-ai': 'You are an image generation assistant. Create detailed image descriptions based on user prompts.',
+  'image-ai': 'Generate a high-quality, detailed image based on this description.',
   'advanced-ai': 'You are an advanced AI assistant capable of complex reasoning, analysis, and creative problem-solving. Provide thorough, well-reasoned responses.',
 };
 
@@ -54,7 +54,7 @@ serve(async (req) => {
       );
     }
 
-    // Create Supabase client with user's auth
+    // Create Supabase client with service role
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     
     // Verify user token
@@ -108,7 +108,21 @@ serve(async (req) => {
       );
     }
 
-    console.log(`Processing ${tool} request for user ${user.id}, cost: ${creditCost} credits`);
+    console.log(`Processing ${tool} request for user ${user.id}, cost: ${creditCost} credits, model: ${model}`);
+
+    // Build request body - add modalities for image generation
+    const requestBody: Record<string, unknown> = {
+      model,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: prompt }
+      ],
+    };
+
+    // For image generation, add modalities
+    if (tool === 'image-ai') {
+      requestBody.modalities = ['image', 'text'];
+    }
 
     // Call Lovable AI Gateway
     const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
@@ -117,18 +131,27 @@ serve(async (req) => {
         'Authorization': `Bearer ${lovableApiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: prompt }
-        ],
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     if (!aiResponse.ok) {
       const errorText = await aiResponse.text();
-      console.error('AI Gateway error:', errorText);
+      console.error('AI Gateway error:', aiResponse.status, errorText);
+      
+      if (aiResponse.status === 429) {
+        return new Response(
+          JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }),
+          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      
+      if (aiResponse.status === 402) {
+        return new Response(
+          JSON.stringify({ error: 'AI service credits exhausted. Please contact support.' }),
+          { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      
       return new Response(
         JSON.stringify({ error: 'AI generation failed' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -136,7 +159,16 @@ serve(async (req) => {
     }
 
     const aiData = await aiResponse.json();
-    const generatedContent = aiData.choices?.[0]?.message?.content || '';
+    console.log('AI response structure:', JSON.stringify({
+      hasChoices: !!aiData.choices,
+      choicesLength: aiData.choices?.length,
+      hasImages: !!aiData.choices?.[0]?.message?.images,
+      imagesLength: aiData.choices?.[0]?.message?.images?.length,
+    }));
+
+    // Extract content and image URL
+    const textContent = aiData.choices?.[0]?.message?.content || '';
+    const imageUrl = aiData.choices?.[0]?.message?.images?.[0]?.image_url?.url || null;
     const tokensUsed = aiData.usage?.total_tokens || 0;
 
     // Deduct credits
@@ -155,12 +187,19 @@ serve(async (req) => {
       tool,
       model,
       credits_used: creditCost,
-      prompt: prompt.substring(0, 500), // Truncate long prompts
+      prompt: prompt.substring(0, 500),
       tokens_used: tokensUsed,
     });
 
     // If projectName provided, save/update project
     if (projectName) {
+      const projectContent = {
+        prompt,
+        output: textContent,
+        imageUrl: imageUrl,
+        model
+      };
+
       const { data: existingProject } = await supabase
         .from('projects')
         .select('id')
@@ -172,7 +211,7 @@ serve(async (req) => {
         await supabase
           .from('projects')
           .update({ 
-            content: { prompt, output: generatedContent, model },
+            content: projectContent,
             updated_at: new Date().toISOString()
           })
           .eq('id', existingProject.id);
@@ -181,14 +220,15 @@ serve(async (req) => {
           user_id: user.id,
           name: projectName,
           type: tool,
-          content: { prompt, output: generatedContent, model },
+          content: projectContent,
         });
       }
     }
 
     return new Response(
       JSON.stringify({
-        content: generatedContent,
+        content: textContent,
+        imageUrl: imageUrl,
         credits_used: creditCost,
         credits_remaining: credits.credits_balance - creditCost,
         tokens_used: tokensUsed,

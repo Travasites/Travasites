@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
+
+type SubscriptionPlan = 'free' | 'starter' | 'pro' | 'business';
 
 interface UserCredits {
   credits_balance: number;
   total_credits_purchased: number;
+  plan: SubscriptionPlan;
 }
 
 interface UsageHistory {
@@ -17,39 +20,43 @@ interface UsageHistory {
   created_at: string;
 }
 
+// Tools that require paid plans (Starter and up)
+const PAID_TOOLS = ['ui-copy', 'app-helper'];
+
 export function useCredits() {
   const { user } = useAuth();
   const [credits, setCredits] = useState<UserCredits | null>(null);
   const [usage, setUsage] = useState<UsageHistory[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (user) {
-      fetchCredits();
-      fetchUsage();
-    } else {
-      setCredits(null);
-      setUsage([]);
-      setLoading(false);
-    }
-  }, [user]);
-
-  const fetchCredits = async () => {
+  const fetchCredits = useCallback(async () => {
     if (!user) return;
     
-    const { data, error } = await supabase
+    // Fetch credits
+    const { data: creditsData, error: creditsError } = await supabase
       .from('user_credits')
       .select('credits_balance, total_credits_purchased')
       .eq('user_id', user.id)
       .single();
 
-    if (!error && data) {
-      setCredits(data);
+    // Fetch profile for plan
+    const { data: profileData, error: profileError } = await supabase
+      .from('profiles')
+      .select('plan')
+      .eq('user_id', user.id)
+      .single();
+
+    if (!creditsError && creditsData) {
+      setCredits({
+        credits_balance: creditsData.credits_balance,
+        total_credits_purchased: creditsData.total_credits_purchased,
+        plan: (profileData?.plan as SubscriptionPlan) || 'free',
+      });
     }
     setLoading(false);
-  };
+  }, [user]);
 
-  const fetchUsage = async () => {
+  const fetchUsage = useCallback(async () => {
     if (!user) return;
     
     const { data, error } = await supabase
@@ -62,17 +69,42 @@ export function useCredits() {
     if (!error && data) {
       setUsage(data);
     }
-  };
+  }, [user]);
 
-  const refreshCredits = () => {
+  useEffect(() => {
+    if (user) {
+      fetchCredits();
+      fetchUsage();
+    } else {
+      setCredits(null);
+      setUsage([]);
+      setLoading(false);
+    }
+  }, [user, fetchCredits, fetchUsage]);
+
+  const refreshCredits = useCallback(() => {
     fetchCredits();
     fetchUsage();
-  };
+  }, [fetchCredits, fetchUsage]);
+
+  // Check if user can access a specific tool
+  const canAccessTool = useCallback((toolId: string): boolean => {
+    if (!PAID_TOOLS.includes(toolId)) return true;
+    if (!credits) return false;
+    return credits.plan !== 'free';
+  }, [credits]);
+
+  // Check if a tool is locked for the current user
+  const isToolLocked = useCallback((toolId: string): boolean => {
+    return PAID_TOOLS.includes(toolId) && credits?.plan === 'free';
+  }, [credits]);
 
   return {
     credits,
     usage,
     loading,
     refreshCredits,
+    canAccessTool,
+    isToolLocked,
   };
 }
