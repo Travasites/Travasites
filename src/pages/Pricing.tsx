@@ -17,7 +17,7 @@ const plans = [
     name: 'Free',
     price: '$0',
     period: 'forever',
-    description: 'Perfect for trying out AI Studio',
+    description: 'Perfect for trying out The Forge',
     credits: 10,
     icon: Zap,
     features: [
@@ -85,17 +85,15 @@ const plans = [
 ];
 
 const creditCosts = [
-  { tool: 'Content AI', credits: 1, description: 'Blog posts, articles, marketing copy' },
-  { tool: 'UI Copy', credits: 1, description: 'Microcopy, buttons, error messages' },
-  { tool: 'App Helper', credits: 2, description: 'Code assistance, architecture advice' },
-  { tool: 'Advanced AI', credits: 3, description: 'Complex reasoning, analysis' },
-  { tool: 'Image AI', credits: 5, description: 'AI-generated images' },
+  { tool: 'Code Refiner', credits: 2, description: 'Analyze and optimize code for production' },
+  { tool: 'Performance Predictor', credits: 2, description: 'Predict Core Web Vitals impact' },
+  { tool: 'Mobile-First Architect', credits: 3, description: 'Generate mobile UI strategies' },
 ];
 
 const faqs = [
   {
     question: 'What are credits?',
-    answer: 'Credits are the currency used in AI Studio. Each AI tool costs a certain number of credits to use. For example, generating content costs 1 credit, while image generation costs 5 credits.',
+    answer: 'Credits are the currency used in The Forge. Each AI tool costs a certain number of credits to use. For example, the Code Refiner costs 2 credits, while the Mobile-First Architect costs 3 credits.',
   },
   {
     question: 'Do unused credits roll over?',
@@ -117,15 +115,15 @@ const faqs = [
 
 export default function Pricing() {
   usePageMeta({
-    title: 'Pricing | Blue Forge AI Studio',
-    description: 'Simple, transparent pricing for Blue Forge AI Studio. Start free with 10 credits, or upgrade for more power.',
+    title: 'Pricing | The Forge by Blue Forge',
+    description: 'Simple, transparent pricing for The Forge. Start free with 10 credits, or upgrade for more power.',
   });
 
   return (
     <Layout>
       {/* Hero */}
-      <section className="py-24 bg-hero-gradient relative overflow-hidden">
-        <div className="absolute inset-0 bg-glow" aria-hidden="true" />
+      <section className="py-24 bg-forge-gradient relative overflow-hidden">
+        <div className="absolute inset-0 bg-forge-glow" aria-hidden="true" />
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             className="max-w-3xl mx-auto text-center"
@@ -134,7 +132,7 @@ export default function Pricing() {
             variants={stagger}
           >
             <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-6">
-              Simple, Transparent <span className="text-gradient">Pricing</span>
+              Simple, Transparent <span className="text-forge-gradient">Pricing</span>
             </motion.h1>
             <motion.p variants={fadeInUp} className="text-lg text-muted-foreground">
               Start free and scale as you grow. No hidden fees.
@@ -159,7 +157,7 @@ export default function Pricing() {
                 variants={fadeInUp}
                 className={`relative p-6 rounded-2xl border ${
                   plan.popular
-                    ? 'bg-card border-primary shadow-glow'
+                    ? 'bg-card border-primary shadow-forge'
                     : 'bg-card border-border'
                 }`}
               >
@@ -200,7 +198,7 @@ export default function Pricing() {
                   asChild
                   className={`w-full ${
                     plan.popular
-                      ? 'bg-accent-gradient text-accent-foreground hover:shadow-glow'
+                      ? 'bg-accent-gradient text-accent-foreground hover:shadow-forge'
                       : ''
                   }`}
                   variant={plan.popular ? 'default' : 'outline'}
@@ -317,12 +315,12 @@ export default function Pricing() {
               Ready to Get Started?
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-muted-foreground mb-8">
-              Join thousands of creators using Blue Forge AI Studio
+              Join developers using The Forge to build production-ready apps
             </motion.p>
             <motion.div variants={fadeInUp}>
-              <Button asChild size="lg" className="bg-accent-gradient text-accent-foreground hover:shadow-glow">
+              <Button asChild size="lg" className="bg-accent-gradient text-accent-foreground hover:shadow-forge">
                 <Link to="/auth">
-                  Start Free
+                  Enter The Forge
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
               </Button>

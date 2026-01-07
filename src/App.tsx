@@ -21,8 +21,6 @@ const Work = lazy(() => import("./pages/Work"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-const PromptGenerator = lazy(() => import("./pages/PromptGenerator"));
-const ContentAdMaker = lazy(() => import("./pages/ContentAdMaker"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -49,8 +47,6 @@ const AnimatedRoutes = () => {
           <Route path="/services" element={<Services />} />
           <Route path="/ai-studio" element={<AIStudio />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/products/prompt-generator" element={<PromptGenerator />} />
-          <Route path="/products/content-ad-maker" element={<ContentAdMaker />} />
           <Route path="/labs" element={<Labs />} />
           <Route path="/work" element={<Work />} />
           <Route path="/about" element={<About />} />

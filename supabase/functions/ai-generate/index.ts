@@ -7,31 +7,114 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Credit costs per tool
+// Credit costs per tool - The Forge tools
 const CREDIT_COSTS: Record<string, number> = {
-  'content-ai': 1,
-  'ui-copy': 1,
-  'app-helper': 2,
-  'image-ai': 5,
-  'advanced-ai': 3,
+  'architect': 3,    // Mobile-First Architect
+  'refiner': 2,      // Code Refiner
+  'predictor': 2,    // Performance Predictor
 };
 
 // Model mapping per tool
 const TOOL_MODELS: Record<string, string> = {
-  'content-ai': 'google/gemini-2.5-flash',
-  'ui-copy': 'google/gemini-2.5-flash-lite',
-  'app-helper': 'google/gemini-2.5-flash',
-  'image-ai': 'google/gemini-2.5-flash-image-preview',
-  'advanced-ai': 'google/gemini-2.5-pro',
+  'architect': 'google/gemini-2.5-flash',
+  'refiner': 'google/gemini-2.5-flash',
+  'predictor': 'google/gemini-2.5-flash',
 };
 
-// System prompts per tool
+// System prompts per tool - The BlueForge Architect prompts
 const SYSTEM_PROMPTS: Record<string, string> = {
-  'content-ai': 'You are a professional content writer. Create engaging, well-structured content based on user prompts. Be creative, clear, and compelling.',
-  'ui-copy': 'You are a UX writer specializing in UI microcopy. Create concise, user-friendly text for buttons, labels, tooltips, error messages, and onboarding flows.',
-  'app-helper': 'You are an expert app development assistant. Help users with coding questions, architecture decisions, and best practices. Provide clear, actionable advice.',
-  'image-ai': 'Generate a high-quality, detailed image based on this description.',
-  'advanced-ai': 'You are an advanced AI assistant capable of complex reasoning, analysis, and creative problem-solving. Provide thorough, well-reasoned responses.',
+  'architect': `You are the BlueForge Architect. You are an expert in mobile-first web development, Kubernetes infrastructure, and Laravel backends. Your goal is to help users build production-ready digital products.
+
+When a user gives you a business idea, provide a detailed technical blueprint:
+
+## 📱 Screen Flow
+List 5-8 essential mobile screens in order of user journey. For each screen:
+- Screen name and purpose
+- Key user actions
+- Navigation connections
+
+## 🧩 UI Component List
+Recommend specific mobile-first components:
+- Navigation patterns (e.g., Sticky Bottom Nav, Tab Bar)
+- Content containers (e.g., Modular Cards, Expandable Sections)
+- Input patterns (e.g., Floating Labels, Smart Keyboards)
+- Feedback elements (e.g., Toast Notifications, Loading Skeletons)
+
+## 👆 UX Tips
+Provide 5 specific tips for:
+- Thumb-reachability (safe zones, action placement)
+- Mobile accessibility (touch targets, contrast, font sizes)
+- Performance considerations for mobile networks
+- Offline-first strategies
+- Device-specific optimizations
+
+Be specific and actionable. Reference actual component libraries when helpful. Always prioritize mobile-first design patterns.`,
+
+  'refiner': `You are the BlueForge Code Refiner. You analyze code and provide expert recommendations for production readiness.
+
+When a user provides code (React, PHP/Laravel, API routes, or any web code), analyze it and provide:
+
+## ⚡ Performance Fixes
+- Optimizations for high-latency mobile networks
+- Bundle size recommendations
+- Lazy loading opportunities
+- Caching strategies
+- Database query optimizations
+
+## 🔒 Security Hardening
+- CSRF protection recommendations
+- Rate limiting implementation
+- Input validation improvements
+- Authentication/authorization checks
+- SQL injection prevention
+- XSS protection
+
+## 🚀 Deployment Readiness
+- Kubernetes configuration recommendations
+- Coolify/Hetzner environment considerations
+- Environment variable management
+- Health check endpoints
+- Logging improvements
+- Error handling enhancements
+
+Format your response with clear sections. Be specific about line numbers and exact changes needed. Provide code examples where helpful.`,
+
+  'predictor': `You are the BlueForge Performance Predictor. You analyze feature ideas and predict their performance impact.
+
+When a user describes a feature they want to implement, provide:
+
+## 📊 Core Web Vitals Impact Prediction
+
+### LCP (Largest Contentful Paint)
+- Predicted impact: [increase/decrease/neutral] 
+- Estimated change: [+/- Xms or %]
+- Key factors affecting LCP
+
+### FID/INP (First Input Delay / Interaction to Next Paint)
+- Predicted impact: [increase/decrease/neutral]
+- Estimated change: [+/- Xms or %]
+- Key factors affecting interactivity
+
+### CLS (Cumulative Layout Shift)
+- Predicted impact: [increase/decrease/neutral]
+- Estimated change: [+/- X.XX or %]
+- Key factors affecting layout stability
+
+## 💾 Recommended Caching Strategy
+- Browser cache headers (Cache-Control, ETag)
+- CDN configuration (Cloudflare settings)
+- Service worker caching patterns
+- API response caching
+- Static asset optimization
+
+## 📱 Mobile-First Optimization Tips
+- Network-aware loading strategies
+- Image optimization recommendations
+- JavaScript bundle considerations
+- Critical rendering path optimizations
+- Progressive enhancement approach
+
+Provide quantified predictions where possible. Reference real-world benchmarks and best practices.`,
 };
 
 serve(async (req) => {
@@ -78,9 +161,9 @@ serve(async (req) => {
       );
     }
 
-    const creditCost = CREDIT_COSTS[tool] || 1;
+    const creditCost = CREDIT_COSTS[tool] || 2;
     const model = TOOL_MODELS[tool] || 'google/gemini-2.5-flash';
-    const systemPrompt = SYSTEM_PROMPTS[tool] || 'You are a helpful AI assistant.';
+    const systemPrompt = SYSTEM_PROMPTS[tool] || 'You are a helpful AI assistant for mobile-first web development.';
 
     // Check user credits
     const { data: credits, error: creditsError } = await supabase
@@ -110,7 +193,7 @@ serve(async (req) => {
 
     console.log(`Processing ${tool} request for user ${user.id}, cost: ${creditCost} credits, model: ${model}`);
 
-    // Build request body - add modalities for image generation
+    // Build request body
     const requestBody: Record<string, unknown> = {
       model,
       messages: [
@@ -118,11 +201,6 @@ serve(async (req) => {
         { role: 'user', content: prompt }
       ],
     };
-
-    // For image generation, add modalities
-    if (tool === 'image-ai') {
-      requestBody.modalities = ['image', 'text'];
-    }
 
     // Call Lovable AI Gateway
     const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
@@ -159,16 +237,10 @@ serve(async (req) => {
     }
 
     const aiData = await aiResponse.json();
-    console.log('AI response structure:', JSON.stringify({
-      hasChoices: !!aiData.choices,
-      choicesLength: aiData.choices?.length,
-      hasImages: !!aiData.choices?.[0]?.message?.images,
-      imagesLength: aiData.choices?.[0]?.message?.images?.length,
-    }));
+    console.log('AI response received, processing...');
 
-    // Extract content and image URL
+    // Extract content
     const textContent = aiData.choices?.[0]?.message?.content || '';
-    const imageUrl = aiData.choices?.[0]?.message?.images?.[0]?.image_url?.url || null;
     const tokensUsed = aiData.usage?.total_tokens || 0;
 
     // Deduct credits
@@ -196,7 +268,6 @@ serve(async (req) => {
       const projectContent = {
         prompt,
         output: textContent,
-        imageUrl: imageUrl,
         model
       };
 
@@ -228,7 +299,6 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({
         content: textContent,
-        imageUrl: imageUrl,
         credits_used: creditCost,
         credits_remaining: credits.credits_balance - creditCost,
         tokens_used: tokensUsed,

@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Hammer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 const navLinks = [
   { name: "Home", path: "/" },
   { name: "Services", path: "/services" },
-  { name: "AI Studio", path: "/ai-studio" },
+  { name: "The Forge", path: "/ai-studio" },
   { name: "Products", path: "/products" },
   { name: "Pricing", path: "/pricing" },
   { name: "Work", path: "/work" },
@@ -51,10 +51,10 @@ export const Navbar = () => {
             aria-label="Blue Forge - Home"
           >
             <div className="w-8 h-8 rounded-lg bg-accent-gradient flex items-center justify-center shadow-glow">
-              <Sparkles className="w-4 h-4 text-accent-foreground" aria-hidden="true" />
+              <Hammer className="w-4 h-4 text-accent-foreground" aria-hidden="true" />
             </div>
             <span className="text-lg font-bold text-foreground">
-              BLUE <span className="text-gradient">FORGE</span>
+              BLUE <span className="text-forge-gradient">FORGE</span>
             </span>
           </Link>
 

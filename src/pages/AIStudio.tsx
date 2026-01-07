@@ -3,17 +3,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { 
   LayoutDashboard, 
-  Image, 
-  FileText, 
-  Type, 
-  Bot,
+  Smartphone,
+  Code,
+  Gauge,
   FolderOpen,
   Settings,
   Plus,
   Save,
   Share2,
   Download,
-  Sparkles,
+  Hammer,
   Send,
   ChevronLeft,
   ChevronRight,
@@ -26,8 +25,6 @@ import {
   Coins,
   LogOut,
   Zap,
-  Lock,
-  ExternalLink,
   User
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -54,39 +51,32 @@ interface SidebarItem {
   label: string;
   id: string;
   credits?: number;
-  paidOnly?: boolean;
 }
 
 const sidebarItems: SidebarItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", id: "dashboard" },
-  { icon: Image, label: "Image AI", id: "image-ai", credits: 5 },
-  { icon: FileText, label: "Content AI", id: "content-ai", credits: 1 },
-  { icon: Type, label: "UI Copy AI", id: "ui-copy", credits: 1, paidOnly: true },
-  { icon: Bot, label: "App Helper", id: "app-helper", credits: 2, paidOnly: true },
+  { icon: Smartphone, label: "Mobile-First Architect", id: "architect", credits: 3 },
+  { icon: Code, label: "Code Refiner", id: "refiner", credits: 2 },
+  { icon: Gauge, label: "Performance Predictor", id: "predictor", credits: 2 },
   { icon: FolderOpen, label: "Projects", id: "projects" },
   { icon: Settings, label: "Settings", id: "settings" },
 ];
 
 const toolDescriptions: Record<string, { title: string; desc: string; placeholder: string }> = {
-  "image-ai": {
-    title: "Generate Images",
-    desc: "Create AI-powered images from text descriptions",
-    placeholder: "Describe the image you want to create... e.g., 'A futuristic city at sunset with flying cars'"
+  "architect": {
+    title: "Mobile-First Architect",
+    desc: "Transform your business idea into a complete mobile UI strategy with screen flows, component recommendations, and UX tips",
+    placeholder: "Describe your business idea... e.g., 'A fitness tracking app for busy professionals with workout scheduling and progress analytics'"
   },
-  "content-ai": {
-    title: "Create Content",
-    desc: "Generate blog posts, articles, marketing copy and more",
-    placeholder: "What content would you like to create? e.g., 'Write a blog post about AI trends in 2025'"
+  "refiner": {
+    title: "Code Refiner",
+    desc: "Analyze and optimize your code for performance, security, and deployment readiness on Kubernetes/Coolify/Hetzner",
+    placeholder: "Paste your React, PHP/Laravel, or API code here for analysis..."
   },
-  "ui-copy": {
-    title: "Write UI Copy",
-    desc: "Generate button text, error messages, tooltips and more",
-    placeholder: "Describe the UI element you need copy for... e.g., 'Error message for invalid email'"
-  },
-  "app-helper": {
-    title: "App Helper",
-    desc: "Get coding assistance and architecture advice",
-    placeholder: "What do you need help with? e.g., 'How do I implement authentication in React?'"
+  "predictor": {
+    title: "Performance Predictor",
+    desc: "Predict Core Web Vitals impact and get caching strategy recommendations for your features",
+    placeholder: "Describe the feature you want to implement... e.g., 'Adding infinite scroll with lazy-loaded images and real-time filtering'"
   },
 };
 
@@ -94,7 +84,7 @@ interface Project {
   id: string;
   name: string;
   type: string;
-  content: { prompt?: string; output?: string; imageUrl?: string; model?: string } | null;
+  content: { prompt?: string; output?: string; model?: string } | null;
   created_at: string;
   updated_at: string;
 }
@@ -103,7 +93,7 @@ const AIStudio = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { user, loading: authLoading, signOut } = useAuth();
-  const { credits, usage, loading: creditsLoading, refreshCredits, isToolLocked, canAccessTool } = useCredits();
+  const { credits, usage, loading: creditsLoading, refreshCredits } = useCredits();
   
   const [activeTab, setActiveTab] = useState("dashboard");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -111,7 +101,6 @@ const AIStudio = () => {
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [output, setOutput] = useState<string | null>(null);
-  const [outputImage, setOutputImage] = useState<string | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loadingProjects, setLoadingProjects] = useState(true);
   const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
@@ -119,8 +108,8 @@ const AIStudio = () => {
   const [savingProfile, setSavingProfile] = useState(false);
 
   usePageMeta({
-    title: "AI Studio | Blue Forge",
-    description: "Build with AI-powered tools. Generate images, content, UI copy, and more in one seamless platform.",
+    title: "The Forge | Blue Forge",
+    description: "Build production-ready digital products with AI-powered mobile-first architecture, code refinement, and performance prediction.",
     canonical: "https://blueforge.dev/ai-studio",
   });
 
@@ -181,19 +170,8 @@ const AIStudio = () => {
   }, [handleKeyDown]);
 
   const handleTabChange = (tabId: string) => {
-    // Check if tool is locked
-    if (isToolLocked(tabId)) {
-      toast({
-        title: "Upgrade Required",
-        description: "This tool is available on Starter plans and above.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
     setActiveTab(tabId);
     setOutput(null);
-    setOutputImage(null);
     setCurrentProjectId(null);
     setMobileMenuOpen(false);
   };
@@ -201,16 +179,7 @@ const AIStudio = () => {
   const handleGenerate = async () => {
     if (!prompt.trim() || !user) return;
     
-    if (!canAccessTool(activeTab)) {
-      toast({
-        title: "Upgrade Required",
-        description: "This tool is available on Starter plans and above.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    const toolCost = sidebarItems.find(i => i.id === activeTab)?.credits || 1;
+    const toolCost = sidebarItems.find(i => i.id === activeTab)?.credits || 2;
     
     if (credits && credits.credits_balance < toolCost) {
       toast({
@@ -223,7 +192,6 @@ const AIStudio = () => {
     
     setIsGenerating(true);
     setOutput(null);
-    setOutputImage(null);
     
     try {
       const response = await supabase.functions.invoke("ai-generate", {
@@ -247,11 +215,6 @@ const AIStudio = () => {
       // Set text output
       if (result.content) {
         setOutput(result.content);
-      }
-      
-      // Set image output for image-ai
-      if (result.imageUrl) {
-        setOutputImage(result.imageUrl);
       }
       
       refreshCredits();
@@ -282,61 +245,53 @@ const AIStudio = () => {
   };
 
   const handleDownload = () => {
-    if (activeTab === 'image-ai' && outputImage) {
-      const link = document.createElement('a');
-      link.download = `blueforge-image-${Date.now()}.png`;
-      link.href = outputImage;
-      link.click();
-      toast({ title: "Downloaded!", description: "Image saved to your device." });
-    } else if (output) {
-      const blob = new Blob([output], { type: 'text/plain' });
+    if (output) {
+      const blob = new Blob([output], { type: 'text/markdown' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
-      link.download = `blueforge-${activeTab}-${Date.now()}.txt`;
+      link.download = `forge-${activeTab}-${Date.now()}.md`;
       link.href = url;
       link.click();
       URL.revokeObjectURL(url);
-      toast({ title: "Downloaded!", description: "Content saved to your device." });
+      toast({ title: "Downloaded!", description: "Blueprint saved to your device." });
     }
   };
 
   const handleShare = async () => {
     const content = output || '';
     
-    if (navigator.share && (output || outputImage)) {
+    if (navigator.share && output) {
       try {
         await navigator.share({
-          title: 'Blue Forge AI Generation',
+          title: 'The Forge Blueprint',
           text: content,
         });
       } catch {
-        // User cancelled or share failed
         navigator.clipboard.writeText(content);
-        toast({ title: "Copied!", description: "Content copied to clipboard." });
+        toast({ title: "Copied!", description: "Blueprint copied to clipboard." });
       }
-    } else if (output || outputImage) {
-      navigator.clipboard.writeText(outputImage || output || '');
-      toast({ title: "Copied!", description: "Content copied to clipboard for sharing." });
+    } else if (output) {
+      navigator.clipboard.writeText(output);
+      toast({ title: "Copied!", description: "Blueprint copied to clipboard for sharing." });
     } else {
-      toast({ title: "Nothing to share", description: "Generate content first.", variant: "destructive" });
+      toast({ title: "Nothing to share", description: "Generate a blueprint first.", variant: "destructive" });
     }
   };
 
   const handleNewProject = () => {
     setPrompt('');
     setOutput(null);
-    setOutputImage(null);
     setCurrentProjectId(null);
-    toast({ title: "New Project", description: "Ready for a new generation." });
+    toast({ title: "New Project", description: "Ready for a new blueprint." });
   };
 
   const handleSaveProject = async () => {
-    if (!output && !outputImage) {
-      toast({ title: "Nothing to save", description: "Generate content first.", variant: "destructive" });
+    if (!output) {
+      toast({ title: "Nothing to save", description: "Generate a blueprint first.", variant: "destructive" });
       return;
     }
     
-    toast({ title: "Project Saved", description: "Your work has been saved automatically." });
+    toast({ title: "Project Saved", description: "Your blueprint has been saved automatically." });
   };
 
   const handleOpenProject = (project: Project) => {
@@ -346,7 +301,6 @@ const AIStudio = () => {
     if (project.content) {
       setPrompt(project.content.prompt || '');
       setOutput(project.content.output || null);
-      setOutputImage(project.content.imageUrl || null);
     }
     
     toast({ title: "Project Loaded", description: `Opened: ${project.name}` });
@@ -414,9 +368,18 @@ const AIStudio = () => {
     }
   };
 
+  const getToolIcon = (toolId: string) => {
+    switch (toolId) {
+      case 'architect': return Smartphone;
+      case 'refiner': return Code;
+      case 'predictor': return Gauge;
+      default: return FolderOpen;
+    }
+  };
+
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-forge-iron flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
@@ -436,7 +399,10 @@ const AIStudio = () => {
           variants={staggerContainer}
         >
           <motion.div variants={fadeInUp} className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Welcome to AI Studio</h2>
+            <div>
+              <h2 className="text-2xl font-bold">Welcome to The Forge</h2>
+              <p className="text-muted-foreground">Your mobile-first development command center</p>
+            </div>
             <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/10 border border-primary/20">
               <Coins className="w-5 h-5 text-primary" />
               <span className="font-bold text-primary">
@@ -450,39 +416,54 @@ const AIStudio = () => {
           <motion.div variants={fadeInUp} className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             {[
               { label: "Total Generations", value: usage.length.toString(), color: "text-primary" },
-              { label: "Credits Used", value: usage.reduce((sum, u) => sum + u.credits_used, 0).toString(), color: "text-pink-500" },
+              { label: "Credits Used", value: usage.reduce((sum, u) => sum + u.credits_used, 0).toString(), color: "text-forge-ember" },
               { label: "Credits Balance", value: credits?.credits_balance?.toString() || "0", color: "text-green-500" },
               { label: "Projects", value: projects.length.toString(), color: "text-blue-500" },
             ].map((stat, i) => (
-              <div key={i} className="p-4 rounded-xl bg-secondary/50 border border-border">
+              <div key={i} className="p-4 rounded-xl bg-forge-steel border border-border">
                 <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
                 <div className="text-sm text-muted-foreground">{stat.label}</div>
               </div>
             ))}
           </motion.div>
 
-          {/* Quick Actions */}
+          {/* Quick Actions - The Forge Tools */}
           <motion.div variants={fadeInUp} className="mb-8">
-            <h3 className="font-semibold mb-4">Quick Actions</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <h3 className="font-semibold mb-4">Forge Tools</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
-                { title: "Image AI", desc: "Generate stunning images", icon: Image, color: "from-pink-500 to-purple-500", tab: "image-ai", credits: 5, locked: false },
-                { title: "Content AI", desc: "Write compelling content", icon: FileText, color: "from-blue-500 to-cyan-500", tab: "content-ai", credits: 1, locked: false },
-                { title: "UI Copy AI", desc: "Perfect interface text", icon: Type, color: "from-green-500 to-emerald-500", tab: "ui-copy", credits: 1, locked: isToolLocked("ui-copy") },
-                { title: "App Helper", desc: "Get coding assistance", icon: Bot, color: "from-orange-500 to-yellow-500", tab: "app-helper", credits: 2, locked: isToolLocked("app-helper") },
+                { 
+                  title: "Mobile-First Architect", 
+                  desc: "Transform ideas into mobile UI strategies", 
+                  icon: Smartphone, 
+                  color: "from-orange-500 to-amber-500", 
+                  tab: "architect", 
+                  credits: 3 
+                },
+                { 
+                  title: "Code Refiner", 
+                  desc: "Optimize code for production", 
+                  icon: Code, 
+                  color: "from-blue-500 to-cyan-500", 
+                  tab: "refiner", 
+                  credits: 2 
+                },
+                { 
+                  title: "Performance Predictor", 
+                  desc: "Predict Core Web Vitals impact", 
+                  icon: Gauge, 
+                  color: "from-green-500 to-emerald-500", 
+                  tab: "predictor", 
+                  credits: 2 
+                },
               ].map((tool, i) => (
                 <motion.button
                   key={i}
                   onClick={() => handleTabChange(tool.tab)}
-                  className={`relative p-6 rounded-xl bg-card border border-border hover:border-primary/30 text-left transition-all group focus:outline-none focus-visible:ring-2 focus-visible:ring-ring ${tool.locked ? 'opacity-75' : ''}`}
+                  className="relative p-6 rounded-xl bg-forge-steel border border-border hover:border-primary/30 text-left transition-all group focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   whileHover={{ y: -4 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  {tool.locked && (
-                    <div className="absolute top-3 right-3">
-                      <Lock className="w-4 h-4 text-muted-foreground" />
-                    </div>
-                  )}
                   <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${tool.color} flex items-center justify-center mb-4`}>
                     <tool.icon className="w-6 h-6 text-white" />
                   </div>
@@ -493,9 +474,6 @@ const AIStudio = () => {
                       <Zap className="w-3 h-3" />
                       {tool.credits}c
                     </span>
-                    {tool.locked && (
-                      <Badge variant="outline" className="text-xs">Starter+</Badge>
-                    )}
                   </div>
                 </motion.button>
               ))}
@@ -505,10 +483,10 @@ const AIStudio = () => {
           {/* Recent Projects */}
           <motion.div variants={fadeInUp}>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold">Recent Projects</h3>
+              <h3 className="font-semibold">Recent Blueprints</h3>
               {projects.length > 0 && (
                 <Button variant="ghost" size="sm" onClick={() => setActiveTab("projects")}>
-                  View All <ExternalLink className="w-3 h-3 ml-1" />
+                  View All
                 </Button>
               )}
             </div>
@@ -518,59 +496,45 @@ const AIStudio = () => {
               </div>
             ) : projects.length > 0 ? (
               <div className="space-y-3">
-                {projects.slice(0, 5).map((project) => (
-                  <button 
-                    key={project.id} 
-                    onClick={() => handleOpenProject(project)}
-                    className="w-full p-4 rounded-lg bg-secondary/50 flex items-center justify-between group hover:bg-secondary/80 transition-colors text-left"
-                  >
-                    <div className="flex items-center gap-3">
-                      <FolderOpen className="w-5 h-5 text-muted-foreground" />
-                      <div>
-                        <span className="font-medium">{project.name}</span>
-                        <span className="ml-2 text-xs text-muted-foreground">({project.type})</span>
+                {projects.slice(0, 5).map((project) => {
+                  const ToolIcon = getToolIcon(project.type);
+                  return (
+                    <button 
+                      key={project.id} 
+                      onClick={() => handleOpenProject(project)}
+                      className="w-full p-4 rounded-lg bg-forge-steel flex items-center justify-between group hover:bg-secondary/80 transition-colors text-left"
+                    >
+                      <div className="flex items-center gap-3">
+                        <ToolIcon className="w-5 h-5 text-muted-foreground" />
+                        <div>
+                          <span className="font-medium">{project.name}</span>
+                          <span className="ml-2 text-xs text-muted-foreground capitalize">({project.type})</span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-xs text-muted-foreground flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {formatTimeAgo(project.updated_at)}
-                      </span>
-                      <button
-                        onClick={(e) => { e.stopPropagation(); handleDeleteProject(project.id); }}
-                        className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-destructive/10 transition-all"
-                        aria-label={`Delete ${project.name}`}
-                      >
-                        <Trash2 className="w-4 h-4 text-destructive" />
-                      </button>
-                    </div>
-                  </button>
-                ))}
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs text-muted-foreground flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {formatTimeAgo(project.updated_at)}
+                        </span>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); handleDeleteProject(project.id); }}
+                          className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-destructive/10 transition-all"
+                          aria-label={`Delete ${project.name}`}
+                        >
+                          <Trash2 className="w-4 h-4 text-destructive" />
+                        </button>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             ) : (
-              <div className="p-8 rounded-lg bg-secondary/30 text-center">
+              <div className="p-8 rounded-lg bg-forge-steel text-center">
                 <FolderOpen className="w-12 h-12 text-muted-foreground/50 mx-auto mb-4" />
-                <p className="text-muted-foreground">No projects yet. Start by generating some content!</p>
+                <p className="text-muted-foreground">No blueprints yet. Start forging!</p>
               </div>
             )}
           </motion.div>
-
-          {/* Upgrade CTA */}
-          {credits && credits.plan === 'free' && (
-            <motion.div variants={fadeInUp} className="mt-8 p-6 rounded-xl bg-primary/5 border border-primary/20">
-              <div className="flex items-center justify-between flex-wrap gap-4">
-                <div>
-                  <h3 className="font-semibold mb-1">Unlock All Tools</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Upgrade to Starter to access UI Copy AI and App Helper.
-                  </p>
-                </div>
-                <Button asChild className="bg-accent-gradient text-accent-foreground">
-                  <Link to="/pricing">View Plans</Link>
-                </Button>
-              </div>
-            </motion.div>
-          )}
         </motion.div>
       );
     }
@@ -587,7 +551,7 @@ const AIStudio = () => {
           
           <motion.div variants={fadeInUp} className="space-y-6">
             {/* Profile Section */}
-            <div className="p-6 rounded-xl bg-card border border-border">
+            <div className="p-6 rounded-xl bg-forge-steel border border-border">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
                   <User className="w-5 h-5 text-primary" />
@@ -617,7 +581,7 @@ const AIStudio = () => {
             </div>
 
             {/* Subscription Section */}
-            <div className="p-6 rounded-xl bg-card border border-border">
+            <div className="p-6 rounded-xl bg-forge-steel border border-border">
               <h3 className="font-semibold mb-4">Subscription</h3>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
@@ -644,7 +608,7 @@ const AIStudio = () => {
             </div>
 
             {/* Usage History */}
-            <div className="p-6 rounded-xl bg-card border border-border">
+            <div className="p-6 rounded-xl bg-forge-steel border border-border">
               <h3 className="font-semibold mb-4">Recent Usage</h3>
               {usage.length > 0 ? (
                 <div className="overflow-x-auto">
@@ -673,7 +637,7 @@ const AIStudio = () => {
             </div>
 
             {/* Sign Out */}
-            <div className="p-6 rounded-xl bg-card border border-border">
+            <div className="p-6 rounded-xl bg-forge-steel border border-border">
               <h3 className="font-semibold mb-4">Account</h3>
               <Button variant="outline" onClick={handleSignOut}>
                 <LogOut className="w-4 h-4 mr-2" />
@@ -693,7 +657,7 @@ const AIStudio = () => {
           animate="visible"
           variants={staggerContainer}
         >
-          <motion.h2 variants={fadeInUp} className="text-2xl font-bold mb-6">Your Projects</motion.h2>
+          <motion.h2 variants={fadeInUp} className="text-2xl font-bold mb-6">Your Blueprints</motion.h2>
           
           {loadingProjects ? (
             <div className="flex items-center justify-center p-12">
@@ -701,52 +665,42 @@ const AIStudio = () => {
             </div>
           ) : projects.length > 0 ? (
             <motion.div variants={fadeInUp} className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {projects.map((project) => (
-                <button 
-                  key={project.id} 
-                  onClick={() => handleOpenProject(project)}
-                  className="p-6 rounded-xl bg-card border border-border hover:border-primary/30 transition-all group text-left"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center">
-                      {project.type === 'image-ai' ? (
-                        <Image className="w-5 h-5 text-primary" />
-                      ) : (
-                        <FolderOpen className="w-5 h-5 text-primary" />
-                      )}
+              {projects.map((project) => {
+                const ToolIcon = getToolIcon(project.type);
+                return (
+                  <button 
+                    key={project.id} 
+                    onClick={() => handleOpenProject(project)}
+                    className="p-6 rounded-xl bg-forge-steel border border-border hover:border-primary/30 transition-all group text-left"
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center">
+                        <ToolIcon className="w-5 h-5 text-primary" />
+                      </div>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleDeleteProject(project.id); }}
+                        className="opacity-0 group-hover:opacity-100 p-2 rounded-lg hover:bg-destructive/10 transition-all"
+                        aria-label={`Delete ${project.name}`}
+                      >
+                        <Trash2 className="w-4 h-4 text-destructive" />
+                      </button>
                     </div>
-                    <button
-                      onClick={(e) => { e.stopPropagation(); handleDeleteProject(project.id); }}
-                      className="opacity-0 group-hover:opacity-100 p-2 rounded-lg hover:bg-destructive/10 transition-all"
-                      aria-label={`Delete ${project.name}`}
-                    >
-                      <Trash2 className="w-4 h-4 text-destructive" />
-                    </button>
-                  </div>
-                  <h3 className="font-semibold mb-1 truncate">{project.name}</h3>
-                  <p className="text-xs text-muted-foreground mb-2 capitalize">{project.type.replace('-', ' ')}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {formatTimeAgo(project.updated_at)}
-                  </p>
-                  {project.content?.imageUrl && (
-                    <div className="mt-3 h-20 rounded-lg overflow-hidden bg-secondary">
-                      <img 
-                        src={project.content.imageUrl} 
-                        alt="Project preview" 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                </button>
-              ))}
+                    <h3 className="font-semibold mb-1 truncate">{project.name}</h3>
+                    <p className="text-xs text-muted-foreground mb-2 capitalize">{project.type}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {formatTimeAgo(project.updated_at)}
+                    </p>
+                  </button>
+                );
+              })}
             </motion.div>
           ) : (
-            <motion.div variants={fadeInUp} className="p-12 rounded-xl bg-secondary/30 text-center">
+            <motion.div variants={fadeInUp} className="p-12 rounded-xl bg-forge-steel text-center">
               <FolderOpen className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">No Projects Yet</h3>
-              <p className="text-muted-foreground mb-6">Start creating to save your projects here.</p>
-              <Button onClick={() => handleTabChange("content-ai")} className="bg-accent-gradient text-accent-foreground">
-                Create Your First Project
+              <h3 className="text-xl font-semibold mb-2">No Blueprints Yet</h3>
+              <p className="text-muted-foreground mb-6">Start forging to create your first blueprint.</p>
+              <Button onClick={() => handleTabChange("architect")} className="bg-accent-gradient text-accent-foreground">
+                Start Forging
               </Button>
             </motion.div>
           )}
@@ -754,9 +708,9 @@ const AIStudio = () => {
       );
     }
 
-    // Generator View
-    const toolInfo = toolDescriptions[activeTab] || { title: "AI Tool", desc: "Generate content", placeholder: "Enter your prompt..." };
-    const toolCost = sidebarItems.find(i => i.id === activeTab)?.credits || 1;
+    // Generator View - The Forge Tools
+    const toolInfo = toolDescriptions[activeTab] || { title: "Forge Tool", desc: "Generate blueprints", placeholder: "Enter your prompt..." };
+    const toolCost = sidebarItems.find(i => i.id === activeTab)?.credits || 2;
 
     return (
       <div className="flex flex-col h-full">
@@ -771,30 +725,28 @@ const AIStudio = () => {
                 exit={{ opacity: 0 }}
                 className="text-center"
               >
-                <div className="w-20 h-20 rounded-2xl bg-secondary flex items-center justify-center mx-auto mb-6">
+                <div className="w-20 h-20 rounded-2xl bg-forge-steel flex items-center justify-center mx-auto mb-6">
                   <Loader2 className="w-10 h-10 text-primary animate-spin" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Generating...</h3>
-                <p className="text-muted-foreground">This may take a few seconds</p>
+                <h3 className="text-xl font-semibold mb-2">Forging...</h3>
+                <p className="text-muted-foreground">Crafting your blueprint</p>
               </motion.div>
-            ) : (output || outputImage) ? (
+            ) : output ? (
               <motion.div
                 key="output"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="w-full max-w-3xl"
+                className="w-full max-w-4xl"
               >
-                <div className="p-6 rounded-xl bg-card border border-border">
+                <div className="p-6 rounded-xl bg-forge-steel border border-border">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold">Output</h3>
+                    <h3 className="font-semibold">Blueprint</h3>
                     <div className="flex gap-2">
-                      {output && (
-                        <Button size="sm" variant="ghost" onClick={handleCopyOutput}>
-                          <Copy className="w-4 h-4 mr-2" />
-                          Copy
-                        </Button>
-                      )}
+                      <Button size="sm" variant="ghost" onClick={handleCopyOutput}>
+                        <Copy className="w-4 h-4 mr-2" />
+                        Copy
+                      </Button>
                       <Button size="sm" variant="ghost" onClick={handleDownload}>
                         <Download className="w-4 h-4 mr-2" />
                         Download
@@ -806,23 +758,10 @@ const AIStudio = () => {
                     </div>
                   </div>
                   
-                  {/* Image Output */}
-                  {outputImage && (
-                    <div className="mb-4">
-                      <img 
-                        src={outputImage} 
-                        alt="Generated image" 
-                        className="max-w-full rounded-lg shadow-lg mx-auto"
-                      />
-                    </div>
-                  )}
-                  
-                  {/* Text Output */}
-                  {output && (
-                    <div className="prose prose-sm dark:prose-invert max-w-none">
-                      <p className="whitespace-pre-wrap">{output}</p>
-                    </div>
-                  )}
+                  {/* Markdown Output */}
+                  <div className="prose prose-sm dark:prose-invert max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-code:bg-secondary prose-code:px-1 prose-code:rounded">
+                    <div className="whitespace-pre-wrap font-mono text-sm leading-relaxed">{output}</div>
+                  </div>
                 </div>
               </motion.div>
             ) : (
@@ -833,8 +772,8 @@ const AIStudio = () => {
                 exit={{ opacity: 0 }}
                 className="text-center"
               >
-                <div className="w-20 h-20 rounded-2xl bg-secondary flex items-center justify-center mx-auto mb-6">
-                  <Sparkles className="w-10 h-10 text-primary" />
+                <div className="w-20 h-20 rounded-2xl bg-forge-steel flex items-center justify-center mx-auto mb-6 shadow-forge">
+                  <Hammer className="w-10 h-10 text-primary" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{toolInfo.title}</h3>
                 <p className="text-muted-foreground max-w-md mb-4">{toolInfo.desc}</p>
@@ -848,7 +787,7 @@ const AIStudio = () => {
                   <kbd className="px-2 py-1 rounded bg-secondary text-xs">⌘</kbd>
                   {" + "}
                   <kbd className="px-2 py-1 rounded bg-secondary text-xs">Enter</kbd>
-                  {" to generate"}
+                  {" to forge"}
                 </p>
               </motion.div>
             )}
@@ -866,8 +805,8 @@ const AIStudio = () => {
                 onChange={(e) => setPrompt(e.target.value)}
                 placeholder={toolInfo.placeholder}
                 disabled={isGenerating}
-                rows={2}
-                className="w-full px-6 py-4 rounded-xl bg-secondary border border-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring transition-colors disabled:opacity-50 resize-none"
+                rows={3}
+                className="w-full px-6 py-4 rounded-xl bg-forge-steel border border-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring transition-colors disabled:opacity-50 resize-none font-mono text-sm"
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
                     e.preventDefault();
@@ -879,14 +818,14 @@ const AIStudio = () => {
             <Button 
               onClick={handleGenerate}
               disabled={!prompt.trim() || isGenerating || (credits?.credits_balance || 0) < toolCost}
-              className="h-auto px-8 bg-accent-gradient text-accent-foreground hover:shadow-glow disabled:opacity-50"
+              className="h-auto px-8 bg-accent-gradient text-accent-foreground hover:shadow-forge disabled:opacity-50"
             >
               {isGenerating ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
                 <Send className="w-5 h-5" />
               )}
-              <span className="sr-only">Generate</span>
+              <span className="sr-only">Forge</span>
             </Button>
           </div>
           <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
@@ -903,14 +842,14 @@ const AIStudio = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-forge-iron flex flex-col">
       <Navbar />
       
       <div className="flex-1 flex pt-16">
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden fixed bottom-6 left-6 z-50 p-4 rounded-full bg-accent-gradient text-accent-foreground shadow-glow"
+          className="lg:hidden fixed bottom-6 left-6 z-50 p-4 rounded-full bg-accent-gradient text-accent-foreground shadow-forge"
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
         >
           {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -934,63 +873,55 @@ const AIStudio = () => {
           className={`
             fixed lg:relative inset-y-0 left-0 z-40 lg:z-0
             h-[calc(100vh-4rem)] lg:h-[calc(100vh-4rem)] mt-16 lg:mt-0
-            bg-sidebar border-r border-sidebar-border flex flex-col
+            bg-forge-iron border-r border-border flex flex-col
             transform lg:transform-none transition-transform duration-300
             ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
           `}
-          animate={{ width: sidebarCollapsed ? 72 : 240 }}
+          animate={{ width: sidebarCollapsed ? 72 : 260 }}
           transition={{ duration: 0.2 }}
         >
-          <div className="p-4 border-b border-sidebar-border flex items-center justify-between">
+          <div className="p-4 border-b border-border flex items-center justify-between">
             {!sidebarCollapsed && (
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-sidebar-foreground">AI Studio</span>
-                <Badge variant="outline" className={`text-xs ${getPlanBadgeColor(credits?.plan || 'free')}`}>
-                  {credits?.plan || 'free'}
-                </Badge>
+                <Hammer className="w-5 h-5 text-primary" />
+                <span className="font-semibold text-foreground">The Forge</span>
               </div>
             )}
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="p-2 rounded-lg hover:bg-sidebar-accent transition-colors hidden lg:block"
+              className="p-2 rounded-lg hover:bg-secondary transition-colors hidden lg:block"
             >
-              {sidebarCollapsed ? <ChevronRight className="w-4 h-4 text-sidebar-foreground" /> : <ChevronLeft className="w-4 h-4 text-sidebar-foreground" />}
+              {sidebarCollapsed ? <ChevronRight className="w-4 h-4 text-foreground" /> : <ChevronLeft className="w-4 h-4 text-foreground" />}
             </button>
           </div>
 
           <nav className="flex-1 p-3 space-y-1">
-            {sidebarItems.map((item) => {
-              const locked = item.paidOnly && isToolLocked(item.id);
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => handleTabChange(item.id)}
-                  className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all ${
-                    activeTab === item.id
-                      ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                      : "text-sidebar-foreground hover:bg-sidebar-accent"
-                  } ${locked ? 'opacity-60' : ''}`}
-                >
-                  <item.icon className="w-5 h-5 flex-shrink-0" />
-                  {!sidebarCollapsed && (
-                    <div className="flex items-center justify-between flex-1">
-                      <span className="text-sm">{item.label}</span>
-                      <div className="flex items-center gap-1">
-                        {locked && <Lock className="w-3 h-3" />}
-                        {item.credits && !locked && (
-                          <span className="text-xs opacity-60">{item.credits}c</span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </button>
-              );
-            })}
+            {sidebarItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleTabChange(item.id)}
+                className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all ${
+                  activeTab === item.id
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                }`}
+              >
+                <item.icon className="w-5 h-5 flex-shrink-0" />
+                {!sidebarCollapsed && (
+                  <div className="flex items-center justify-between flex-1">
+                    <span className="text-sm">{item.label}</span>
+                    {item.credits && (
+                      <span className="text-xs opacity-60">{item.credits}c</span>
+                    )}
+                  </div>
+                )}
+              </button>
+            ))}
           </nav>
 
           {/* Upgrade CTA */}
           {!sidebarCollapsed && (
-            <div className="p-4 border-t border-sidebar-border">
+            <div className="p-4 border-t border-border">
               <Button asChild size="sm" className="w-full bg-accent-gradient text-accent-foreground">
                 <Link to="/pricing">
                   <Coins className="w-4 h-4 mr-2" />
@@ -1004,7 +935,7 @@ const AIStudio = () => {
         {/* Main Content */}
         <div className="flex-1 flex flex-col min-w-0">
           {/* Top Bar */}
-          <div className="h-14 border-b border-border flex items-center justify-between px-4 md:px-6">
+          <div className="h-14 border-b border-border flex items-center justify-between px-4 md:px-6 bg-forge-iron">
             <div className="flex items-center gap-2 md:gap-4">
               <Button size="sm" variant="outline" onClick={handleNewProject}>
                 <Plus className="w-4 h-4 sm:mr-2" />
@@ -1020,11 +951,11 @@ const AIStudio = () => {
                 <Save className="w-4 h-4 sm:mr-2" />
                 <span className="hidden sm:inline">Save</span>
               </Button>
-              <Button size="sm" variant="ghost" onClick={handleDownload} disabled={!output && !outputImage}>
+              <Button size="sm" variant="ghost" onClick={handleDownload} disabled={!output}>
                 <Download className="w-4 h-4 sm:mr-2" />
                 <span className="hidden sm:inline">Export</span>
               </Button>
-              <Button size="sm" variant="ghost" onClick={handleShare} disabled={!output && !outputImage}>
+              <Button size="sm" variant="ghost" onClick={handleShare} disabled={!output}>
                 <Share2 className="w-4 h-4 sm:mr-2" />
                 <span className="hidden sm:inline">Share</span>
               </Button>
