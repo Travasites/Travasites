@@ -53,9 +53,9 @@ const Work = () => {
   return (
     <Layout>
       {/* Hero */}
-      <section className="py-24 bg-hero-gradient relative overflow-hidden">
-        <div className="absolute inset-0 bg-glow" aria-hidden="true" />
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="py-24 relative overflow-hidden glass-hero-animated">
+        <div className="absolute inset-0 bg-glow z-10" aria-hidden="true" />
+        <div className="container mx-auto px-6 relative z-20">
           <motion.div 
             className="max-w-3xl mx-auto text-center"
             initial="hidden"
@@ -63,7 +63,7 @@ const Work = () => {
             variants={stagger}
           >
             <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-6">
-              Our <span className="text-gradient">Work</span>
+              Our <span className="text-primary">Work</span>
             </motion.h1>
             <motion.p variants={fadeInUp} className="text-lg text-muted-foreground">
               Featured projects and case studies showcasing our expertise
@@ -107,8 +107,8 @@ const Work = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-24 bg-card/30">
-        <div className="container mx-auto px-6">
+      <section className="py-24 relative overflow-hidden glass-hero-animated">
+        <div className="container mx-auto px-6 relative z-20">
           <motion.div 
             className="max-w-2xl mx-auto text-center"
             initial="hidden"

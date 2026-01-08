@@ -122,9 +122,9 @@ export default function Pricing() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="py-24 bg-forge-gradient relative overflow-hidden">
-        <div className="absolute inset-0 bg-forge-glow" aria-hidden="true" />
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="py-24 relative overflow-hidden glass-hero-animated">
+        <div className="absolute inset-0 bg-glow z-10" aria-hidden="true" />
+        <div className="container mx-auto px-6 relative z-20">
           <motion.div
             className="max-w-3xl mx-auto text-center"
             initial="hidden"
@@ -132,7 +132,7 @@ export default function Pricing() {
             variants={stagger}
           >
             <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-6">
-              Simple, Transparent <span className="text-forge-gradient">Pricing</span>
+              Simple, Transparent <span className="text-primary">Pricing</span>
             </motion.h1>
             <motion.p variants={fadeInUp} className="text-lg text-muted-foreground">
               Start free and scale as you grow. No hidden fees.
@@ -157,7 +157,7 @@ export default function Pricing() {
                 variants={fadeInUp}
                 className={`relative p-6 rounded-2xl border ${
                   plan.popular
-                    ? 'bg-card border-primary shadow-forge'
+                    ? 'bg-card border-primary shadow-glow'
                     : 'bg-card border-border'
                 }`}
               >
@@ -198,7 +198,7 @@ export default function Pricing() {
                   asChild
                   className={`w-full ${
                     plan.popular
-                      ? 'bg-accent-gradient text-accent-foreground hover:shadow-forge'
+                      ? 'bg-accent-gradient text-accent-foreground hover:shadow-glow'
                       : ''
                   }`}
                   variant={plan.popular ? 'default' : 'outline'}
@@ -302,8 +302,8 @@ export default function Pricing() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 bg-card/30">
-        <div className="container mx-auto px-6">
+      <section className="py-24 relative overflow-hidden glass-hero-animated">
+        <div className="container mx-auto px-6 relative z-20">
           <motion.div
             className="max-w-2xl mx-auto text-center"
             initial="hidden"
@@ -318,7 +318,7 @@ export default function Pricing() {
               Join developers using The Forge to build production-ready apps
             </motion.p>
             <motion.div variants={fadeInUp}>
-              <Button asChild size="lg" className="bg-accent-gradient text-accent-foreground hover:shadow-forge">
+              <Button asChild size="lg" className="bg-accent-gradient text-accent-foreground hover:shadow-glow">
                 <Link to="/auth">
                   Enter The Forge
                   <ArrowRight className="ml-2 w-5 h-5" />

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Sparkles, Github, Twitter, Linkedin, Mail } from "lucide-react";
+import { Hammer, Github, Twitter, Linkedin, Mail } from "lucide-react";
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -16,10 +16,11 @@ export const Footer = () => {
               aria-label="Blue Forge - Home"
             >
               <div className="w-8 h-8 rounded-lg bg-accent-gradient flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-accent-foreground" aria-hidden="true" />
+                <Hammer className="w-4 h-4 text-accent-foreground" aria-hidden="true" />
               </div>
               <span className="text-lg font-bold">
-                BLUE <span className="text-gradient">FORGE</span>
+                <span className="text-logo-blue">BLUE </span>
+                <span className="text-logo-forge">FORGE</span>
               </span>
             </Link>
             <p className="text-sm text-muted-foreground">
@@ -60,17 +61,12 @@ export const Footer = () => {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link to="/ai-studio" className="hover:text-primary transition-colors focus:outline-none focus-visible:underline">
-                  AI Studio
+                  The Forge
                 </Link>
               </li>
               <li>
-                <Link to="/products/prompt-generator" className="hover:text-primary transition-colors focus:outline-none focus-visible:underline">
-                  Prompt Generator
-                </Link>
-              </li>
-              <li>
-                <Link to="/products/content-ad-maker" className="hover:text-primary transition-colors focus:outline-none focus-visible:underline">
-                  Content Ad Maker
+                <Link to="/products" className="hover:text-primary transition-colors focus:outline-none focus-visible:underline">
+                  Products
                 </Link>
               </li>
               <li>
