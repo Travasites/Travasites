@@ -53,8 +53,9 @@ export const Navbar = () => {
             <div className="w-8 h-8 rounded-lg bg-accent-gradient flex items-center justify-center shadow-glow">
               <Hammer className="w-4 h-4 text-accent-foreground" aria-hidden="true" />
             </div>
-            <span className="text-lg font-bold text-foreground">
-              BLUE <span className="text-forge-gradient">FORGE</span>
+            <span className="text-lg font-bold">
+              <span className="text-logo-blue">BLUE </span>
+              <span className="text-logo-forge">FORGE</span>
             </span>
           </Link>
 

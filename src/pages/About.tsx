@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Target, Lightbulb, Wrench, ArrowRight, Users } from "lucide-react";
+import { Target, Lightbulb, Wrench, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { usePageMeta } from "@/hooks/usePageMeta";
@@ -21,7 +21,20 @@ const process = [
   { step: "06", title: "Support", desc: "Ongoing maintenance and optimization" }
 ];
 
-const stack = ["React", "Vite", "TypeScript", "Node.js", "Supabase", "PostgreSQL", "OpenAI", "TailwindCSS", "Vercel", "AWS", "Docker", "GraphQL"];
+const stack = [
+  { name: "React", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+  { name: "Vite", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg" },
+  { name: "TypeScript", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
+  { name: "Node.js", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
+  { name: "Supabase", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" },
+  { name: "PostgreSQL", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
+  { name: "Kubernetes", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" },
+  { name: "TailwindCSS", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
+  { name: "Docker", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" },
+  { name: "Cloudflare", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cloudflare/cloudflare-original.svg" },
+  { name: "AWS", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" },
+  { name: "Laravel", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg" },
+];
 
 const About = () => {
   usePageMeta({
@@ -32,11 +45,11 @@ const About = () => {
 
   return (
     <Layout>
-      <section className="py-24 bg-hero-gradient relative overflow-hidden">
-        <div className="absolute inset-0 bg-glow" aria-hidden="true" />
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="py-24 relative overflow-hidden glass-hero-animated">
+        <div className="absolute inset-0 bg-glow z-10" aria-hidden="true" />
+        <div className="container mx-auto px-6 relative z-20">
           <motion.div className="max-w-3xl mx-auto text-center" initial="hidden" animate="visible" variants={staggerContainer}>
-            <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-6">About <span className="text-gradient">Blue Forge</span></motion.h1>
+            <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-6">About <span className="text-primary">Blue Forge</span></motion.h1>
             <motion.p variants={fadeInUp} className="text-lg text-muted-foreground">A web development studio and AI builder platform dedicated to crafting exceptional digital experiences</motion.p>
           </motion.div>
         </div>
@@ -67,7 +80,7 @@ const About = () => {
           <motion.div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
             {process.map((item, index) => (
               <motion.div key={index} variants={fadeInUp} className="p-6 rounded-xl bg-card border border-border">
-                <span className="text-3xl font-bold text-gradient">{item.step}</span>
+                <span className="text-3xl font-bold text-primary">{item.step}</span>
                 <h3 className="text-lg font-semibold mt-3 mb-2">{item.title}</h3>
                 <p className="text-sm text-muted-foreground">{item.desc}</p>
               </motion.div>
@@ -84,16 +97,17 @@ const About = () => {
           </motion.div>
           <motion.div className="flex flex-wrap justify-center gap-4" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
             {stack.map((tech, i) => (
-              <motion.div key={i} variants={fadeInUp} whileHover={{ scale: 1.05 }} className="px-6 py-3 rounded-xl bg-card border border-border">
-                <span className="font-medium">{tech}</span>
+              <motion.div key={i} variants={fadeInUp} whileHover={{ scale: 1.05 }} className="flex items-center gap-3 px-5 py-3 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors">
+                <img src={tech.logo} alt={tech.name} className="w-6 h-6 object-contain" />
+                <span className="font-medium">{tech.name}</span>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      <section className="py-24 bg-card/30">
-        <div className="container mx-auto px-6">
+      <section className="py-24 relative overflow-hidden glass-hero-animated">
+        <div className="container mx-auto px-6 relative z-20">
           <motion.div className="max-w-2xl mx-auto text-center" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
             <motion.h2 variants={fadeInUp} className="text-3xl font-bold mb-6">Let's Work Together</motion.h2>
             <motion.p variants={fadeInUp} className="text-muted-foreground mb-8">Ready to start your project? Get in touch and let's create something amazing.</motion.p>

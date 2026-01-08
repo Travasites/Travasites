@@ -54,12 +54,12 @@ const Services = () => {
 
   return (
     <Layout>
-      <section className="py-24 bg-hero-gradient relative overflow-hidden">
-        <div className="absolute inset-0 bg-glow" aria-hidden="true" />
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="py-24 relative overflow-hidden glass-hero-animated">
+        <div className="absolute inset-0 bg-glow z-10" aria-hidden="true" />
+        <div className="container mx-auto px-6 relative z-20">
           <motion.div className="max-w-3xl mx-auto text-center" initial="hidden" animate="visible" variants={staggerContainer}>
             <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-6">
-              Our <span className="text-gradient">Services</span>
+              Our <span className="text-primary">Services</span>
             </motion.h1>
             <motion.p variants={fadeInUp} className="text-lg text-muted-foreground">
               Full-stack development services to bring your digital vision to life
@@ -96,8 +96,8 @@ const Services = () => {
         </div>
       </section>
 
-      <section className="py-24 bg-card/30">
-        <div className="container mx-auto px-6">
+      <section className="py-24 relative overflow-hidden glass-hero-animated">
+        <div className="container mx-auto px-6 relative z-20">
           <motion.div className="max-w-2xl mx-auto text-center" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
             <motion.h2 variants={fadeInUp} className="text-3xl font-bold mb-6">Let's Build Together</motion.h2>
             <motion.p variants={fadeInUp} className="text-muted-foreground mb-8">Ready to start your project? Get in touch for a free consultation.</motion.p>

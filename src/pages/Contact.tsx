@@ -79,10 +79,10 @@ const Contact = () => {
   if (isSuccess) {
     return (
       <Layout>
-        <section className="min-h-[80vh] flex items-center justify-center py-24 bg-hero-gradient relative overflow-hidden">
-          <div className="absolute inset-0 bg-glow" aria-hidden="true" />
+        <section className="min-h-[80vh] flex items-center justify-center py-24 relative overflow-hidden glass-hero-animated">
+          <div className="absolute inset-0 bg-glow z-10" aria-hidden="true" />
           <motion.div 
-            className="container mx-auto px-6 relative z-10 text-center"
+            className="container mx-auto px-6 relative z-20 text-center"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
@@ -110,9 +110,9 @@ const Contact = () => {
   return (
     <Layout>
       {/* Hero */}
-      <section className="py-24 bg-hero-gradient relative overflow-hidden">
-        <div className="absolute inset-0 bg-glow" aria-hidden="true" />
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="py-24 relative overflow-hidden glass-hero-animated">
+        <div className="absolute inset-0 bg-glow z-10" aria-hidden="true" />
+        <div className="container mx-auto px-6 relative z-20">
           <motion.div 
             className="max-w-3xl mx-auto text-center"
             initial="hidden"
@@ -120,7 +120,7 @@ const Contact = () => {
             variants={staggerContainer}
           >
             <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-6">
-              Start a <span className="text-gradient">Project</span>
+              Start a <span className="text-primary">Project</span>
             </motion.h1>
             <motion.p variants={fadeInUp} className="text-lg text-muted-foreground">
               Tell us about your project and we'll get back to you within 24 hours

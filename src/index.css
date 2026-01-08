@@ -18,7 +18,7 @@
     --popover: 220 20% 100%;
     --popover-foreground: 220 50% 10%;
 
-    --primary: 190 100% 35%;
+    --primary: 199 90% 48%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 218 30% 92%;
@@ -27,7 +27,7 @@
     --muted: 218 25% 90%;
     --muted-foreground: 220 15% 45%;
 
-    --accent: 190 100% 35%;
+    --accent: 199 90% 48%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
@@ -35,47 +35,51 @@
 
     --border: 220 20% 88%;
     --input: 220 20% 88%;
-    --ring: 190 100% 35%;
+    --ring: 199 90% 48%;
 
     --radius: 0.75rem;
 
     /* Custom Blue Forge tokens - Light mode */
-    --cyan: 190 100% 35%;
-    --cyan-glow: 190 100% 45%;
+    --cyan: 199 90% 48%;
+    --cyan-glow: 199 100% 55%;
     --teal: 175 60% 35%;
     --navy: 220 50% 25%;
     --steel: 218 32% 40%;
     --slate: 218 25% 50%;
 
     /* Forge tokens - Light mode */
-    --forge-orange: 24 100% 50%;
-    --forge-ember: 15 85% 45%;
-    --forge-spark: 35 100% 55%;
+    --forge-orange: 199 90% 48%;
+    --forge-ember: 199 85% 40%;
+    --forge-spark: 199 100% 55%;
     --forge-steel: 220 25% 90%;
     --forge-iron: 220 20% 85%;
 
+    /* Logo colors - Light mode */
+    --logo-blue: 0 0% 0%;
+    --logo-forge: 199 90% 48%;
+
     /* Light mode gradients */
     --gradient-hero: linear-gradient(135deg, hsl(220 30% 96%) 0%, hsl(218 40% 92%) 50%, hsl(220 35% 94%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(190 100% 35%) 0%, hsl(175 60% 35%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(199 90% 48%) 0%, hsl(199 85% 40%) 100%);
     --gradient-card: linear-gradient(145deg, hsl(220 20% 100%) 0%, hsl(218 25% 96%) 100%);
-    --gradient-glow: radial-gradient(ellipse at 50% 0%, hsl(190 100% 50% / 0.08) 0%, transparent 60%);
+    --gradient-glow: radial-gradient(ellipse at 50% 0%, hsl(199 90% 50% / 0.08) 0%, transparent 60%);
     --gradient-forge: linear-gradient(135deg, hsl(220 25% 90%) 0%, hsl(218 30% 85%) 100%);
-    --gradient-forge-accent: linear-gradient(135deg, hsl(24 100% 50%) 0%, hsl(15 85% 45%) 100%);
-    --gradient-forge-glow: radial-gradient(ellipse at 50% 0%, hsl(24 100% 50% / 0.1) 0%, transparent 60%);
+    --gradient-forge-accent: linear-gradient(135deg, hsl(199 90% 48%) 0%, hsl(199 85% 40%) 100%);
+    --gradient-forge-glow: radial-gradient(ellipse at 50% 0%, hsl(199 90% 50% / 0.1) 0%, transparent 60%);
 
-    --shadow-glow: 0 0 40px hsl(190 100% 50% / 0.15);
+    --shadow-glow: 0 0 40px hsl(199 90% 50% / 0.15);
     --shadow-card: 0 4px 24px hsl(220 50% 50% / 0.08);
     --shadow-elevated: 0 8px 32px hsl(220 50% 50% / 0.12);
-    --shadow-forge: 0 0 40px hsl(24 100% 50% / 0.2);
+    --shadow-forge: 0 0 40px hsl(199 90% 50% / 0.2);
 
     --sidebar-background: 220 20% 98%;
     --sidebar-foreground: 220 50% 20%;
-    --sidebar-primary: 190 100% 35%;
+    --sidebar-primary: 199 90% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 218 30% 94%;
     --sidebar-accent-foreground: 220 50% 15%;
     --sidebar-border: 220 20% 88%;
-    --sidebar-ring: 190 100% 35%;
+    --sidebar-ring: 199 90% 48%;
   }
 
   .dark {
@@ -121,6 +125,10 @@
     --forge-spark: 35 100% 55%;
     --forge-steel: 220 30% 10%;
     --forge-iron: 220 35% 6%;
+
+    /* Logo colors - Dark mode */
+    --logo-blue: 0 0% 100%;
+    --logo-forge: 24 95% 47%;
 
     /* Dark mode gradients */
     --gradient-hero: linear-gradient(135deg, hsl(220 50% 4%) 0%, hsl(220 40% 8%) 50%, hsl(220 45% 6%) 100%);
@@ -175,6 +183,15 @@
   .text-forge-gradient {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, hsl(var(--forge-orange)) 0%, hsl(var(--forge-ember)) 100%);
+  }
+
+  /* Logo text colors */
+  .text-logo-blue {
+    color: hsl(var(--logo-blue));
+  }
+
+  .text-logo-forge {
+    color: hsl(var(--logo-forge));
   }
 
   .bg-hero-gradient {
@@ -264,5 +281,66 @@
   .glass-forge {
     @apply backdrop-blur-xl border border-border/40;
     background: hsl(var(--forge-iron) / 0.9);
+  }
+
+  /* Glass Hero Effect */
+  .glass-hero {
+    @apply backdrop-blur-xl;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--background) / 0.85) 0%,
+      hsl(var(--card) / 0.7) 50%,
+      hsl(var(--background) / 0.85) 100%
+    );
+    border-bottom: 1px solid hsl(var(--border) / 0.5);
+  }
+
+  /* Animated Color Gradient Background */
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .animated-gradient-bg {
+    background: linear-gradient(
+      -45deg,
+      hsl(var(--primary) / 0.08),
+      hsl(var(--accent) / 0.08),
+      hsl(var(--forge-orange) / 0.08),
+      hsl(var(--cyan) / 0.08)
+    );
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+  }
+
+  /* Combined glass hero with animation */
+  .glass-hero-animated {
+    @apply backdrop-blur-xl relative overflow-hidden;
+  }
+
+  .glass-hero-animated::before {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--background) / 0.85) 0%,
+      hsl(var(--card) / 0.7) 50%,
+      hsl(var(--background) / 0.85) 100%
+    );
+  }
+
+  .glass-hero-animated::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(
+      -45deg,
+      hsl(var(--primary) / 0.06),
+      hsl(var(--accent) / 0.06),
+      hsl(var(--forge-orange) / 0.06),
+      hsl(var(--cyan) / 0.06)
+    );
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
   }
 }
