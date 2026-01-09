@@ -2,24 +2,42 @@
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=yes" />
     <title>Blue Forge | Web Development Studio + AI Builder Platform</title>
     <meta name="description" content="Build. Launch. Scale. Mobile-first websites, web apps, and AI-powered products crafted with precision." />
     <meta name="author" content="Blue Forge" />
     <meta name="theme-color" content="#0a0f1a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
+    <!-- Open Graph -->
     <meta property="og:title" content="Blue Forge | Build. Launch. Scale." />
     <meta property="og:description" content="Web Development Studio + AI Builder Platform. Mobile-first websites, web apps, and AI-powered products." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@BlueForge" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <!-- Performance & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://lovable.dev" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="https://blueforge.dev" />
+
+    <!-- Preload main module to avoid render delay -->
+    <link rel="modulepreload" href="/src/main.tsx" />
   </head>
 
   <body>
     <div id="root"></div>
+    <noscript>Please enable JavaScript to view this site.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
