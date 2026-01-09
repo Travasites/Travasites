@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Hammer } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import blueforgeLogoIcon from "@/assets/blueforge-logo-icon.png";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -50,9 +51,11 @@ export const Navbar = () => {
             className="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-lg"
             aria-label="Blue Forge - Home"
           >
-            <div className="w-8 h-8 rounded-lg bg-accent-gradient flex items-center justify-center shadow-glow">
-              <Hammer className="w-4 h-4 text-accent-foreground" aria-hidden="true" />
-            </div>
+            <img 
+              src={blueforgeLogoIcon} 
+              alt="BlueForge Logo" 
+              className="h-8 w-auto"
+            />
             <span className="text-lg font-bold">
               <span className="text-logo-blue">BLUE </span>
               <span className="text-logo-forge">FORGE</span>
