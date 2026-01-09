@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Hammer, Github, Twitter, Linkedin, Mail } from "lucide-react";
+import { Github, Twitter, Linkedin, Mail } from "lucide-react";
+import blueforgeLogoIcon from "@/assets/blueforge-logo-icon.png";
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -15,9 +16,11 @@ export const Footer = () => {
               className="flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg"
               aria-label="Blue Forge - Home"
             >
-              <div className="w-8 h-8 rounded-lg bg-accent-gradient flex items-center justify-center">
-                <Hammer className="w-4 h-4 text-accent-foreground" aria-hidden="true" />
-              </div>
+              <img 
+                src={blueforgeLogoIcon} 
+                alt="BlueForge Logo" 
+                className="h-8 w-auto"
+              />
               <span className="text-lg font-bold">
                 <span className="text-logo-blue">BLUE </span>
                 <span className="text-logo-forge">FORGE</span>
