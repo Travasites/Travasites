@@ -194,6 +194,32 @@
     color: hsl(var(--logo-forge));
   }
 
+  /* Theme-aware logo icon with CSS filter */
+  .logo-icon-themed {
+    @apply transition-all duration-300;
+    /* Light mode: blue tint (#07a1ea) */
+    filter: brightness(0) saturate(100%) invert(52%) sepia(98%) saturate(1462%) hue-rotate(166deg) brightness(96%) contrast(101%);
+  }
+
+  .dark .logo-icon-themed {
+    /* Dark mode: orange tint (#ea5007) */
+    filter: brightness(0) saturate(100%) invert(41%) sepia(91%) saturate(2064%) hue-rotate(4deg) brightness(99%) contrast(92%);
+  }
+
+  /* Logo hover animation with scale and glow */
+  .logo-hover {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .logo-hover:hover {
+    @apply scale-110;
+    filter: brightness(0) saturate(100%) invert(52%) sepia(98%) saturate(1462%) hue-rotate(166deg) brightness(110%) contrast(101%) drop-shadow(0 0 8px hsl(var(--logo-forge) / 0.6));
+  }
+
+  .dark .logo-hover:hover {
+    filter: brightness(0) saturate(100%) invert(41%) sepia(91%) saturate(2064%) hue-rotate(4deg) brightness(110%) contrast(92%) drop-shadow(0 0 8px hsl(var(--logo-forge) / 0.6));
+  }
+
   .bg-hero-gradient {
     background: var(--gradient-hero);
   }

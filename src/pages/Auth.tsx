@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Sparkles, Mail, Lock, User, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { usePageMeta } from '@/hooks/usePageMeta';
+import blueforgeLogoIcon from '@/assets/blueforge-logo-icon.png';
 
 const signInSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -148,26 +149,31 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen bg-hero-gradient flex items-center justify-center p-6">
+    <div className="min-h-screen bg-hero-gradient flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Animated gradient background */}
+      <div className="absolute inset-0 animated-gradient-bg" aria-hidden="true" />
       <div className="absolute inset-0 bg-glow" aria-hidden="true" />
       
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative w-full max-w-md"
+        className="relative w-full max-w-md z-10"
       >
         {/* Logo */}
-        <Link to="/" className="flex items-center justify-center gap-2 mb-8">
-          <div className="w-10 h-10 rounded-xl bg-accent-gradient flex items-center justify-center shadow-glow">
-            <Sparkles className="w-5 h-5 text-accent-foreground" />
-          </div>
-          <span className="text-2xl font-bold">
-            BLUE <span className="text-gradient">FORGE</span>
+        <Link to="/" className="flex items-center justify-center gap-3 mb-8 group">
+          <img 
+            src={blueforgeLogoIcon} 
+            alt="BlueForge Logo" 
+            className="h-10 w-auto logo-icon-themed logo-hover"
+          />
+          <span className="text-2xl font-bold group-hover:opacity-90 transition-opacity">
+            <span className="text-logo-blue">BLUE </span>
+            <span className="text-logo-forge">FORGE</span>
           </span>
         </Link>
 
         {/* Card */}
-        <div className="bg-card border border-border rounded-2xl p-8 shadow-elevated">
+        <div className="glass-strong rounded-2xl p-8 shadow-elevated border-primary/20">
           <div className="text-center mb-6">
             <h1 className="text-2xl font-bold mb-2">
               {mode === 'signin' && 'Welcome Back'}
