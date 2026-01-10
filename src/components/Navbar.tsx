@@ -1,10 +1,19 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 import blueforgeLogoIcon from "@/assets/blueforge-logo-icon.png";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -21,6 +30,9 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,6 +46,23 @@ export const Navbar = () => {
   useEffect(() => {
     setIsOpen(false);
   }, [location.pathname]);
+
+  const handleSignOut = async () => {
+    const { error } = await signOut();
+    if (error) {
+      toast({
+        title: "Error signing out",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Signed out",
+        description: "You have been signed out successfully.",
+      });
+      navigate("/");
+    }
+  };
 
   return (
     <nav 
@@ -54,9 +83,9 @@ export const Navbar = () => {
             <img 
               src={blueforgeLogoIcon} 
               alt="BlueForge Logo" 
-              className="h-8 w-auto"
+              className="h-8 w-auto logo-icon-themed logo-hover"
             />
-            <span className="text-lg font-bold">
+            <span className="text-lg font-bold group-hover:opacity-90 transition-opacity">
               <span className="text-logo-blue">BLUE </span>
               <span className="text-logo-forge">FORGE</span>
             </span>
@@ -84,12 +113,37 @@ export const Navbar = () => {
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-2">
             <ThemeToggle />
-            <Button 
-              asChild 
-              className="bg-accent-gradient text-accent-foreground hover:shadow-glow transition-all duration-300"
-            >
-              <Link to="/contact">Start a Project</Link>
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="gap-2">
+                    <User className="h-4 w-4" />
+                    <span className="max-w-[100px] truncate">
+                      {user.user_metadata?.display_name || user.email?.split('@')[0]}
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem asChild>
+                    <Link to="/ai-studio" className="cursor-pointer">
+                      The Forge
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} className="text-destructive cursor-pointer">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button 
+                asChild 
+                className="bg-accent-gradient text-accent-foreground hover:shadow-glow transition-all duration-300"
+              >
+                <Link to="/auth">Sign In</Link>
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -139,11 +193,22 @@ export const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
-              <Button asChild className="w-full mt-4 bg-accent-gradient text-accent-foreground">
-                <Link to="/contact">
-                  Start a Project
-                </Link>
-              </Button>
+              {user ? (
+                <Button 
+                  onClick={handleSignOut} 
+                  variant="outline" 
+                  className="w-full mt-4"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
+                </Button>
+              ) : (
+                <Button asChild className="w-full mt-4 bg-accent-gradient text-accent-foreground">
+                  <Link to="/auth">
+                    Sign In
+                  </Link>
+                </Button>
+              )}
             </div>
           </motion.div>
         )}

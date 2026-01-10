@@ -13,15 +13,15 @@ export const Footer = () => {
           <div className="space-y-4">
             <Link 
               to="/" 
-              className="flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg"
+              className="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg"
               aria-label="Blue Forge - Home"
             >
               <img 
                 src={blueforgeLogoIcon} 
                 alt="BlueForge Logo" 
-                className="h-8 w-auto"
+                className="h-8 w-auto logo-icon-themed logo-hover"
               />
-              <span className="text-lg font-bold">
+              <span className="text-lg font-bold group-hover:opacity-90 transition-opacity">
                 <span className="text-logo-blue">BLUE </span>
                 <span className="text-logo-forge">FORGE</span>
               </span>
