@@ -95,7 +95,7 @@ const clientLogos = [{
   logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg"
 }, {
   name: "Hetzner",
-  logo: "https://cdn.simpleicons.org/hetzner/D50C2D"
+  logo: "https://www.hetzner.com/assets/Uploads/Hetzner-Logo.svg"
 }];
 const forgeTools = [{
   icon: Smartphone,
