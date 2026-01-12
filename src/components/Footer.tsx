@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Github, Twitter, Linkedin, Mail } from "lucide-react";
+import { Github, Twitter } from "lucide-react";
 import blueforgeLogoIcon from "@/assets/blueforge-logo-icon.png";
 
 export const Footer = () => {
@@ -101,22 +101,6 @@ export const Footer = () => {
                 aria-label="Follow Blue Forge on Twitter"
               >
                 <Twitter className="w-5 h-5 text-muted-foreground hover:text-primary" aria-hidden="true" />
-              </a>
-              <a 
-                href="https://linkedin.com/company/blueforge" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                aria-label="Connect with Blue Forge on LinkedIn"
-              >
-                <Linkedin className="w-5 h-5 text-muted-foreground hover:text-primary" aria-hidden="true" />
-              </a>
-              <a 
-                href="mailto:hello@blueforge.dev"
-                className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                aria-label="Email Blue Forge"
-              >
-                <Mail className="w-5 h-5 text-muted-foreground hover:text-primary" aria-hidden="true" />
               </a>
             </div>
           </div>
