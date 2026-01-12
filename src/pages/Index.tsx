@@ -6,6 +6,8 @@ import { Layout } from "@/components/Layout";
 import { OrganizationSchema } from "@/components/JsonLd";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
+import stripeLogo from "@/assets/stripe-logo.png";
+import hetznerLogo from "@/assets/hetzner-logo.png";
 const services = [{
   icon: Globe,
   title: "Website Development",
@@ -86,7 +88,7 @@ const clientLogos = [{
   logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg"
 }, {
   name: "Stripe",
-  logo: "https://images.ctfassets.net/fzn2n1nzq965/HTTOloNPhisV9P4hlMPNA/cacf1bb88b9fc492dfad34378d844280/Stripe_logo_-_blurple.svg"
+  logo: stripeLogo
 }, {
   name: "DigitalOcean",
   logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/digitalocean/digitalocean-original.svg"
@@ -95,7 +97,7 @@ const clientLogos = [{
   logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg"
 }, {
   name: "Hetzner",
-  logo: "https://www.hetzner.com/assets/Uploads/Hetzner-Logo.svg"
+  logo: hetznerLogo
 }];
 const forgeTools = [{
   icon: Smartphone,
