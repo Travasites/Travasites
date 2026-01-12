@@ -86,7 +86,7 @@ const clientLogos = [{
   logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg"
 }, {
   name: "Stripe",
-  logo: "https://cdn.simpleicons.org/stripe/635BFF"
+  logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/stripe/stripe-original.svg"
 }, {
   name: "DigitalOcean",
   logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/digitalocean/digitalocean-original.svg"
