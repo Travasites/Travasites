@@ -44,7 +44,7 @@ const plans = [
       'Export options',
     ],
     cta: 'Start Starter',
-    popular: false,
+    popular: true,
   },
   {
     name: 'Pro',
@@ -62,24 +62,6 @@ const plans = [
       'Team collaboration',
     ],
     cta: 'Go Pro',
-    popular: true,
-  },
-  {
-    name: 'Business',
-    price: '$79',
-    period: '/month',
-    description: 'For agencies and enterprises',
-    credits: 2000,
-    icon: Building2,
-    features: [
-      '2000 credits/month',
-      'All Pro features',
-      'Dedicated support',
-      'Custom integrations',
-      'SLA guarantee',
-      'White-label options',
-    ],
-    cta: 'Contact Sales',
     popular: false,
   },
 ];
@@ -145,7 +127,7 @@ export default function Pricing() {
       <section className="py-24">
         <div className="container mx-auto px-6">
           <motion.div
-            className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -203,7 +185,7 @@ export default function Pricing() {
                   }`}
                   variant={plan.popular ? 'default' : 'outline'}
                 >
-                  <Link to={plan.name === 'Business' ? '/contact' : '/auth'}>
+                  <Link to="/auth">
                     {plan.cta}
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Link>

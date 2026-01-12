@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Mail, MessageSquare, Send, Github, Twitter, Linkedin, Loader2, CheckCircle } from "lucide-react";
+import { Mail, MessageSquare, Send, Github, Twitter, Loader2, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -336,15 +336,6 @@ const Contact = () => {
                     aria-label="Follow Blue Forge on Twitter"
                   >
                     <Twitter className="w-5 h-5" aria-hidden="true" />
-                  </a>
-                  <a 
-                    href="https://linkedin.com/company/blueforge" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-xl bg-card border border-border hover:border-primary/30 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    aria-label="Connect with Blue Forge on LinkedIn"
-                  >
-                    <Linkedin className="w-5 h-5" aria-hidden="true" />
                   </a>
                 </div>
               </motion.div>
