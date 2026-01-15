@@ -6,7 +6,7 @@ interface PageTransitionProps {
   children: ReactNode;
 }
 
-export const PageTransition = ({ children }: PageTransitionProps) => {
+export const PageTransition = ({ children }: PageTransitionProps): React.ReactNode => {
   return (
     <motion.div
       initial="initial"

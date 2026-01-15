@@ -5,7 +5,7 @@ interface LoadingSpinnerProps {
   className?: string;
 }
 
-export const LoadingSpinner = ({ size = "md", className }: LoadingSpinnerProps) => {
+export const LoadingSpinner = ({ size = "md", className }: LoadingSpinnerProps): React.ReactNode => {
   const sizeClasses = {
     sm: "w-4 h-4",
     md: "w-6 h-6",

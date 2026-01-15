@@ -59,6 +59,10 @@ export default {
         navy: "hsl(var(--navy))",
         steel: "hsl(var(--steel))",
         slate: "hsl(var(--slate))",
+        logo: {
+          blue: "hsl(var(--logo-blue))",
+          forge: "hsl(var(--logo-forge))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -100,9 +104,9 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "glow-pulse": "glow-pulse 3s ease-in-out infinite",
-        "float": "float 6s ease-in-out infinite",
-        "shimmer": "shimmer 2s linear infinite",
+        "glow-pulse": "glow-pulse 1.2s ease-in-out infinite",
+        "float": "float 2s ease-in-out infinite",
+        "shimmer": "shimmer 0.8s linear infinite",
       },
     },
   },

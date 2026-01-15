@@ -4,7 +4,7 @@ interface SkeletonProps {
   className?: string;
 }
 
-export const Skeleton = ({ className }: SkeletonProps) => {
+export const Skeleton = ({ className }: SkeletonProps): React.ReactNode => {
   return (
     <div
       className={cn(
@@ -15,7 +15,7 @@ export const Skeleton = ({ className }: SkeletonProps) => {
   );
 };
 
-export const SkeletonCard = () => {
+export const SkeletonCard = (): React.ReactNode => {
   return (
     <div className="p-6 rounded-2xl bg-card border border-border">
       <Skeleton className="w-12 h-12 rounded-xl mb-4" />
@@ -26,7 +26,7 @@ export const SkeletonCard = () => {
   );
 };
 
-export const SkeletonText = ({ lines = 3 }: { lines?: number }) => {
+export const SkeletonText = ({ lines = 3 }: { lines?: number }): React.ReactNode => {
   return (
     <div className="space-y-2">
       {Array.from({ length: lines }).map((_, i) => (

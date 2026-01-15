@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Check, Zap, Star, Building2, ArrowRight, HelpCircle } from 'lucide-react';
+import { Check, Zap, Star, ArrowRight, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Layout } from '@/components/Layout';
 import { usePageMeta } from '@/hooks/usePageMeta';

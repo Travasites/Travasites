@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import blueforgeLogoIcon from "@/assets/blueforge-logo-icon.png";
@@ -33,7 +32,7 @@ const navLinks = [{
   name: "Contact",
   path: "/contact"
 }];
-export const Navbar = () => {
+export const Navbar = (): React.ReactNode => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
@@ -82,8 +81,8 @@ export const Navbar = () => {
           <Link to="/" className="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-lg" aria-label="Blue Forge - Home">
             <img src={blueforgeLogoIcon} alt="BlueForge Logo" className="h-8 w-auto logo-icon-themed logo-hover" />
             <span className="text-lg font-bold group-hover:opacity-90 transition-opacity">
-              <span className="text-logo-blue">​ </span>
-              <span className="text-logo-forge">​</span>
+              <span className="text-logo-blue">B</span>
+              <span className="text-logo-forge">F</span>
             </span>
           </Link>
 
@@ -96,7 +95,6 @@ export const Navbar = () => {
 
           {/* Desktop Actions */}
           <div className="hidden lg:flex items-center gap-2">
-            <ThemeToggle />
             {user ? <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="gap-2">
@@ -131,7 +129,6 @@ export const Navbar = () => {
 
           {/* Mobile Menu Toggle */}
           <div className="flex items-center gap-2 lg:hidden">
-            <ThemeToggle />
             <button onClick={() => setIsOpen(!isOpen)} className="p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring" aria-expanded={isOpen} aria-controls="mobile-menu" aria-label={isOpen ? "Close menu" : "Open menu"}>
               {isOpen ? <X className="w-6 h-6" aria-hidden="true" /> : <Menu className="w-6 h-6" aria-hidden="true" />}
             </button>

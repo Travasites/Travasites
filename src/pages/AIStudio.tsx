@@ -9,7 +9,6 @@ import {
   FolderOpen,
   Settings,
   Plus,
-  Save,
   Share2,
   Download,
   Hammer,

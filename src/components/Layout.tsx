@@ -11,7 +11,7 @@ interface LayoutProps {
   hideFooter?: boolean;
 }
 
-export const Layout = ({ children, hideFooter = false }: LayoutProps) => {
+export const Layout = ({ children, hideFooter = false }: LayoutProps): React.ReactNode => {
   return (
     <div className="min-h-screen bg-background">
       <SkipToContent />

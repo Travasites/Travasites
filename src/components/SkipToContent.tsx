@@ -1,4 +1,4 @@
-export const SkipToContent = () => {
+export const SkipToContent = (): React.ReactNode => {
   return (
     <a
       href="#main-content"

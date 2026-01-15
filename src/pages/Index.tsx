@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { OrganizationSchema } from "@/components/JsonLd";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import { fadeInUp, staggerContainer } from "@/lib/animations";
+import { fadeInUp, staggerContainer, hoverLift, hoverGlow } from "@/lib/animations";
+import { AnimatedHeroBackground } from "@/components/AnimatedHeroBackground";
 import stripeLogo from "@/assets/stripe-logo.png";
 import hetznerLogo from "@/assets/hetzner-logo.png";
 const services = [{
@@ -127,12 +128,8 @@ const Index = () => {
       
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden glass-hero-animated">
-        {/* Background Effects */}
-        <div className="absolute inset-0 bg-glow z-10" aria-hidden="true" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-glow-pulse z-0" aria-hidden="true" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl animate-glow-pulse z-0" style={{
-        animationDelay: "1.5s"
-      }} aria-hidden="true" />
+        {/* Enhanced Animated Background */}
+        <AnimatedHeroBackground />
         
         <div className="container mx-auto px-6 relative z-20">
           <motion.div className="max-w-4xl mx-auto text-center" initial="hidden" animate="visible" variants={staggerContainer}>
@@ -217,11 +214,17 @@ const Index = () => {
           once: true
         }} variants={staggerContainer}>
             {services.map((service, index) => <motion.div key={index} variants={fadeInUp} whileHover={{
-            y: -4
-          }} className="group p-6 rounded-2xl bg-card border border-border hover:border-primary/30 hover:shadow-card transition-all duration-300">
-                <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center mb-4 group-hover:bg-accent-gradient transition-all duration-300">
+            y: -8,
+            boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)"
+          }} whileTap={{
+            scale: 0.95
+          }} className="group p-6 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-300 cursor-pointer">
+                <motion.div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center mb-4 group-hover:bg-accent-gradient transition-all duration-300" whileHover={{
+            scale: 1.1,
+            rotate: 5
+          }}>
                   <service.icon className="w-6 h-6 text-primary group-hover:text-accent-foreground transition-colors" aria-hidden="true" />
-                </div>
+                </motion.div>
                 <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
                 <p className="text-muted-foreground">{service.desc}</p>
               </motion.div>)}

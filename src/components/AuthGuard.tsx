@@ -7,7 +7,7 @@ interface AuthGuardProps {
   children: React.ReactNode;
 }
 
-export function AuthGuard({ children }: AuthGuardProps) {
+export function AuthGuard({ children }: AuthGuardProps): React.ReactNode {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 

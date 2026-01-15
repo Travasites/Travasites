@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export const BackToTop = () => {
+export const BackToTop = (): React.ReactNode => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

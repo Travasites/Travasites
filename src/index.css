@@ -8,81 +8,7 @@
 
 @layer base {
   :root {
-    /* Light mode */
-    --background: 220 20% 97%;
-    --foreground: 220 50% 10%;
-
-    --card: 220 20% 100%;
-    --card-foreground: 220 50% 10%;
-
-    --popover: 220 20% 100%;
-    --popover-foreground: 220 50% 10%;
-
-    --primary: 199 90% 48%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 218 30% 92%;
-    --secondary-foreground: 220 50% 15%;
-
-    --muted: 218 25% 90%;
-    --muted-foreground: 220 15% 45%;
-
-    --accent: 199 90% 48%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 220 20% 88%;
-    --input: 220 20% 88%;
-    --ring: 199 90% 48%;
-
-    --radius: 0.75rem;
-
-    /* Custom Blue Forge tokens - Light mode */
-    --cyan: 199 90% 48%;
-    --cyan-glow: 199 100% 55%;
-    --teal: 175 60% 35%;
-    --navy: 220 50% 25%;
-    --steel: 218 32% 40%;
-    --slate: 218 25% 50%;
-
-    /* Forge tokens - Light mode */
-    --forge-orange: 199 90% 48%;
-    --forge-ember: 199 85% 40%;
-    --forge-spark: 199 100% 55%;
-    --forge-steel: 220 25% 90%;
-    --forge-iron: 220 20% 85%;
-
-    /* Logo colors - Light mode */
-    --logo-blue: 0 0% 0%;
-    --logo-forge: 197 94% 47%;
-
-    /* Light mode gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(220 30% 96%) 0%, hsl(218 40% 92%) 50%, hsl(220 35% 94%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(199 90% 48%) 0%, hsl(199 85% 40%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(220 20% 100%) 0%, hsl(218 25% 96%) 100%);
-    --gradient-glow: radial-gradient(ellipse at 50% 0%, hsl(199 90% 50% / 0.08) 0%, transparent 60%);
-    --gradient-forge: linear-gradient(135deg, hsl(220 25% 90%) 0%, hsl(218 30% 85%) 100%);
-    --gradient-forge-accent: linear-gradient(135deg, hsl(199 90% 48%) 0%, hsl(199 85% 40%) 100%);
-    --gradient-forge-glow: radial-gradient(ellipse at 50% 0%, hsl(199 90% 50% / 0.1) 0%, transparent 60%);
-
-    --shadow-glow: 0 0 40px hsl(199 90% 50% / 0.15);
-    --shadow-card: 0 4px 24px hsl(220 50% 50% / 0.08);
-    --shadow-elevated: 0 8px 32px hsl(220 50% 50% / 0.12);
-    --shadow-forge: 0 0 40px hsl(199 90% 50% / 0.2);
-
-    --sidebar-background: 220 20% 98%;
-    --sidebar-foreground: 220 50% 20%;
-    --sidebar-primary: 199 90% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 218 30% 94%;
-    --sidebar-accent-foreground: 220 50% 15%;
-    --sidebar-border: 220 20% 88%;
-    --sidebar-ring: 199 90% 48%;
-  }
-
-  .dark {
+    /* Dark mode - Default */
     --background: 220 50% 4%;
     --foreground: 220 20% 95%;
 
@@ -111,7 +37,9 @@
     --input: 220 25% 12%;
     --ring: 24 100% 50%;
 
-    /* Custom Blue Forge tokens - Dark mode */
+    --radius: 0.75rem;
+
+    /* Custom Blue Forge tokens - Dark mode (OLED blacks, deep blues, orange accents) */
     --cyan: 190 100% 50%;
     --cyan-glow: 190 100% 60%;
     --teal: 175 60% 45%;
@@ -119,7 +47,7 @@
     --steel: 220 30% 12%;
     --slate: 220 25% 18%;
 
-    /* Forge tokens - Dark mode (OLED blacks, deep blues, orange accents) */
+    /* Forge tokens - Dark mode */
     --forge-orange: 24 100% 50%;
     --forge-ember: 15 90% 45%;
     --forge-spark: 35 100% 55%;
@@ -194,14 +122,9 @@
     color: hsl(var(--logo-forge));
   }
 
-  /* Theme-aware logo icon with CSS filter */
+  /* Theme-aware logo icon with CSS filter - Dark mode only */
   .logo-icon-themed {
     @apply transition-all duration-300;
-    /* Light mode: blue tint (#07a1ea) */
-    filter: brightness(0) saturate(100%) invert(52%) sepia(98%) saturate(1462%) hue-rotate(166deg) brightness(96%) contrast(101%);
-  }
-
-  .dark .logo-icon-themed {
     /* Dark mode: orange tint (#ea5007) */
     filter: brightness(0) saturate(100%) invert(41%) sepia(91%) saturate(2064%) hue-rotate(4deg) brightness(99%) contrast(92%);
   }
@@ -213,10 +136,6 @@
 
   .logo-hover:hover {
     @apply scale-110;
-    filter: brightness(0) saturate(100%) invert(52%) sepia(98%) saturate(1462%) hue-rotate(166deg) brightness(110%) contrast(101%) drop-shadow(0 0 8px hsl(var(--logo-forge) / 0.6));
-  }
-
-  .dark .logo-hover:hover {
     filter: brightness(0) saturate(100%) invert(41%) sepia(91%) saturate(2064%) hue-rotate(4deg) brightness(110%) contrast(92%) drop-shadow(0 0 8px hsl(var(--logo-forge) / 0.6));
   }
 
@@ -331,13 +250,13 @@
   .animated-gradient-bg {
     background: linear-gradient(
       -45deg,
-      hsl(var(--primary) / 0.08),
-      hsl(var(--accent) / 0.08),
-      hsl(var(--forge-orange) / 0.08),
-      hsl(var(--cyan) / 0.08)
+      hsl(var(--primary) / 0.12),
+      hsl(var(--accent) / 0.12),
+      hsl(var(--forge-orange) / 0.12),
+      hsl(var(--cyan) / 0.12)
     );
     background-size: 400% 400%;
-    animation: gradient-shift 15s ease infinite;
+    animation: gradient-shift 4s ease infinite;
   }
 
   /* Combined glass hero with animation */
@@ -361,12 +280,12 @@
     @apply absolute inset-0;
     background: linear-gradient(
       -45deg,
-      hsl(var(--primary) / 0.06),
-      hsl(var(--accent) / 0.06),
-      hsl(var(--forge-orange) / 0.06),
-      hsl(var(--cyan) / 0.06)
+      hsl(var(--primary) / 0.10),
+      hsl(var(--accent) / 0.10),
+      hsl(var(--forge-orange) / 0.10),
+      hsl(var(--cyan) / 0.10)
     );
     background-size: 400% 400%;
-    animation: gradient-shift 15s ease infinite;
+    animation: gradient-shift 4s ease infinite;
   }
 }

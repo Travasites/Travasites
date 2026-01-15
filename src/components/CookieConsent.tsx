@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const COOKIE_CONSENT_KEY = "blueforge-cookie-consent";
 
-export const CookieConsent = () => {
+export const CookieConsent = (): React.ReactNode => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

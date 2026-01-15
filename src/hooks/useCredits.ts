@@ -40,7 +40,7 @@ export function useCredits() {
       .single();
 
     // Fetch profile for plan
-    const { data: profileData, error: profileError } = await supabase
+    const { data: profileData, error: _profileError } = await supabase
       .from('profiles')
       .select('plan')
       .eq('user_id', user.id)

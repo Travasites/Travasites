@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Github, Twitter } from "lucide-react";
 import blueforgeLogoIcon from "@/assets/blueforge-logo-icon.png";
 
-export const Footer = () => {
+export const Footer = (): React.ReactNode => {
   const currentYear = new Date().getFullYear();
 
   return (
