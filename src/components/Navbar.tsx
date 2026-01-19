@@ -81,8 +81,8 @@ export const Navbar = (): React.ReactNode => {
           <Link to="/" className="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-lg" aria-label="Blue Forge - Home">
             <img src={blueforgeLogoIcon} alt="BlueForge Logo" className="h-8 w-auto logo-icon-themed logo-hover" />
             <span className="text-lg font-bold group-hover:opacity-90 transition-opacity">
-              <span className="text-logo-blue">B</span>
-              <span className="text-logo-forge">F</span>
+              <span className="text-logo-blue">​</span>
+              <span className="text-logo-forge">​</span>
             </span>
           </Link>
 
