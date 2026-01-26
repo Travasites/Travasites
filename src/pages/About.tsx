@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
+import founderProfile from "@/assets/founder-profile.jpeg";
 
 const values = [
   { icon: Target, title: "Mission", description: "To empower businesses with cutting-edge web solutions and AI tools that drive growth and innovation." },
@@ -85,6 +86,62 @@ const About = () => {
                 <p className="text-sm text-muted-foreground">{item.desc}</p>
               </motion.div>
             ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Meet the Founder Section */}
+      <section className="py-24 bg-card/30">
+        <div className="container mx-auto px-6">
+          <motion.div
+            className="max-w-4xl mx-auto"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+          >
+            <motion.div variants={fadeInUp} className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-4">Meet the Founder</h2>
+              <p className="text-muted-foreground">The face behind Blue Forge</p>
+            </motion.div>
+            
+            <motion.div 
+              variants={fadeInUp}
+              className="flex flex-col md:flex-row items-center gap-8 md:gap-12"
+            >
+              {/* Profile Image */}
+              <div className="flex-shrink-0">
+                <div className="relative">
+                  <div className="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden ring-4 ring-primary/20 ring-offset-4 ring-offset-background">
+                    <img
+                      src={founderProfile}
+                      alt="Founder of Blue Forge"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  {/* Decorative glow */}
+                  <div className="absolute inset-0 rounded-full bg-primary/10 blur-2xl -z-10" />
+                </div>
+              </div>
+
+              {/* Bio Content */}
+              <div className="text-center md:text-left">
+                <h3 className="text-2xl font-bold mb-2">Wisdom</h3>
+                <p className="text-primary font-medium mb-4">Founder & Lead Developer</p>
+                <p className="text-muted-foreground leading-relaxed mb-6">
+                  Passionate about crafting exceptional digital experiences, I founded Blue Forge with a vision to help businesses thrive in the digital age. With years of experience in full-stack development and a deep understanding of modern web technologies, I bring a unique blend of technical expertise and creative problem-solving to every project.
+                </p>
+                <p className="text-muted-foreground leading-relaxed mb-6">
+                  My mission is to bridge the gap between complex technology and business needs, delivering solutions that are not only powerful but also intuitive and user-friendly.
+                </p>
+                <Button asChild variant="outline" className="hover:border-primary/50">
+                  <Link to="/contact">
+                    Get in Touch
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </Link>
+                </Button>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
