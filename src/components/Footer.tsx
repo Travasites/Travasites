@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Github, Twitter } from "lucide-react";
+import { Github, Linkedin } from "lucide-react";
 import blueforgeLogoIcon from "@/assets/blueforge-logo-icon.png";
 
 export const Footer = (): React.ReactNode => {
@@ -85,7 +85,7 @@ export const Footer = (): React.ReactNode => {
             <h4 className="font-semibold text-foreground mb-4">Connect</h4>
             <div className="flex gap-4" role="list" aria-label="Social media links">
               <a 
-                href="https://github.com/blueforge" 
+                href="https://github.com/blueforgedev" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -94,13 +94,13 @@ export const Footer = (): React.ReactNode => {
                 <Github className="w-5 h-5 text-muted-foreground hover:text-primary" aria-hidden="true" />
               </a>
               <a 
-                href="https://twitter.com/blueforge" 
+                href="https://www.linkedin.com/in/wisdom-a-b02587331/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                aria-label="Follow Blue Forge on Twitter"
+                aria-label="Connect with Blue Forge on LinkedIn"
               >
-                <Twitter className="w-5 h-5 text-muted-foreground hover:text-primary" aria-hidden="true" />
+                <Linkedin className="w-5 h-5 text-muted-foreground hover:text-primary" aria-hidden="true" />
               </a>
             </div>
           </div>

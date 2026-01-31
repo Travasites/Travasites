@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+/* Fonts loaded via index.html for non-blocking render */
 
 /* BLUE FORGE Design System - Dark Mode First */
 
@@ -287,5 +287,27 @@
     );
     background-size: 400% 400%;
     animation: gradient-shift 4s ease infinite;
+  }
+
+  /* Performance Optimization Utilities */
+  .instant-load {
+    content-visibility: auto;
+  }
+
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

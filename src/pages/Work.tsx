@@ -87,12 +87,6 @@ const projects: Project[] = [
   }
 ];
 
-const gradients = {
-  "gradient-1": "from-blue-500 to-purple-500",
-  "gradient-2": "from-cyan-500 to-blue-500",
-  "gradient-3": "from-green-500 to-emerald-500",
-  "gradient-4": "from-orange-500 to-pink-500"
-};
 
 const Work = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
