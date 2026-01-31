@@ -1,11 +1,59 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Target, Lightbulb, Wrench, ArrowRight } from "lucide-react";
+import { Target, Lightbulb, Wrench, ArrowRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import founderProfile from "@/assets/founder-profile.jpeg";
+
+interface Testimonial {
+  id: string;
+  name: string;
+  role: string;
+  company: string;
+  rating: number;
+  quote: string;
+}
+
+const testimonials: Testimonial[] = [
+  {
+    id: "1",
+    name: "Sarah Chen",
+    role: "CEO",
+    company: "TechStart Inc",
+    rating: 5,
+    quote: "Blue Forge transformed our online presence completely. Their attention to detail and commitment to delivering a fast, modern website exceeded our expectations. Highly recommend!"
+  },
+  {
+    id: "2",
+    name: "Marcus Johnson",
+    role: "Founder",
+    company: "GrowthLab",
+    rating: 5,
+    quote: "Working with Blue Forge was a game-changer for our startup. They delivered our MVP in record time without compromising on quality. The AI integration features are phenomenal."
+  },
+  {
+    id: "3",
+    name: "Emily Rodriguez",
+    role: "Marketing Director",
+    company: "Elevate Digital",
+    rating: 5,
+    quote: "The team at Blue Forge truly understands modern web development. Our new platform is lightning fast and our conversion rates have improved significantly since launch."
+  },
+  {
+    id: "4",
+    name: "David Kim",
+    role: "CTO",
+    company: "InnovateTech",
+    rating: 5,
+    quote: "Professional, responsive, and technically excellent. Blue Forge delivered a complex web application that our users love. Their code quality is top-notch."
+  }
+];
+
+const getInitials = (name: string) => {
+  return name.split(' ').map(n => n[0]).join('').toUpperCase();
+};
 
 const values = [
   { icon: Target, title: "Mission", description: "To empower businesses with cutting-edge web solutions and AI tools that drive growth and innovation." },
@@ -146,6 +194,71 @@ const About = () => {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section className="py-24">
+        <div className="container mx-auto px-6">
+          <motion.div
+            className="text-center mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+          >
+            <h2 className="text-3xl font-bold mb-4">What Our Clients Say</h2>
+            <p className="text-muted-foreground">Trusted by businesses worldwide</p>
+          </motion.div>
+
+          <motion.div
+            className="grid md:grid-cols-2 gap-6"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+          >
+            {testimonials.map((testimonial) => (
+              <motion.div
+                key={testimonial.id}
+                variants={fadeInUp}
+                className="p-6 rounded-2xl bg-card border border-border hover:border-primary/20 transition-all"
+              >
+                {/* Header: Avatar + Info */}
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/80 to-primary flex items-center justify-center text-primary-foreground font-semibold">
+                    {getInitials(testimonial.name)}
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground">{testimonial.name}</h4>
+                    <p className="text-sm text-muted-foreground">
+                      {testimonial.role}, {testimonial.company}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Star Rating */}
+                <div className="flex gap-1 mb-4">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`w-4 h-4 ${
+                        i < testimonial.rating
+                          ? "text-yellow-500 fill-yellow-500"
+                          : "text-muted-foreground"
+                      }`}
+                      aria-hidden="true"
+                    />
+                  ))}
+                </div>
+
+                {/* Quote */}
+                <p className="text-muted-foreground italic leading-relaxed">
+                  "{testimonial.quote}"
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
       <section className="py-24">
         <div className="container mx-auto px-6">
           <motion.div className="text-center mb-12" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
@@ -155,7 +268,13 @@ const About = () => {
           <motion.div className="flex flex-wrap justify-center gap-4" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
             {stack.map((tech, i) => (
               <motion.div key={i} variants={fadeInUp} whileHover={{ scale: 1.05 }} className="flex items-center gap-3 px-5 py-3 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors">
-                <img src={tech.logo} alt={tech.name} className="w-6 h-6 object-contain" />
+                <img 
+                  src={tech.logo} 
+                  alt={tech.name} 
+                  className="w-6 h-6 object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <span className="font-medium">{tech.name}</span>
               </motion.div>
             ))}

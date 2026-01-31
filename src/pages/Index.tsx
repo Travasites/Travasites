@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { OrganizationSchema } from "@/components/JsonLd";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import { fadeInUp, staggerContainer, hoverLift, hoverGlow } from "@/lib/animations";
+import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { AnimatedHeroBackground } from "@/components/AnimatedHeroBackground";
 import stripeLogo from "@/assets/stripe-logo.png";
 import hetznerLogo from "@/assets/hetzner-logo.png";
