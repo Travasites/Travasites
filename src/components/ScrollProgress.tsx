@@ -10,7 +10,7 @@ export const ScrollProgress = (): React.ReactNode => {
 
   return (
     <motion.div
-      className="fixed top-16 left-0 right-0 h-0.5 bg-primary origin-left z-50"
+      className="fixed top-16 md:top-20 left-0 right-0 h-0.5 bg-primary origin-left z-50"
       style={{ scaleX }}
     />
   );

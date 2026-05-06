@@ -34,7 +34,7 @@ export const BackToTop = (): React.ReactNode => {
           <Button
             onClick={scrollToTop}
             size="icon"
-            className="w-12 h-12 rounded-full bg-accent-gradient text-accent-foreground shadow-glow hover:shadow-elevated transition-all"
+            className="w-12 h-12 rounded-full bg-primary text-white shadow-glow hover:shadow-elevated transition-all"
             aria-label="Scroll to top"
           >
             <ArrowUp className="w-5 h-5" />

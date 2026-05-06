@@ -1,296 +1,261 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { Target, Lightbulb, Wrench, ArrowRight, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Twitter, Github, Linkedin, Mail, MapPin, Clock, MessageSquare, Send } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
-import founderProfile from "@/assets/founder-profile.jpeg";
+import { useState } from "react";
 
-interface Testimonial {
-  id: string;
-  name: string;
-  role: string;
-  company: string;
-  rating: number;
-  quote: string;
-}
-
-const testimonials: Testimonial[] = [
-  {
-    id: "1",
-    name: "Sarah Chen",
-    role: "CEO",
-    company: "TechStart Inc",
-    rating: 5,
-    quote: "Blue Forge transformed our online presence completely. Their attention to detail and commitment to delivering a fast, modern website exceeded our expectations. Highly recommend!"
-  },
-  {
-    id: "2",
-    name: "Marcus Johnson",
-    role: "Founder",
-    company: "GrowthLab",
-    rating: 5,
-    quote: "Working with Blue Forge was a game-changer for our startup. They delivered our MVP in record time without compromising on quality. The AI integration features are phenomenal."
-  },
-  {
-    id: "3",
-    name: "Emily Rodriguez",
-    role: "Marketing Director",
-    company: "Elevate Digital",
-    rating: 5,
-    quote: "The team at Blue Forge truly understands modern web development. Our new platform is lightning fast and our conversion rates have improved significantly since launch."
-  },
-  {
-    id: "4",
-    name: "David Kim",
-    role: "CTO",
-    company: "InnovateTech",
-    rating: 5,
-    quote: "Professional, responsive, and technically excellent. Blue Forge delivered a complex web application that our users love. Their code quality is top-notch."
-  }
+const timeline = [
+  { year: "2024", title: "Started Building", desc: "Began freelancing as a full-stack developer, specializing in React and Node.js projects." },
+  { year: "2025", title: "E-Commerce Focus", desc: "Pivoted to strictly e-commerce development. Adopted Next.js + Supabase as the core stack. Launched Glowhite Cosmetics." },
+  { year: "2026", title: "Growing the Brand", desc: "3+ projects completed. Building a reputation for fast, custom e-commerce platforms that actually convert." },
 ];
-
-const getInitials = (name: string) => {
-  return name.split(' ').map(n => n[0]).join('').toUpperCase();
-};
 
 const values = [
-  { icon: Target, title: "Mission", description: "To empower businesses with cutting-edge web solutions and AI tools that drive growth and innovation." },
-  { icon: Lightbulb, title: "Vision", description: "A world where every business can harness the power of modern technology to achieve their goals." },
-  { icon: Wrench, title: "Approach", description: "We combine technical excellence with creative problem-solving to deliver solutions that exceed expectations." }
-];
-
-const process = [
-  { step: "01", title: "Discovery", desc: "Understanding your goals, challenges, and requirements" },
-  { step: "02", title: "Strategy", desc: "Planning the optimal approach and technology stack" },
-  { step: "03", title: "Design", desc: "Creating intuitive, beautiful user experiences" },
-  { step: "04", title: "Development", desc: "Building with clean, scalable code" },
-  { step: "05", title: "Launch", desc: "Deploying and ensuring smooth operation" },
-  { step: "06", title: "Support", desc: "Ongoing maintenance and optimization" }
-];
-
-const stack = [
-  { name: "React", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
-  { name: "Vite", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg" },
-  { name: "TypeScript", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
-  { name: "Node.js", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
-  { name: "Supabase", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" },
-  { name: "PostgreSQL", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
-  { name: "Kubernetes", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" },
-  { name: "TailwindCSS", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
-  { name: "Docker", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" },
-  { name: "Cloudflare", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cloudflare/cloudflare-original.svg" },
-  { name: "AWS", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" },
-  { name: "Laravel", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg" },
+  { title: "No Templates", desc: "Every project is built from scratch. We don't reskin Shopify themes or use WordPress page builders." },
+  { title: "Direct Access", desc: "You talk directly to the developer who writes your code. No project managers, no middlemen." },
+  { title: "Transparent Pricing", desc: "$220 for a full custom store. $44/month for management. No hidden fees, no surprise invoices." },
+  { title: "Ship Fast", desc: "Most stores launch in 2 weeks max. We move fast because we know the stack inside and out." },
 ];
 
 const About = () => {
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [submitted, setSubmitted] = useState(false);
+
   usePageMeta({
-    title: "About Us | Blue Forge",
-    description: "Learn about Blue Forge - a web development studio and AI builder platform dedicated to crafting exceptional digital experiences.",
-    canonical: "https://blueforge.dev/about",
+    title: "About | Travasites — E-comm Web Developer",
+    description: "Meet the developer behind Travasites. 2+ years of full-stack experience, 3+ projects delivered. Custom Next.js + Supabase e-commerce stores.",
+    canonical: "https://travasites.com/about",
+    keywords: "about travasites, e-commerce developer, contact, next.js developer, supabase developer",
   });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 4000);
+    setFormData({ name: "", email: "", message: "" });
+  };
 
   return (
     <Layout>
-      <section className="py-24 relative overflow-hidden glass-hero-animated">
-        <div className="absolute inset-0 bg-glow z-10" aria-hidden="true" />
-        <div className="container mx-auto px-6 relative z-20">
-          <motion.div className="max-w-3xl mx-auto text-center" initial="hidden" animate="visible" variants={staggerContainer}>
-            <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-6">About <span className="text-primary">Blue Forge</span></motion.h1>
-            <motion.p variants={fadeInUp} className="text-lg text-muted-foreground">A web development studio and AI builder platform dedicated to crafting exceptional digital experiences</motion.p>
+      {/* Hero */}
+      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-black">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl" aria-hidden="true" />
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.div className="max-w-4xl mx-auto text-center" initial="hidden" animate="visible" variants={staggerContainer}>
+            <motion.h1 variants={fadeInUp} className="hero-heading text-5xl sm:text-7xl md:text-8xl text-white mb-6">
+              ABOUT <span className="text-gradient-purple">US</span>
+            </motion.h1>
+            <motion.p variants={fadeInUp} className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+              Building, managing Next.js + Supabase e-commerce platforms that scale long term. Real builds, no templates. Tips & audits → DMs open.
+            </motion.p>
+            <motion.div variants={fadeInUp}>
+              <a href="https://twitter.com/travasites" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold hover:shadow-glow transition-all duration-300">
+                Follow @travasites <ArrowRight className="w-5 h-5" />
+              </a>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-24">
+      {/* Who We Are */}
+      <section className="py-24 bg-black" aria-labelledby="who-heading">
         <div className="container mx-auto px-6">
-          <motion.div className="grid md:grid-cols-3 gap-8" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
-            {values.map((value, index) => (
-              <motion.div key={index} variants={fadeInUp} className="p-8 rounded-2xl bg-card border border-border text-center">
-                <div className="w-14 h-14 rounded-xl bg-secondary flex items-center justify-center mx-auto mb-6">
-                  <value.icon className="w-7 h-7 text-primary" aria-hidden="true" />
+          <motion.div className="max-w-4xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
+            <motion.div variants={fadeInUp} className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <p className="text-primary text-sm font-medium uppercase tracking-wider mb-3">Who We Are</p>
+                <h2 id="who-heading" className="text-3xl md:text-4xl font-display font-bold text-white mb-6">E-comm Web Developer</h2>
+                <div className="space-y-4 text-muted-foreground leading-relaxed">
+                  <p>
+                    Travasites is a professional e-commerce development service focused exclusively on building custom online stores with <span className="text-white font-medium">Next.js + Supabase</span>.
+                  </p>
+                  <p>
+                    We don't do WordPress. We don't do Shopify themes. Every store we build is coded from scratch — custom UI, custom backend, custom everything.
+                  </p>
+                  <p>
+                    With 2+ years of full-stack development experience and 3+ completed projects, we know exactly how to build platforms that are fast, secure, and built to convert.
+                  </p>
                 </div>
-                <h2 className="text-xl font-bold mb-4">{value.title}</h2>
-                <p className="text-muted-foreground">{value.description}</p>
-              </motion.div>
-            ))}
+                <div className="flex gap-4 mt-8">
+                  <a href="https://twitter.com/travasites" target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-white/5 border border-border/30 hover:border-primary/30 hover:bg-primary/10 transition-all" aria-label="Twitter">
+                    <Twitter className="w-5 h-5 text-muted-foreground hover:text-primary" />
+                  </a>
+                  <a href="https://github.com/travasites" target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-white/5 border border-border/30 hover:border-primary/30 hover:bg-primary/10 transition-all" aria-label="GitHub">
+                    <Github className="w-5 h-5 text-muted-foreground hover:text-primary" />
+                  </a>
+                  <a href="https://www.linkedin.com/in/wisdom-a-b02587331/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-white/5 border border-border/30 hover:border-primary/30 hover:bg-primary/10 transition-all" aria-label="LinkedIn">
+                    <Linkedin className="w-5 h-5 text-muted-foreground hover:text-primary" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Stats card */}
+              <div className="space-y-6">
+                {[
+                  { label: "Projects Completed", value: "3+" },
+                  { label: "Years of Experience", value: "2+" },
+                  { label: "Client Satisfaction", value: "98%" },
+                  { label: "Average Delivery", value: "2 Weeks Max" },
+                ].map((s, i) => (
+                  <div key={i} className="flex items-center justify-between p-5 rounded-2xl bg-white/[0.02] border border-border/30">
+                    <span className="text-muted-foreground text-sm">{s.label}</span>
+                    <span className="text-2xl font-display font-bold text-white">{s.value}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-24 bg-card/30">
+      {/* Values */}
+      <section className="py-24 bg-black border-t border-border/20" aria-labelledby="values-heading">
         <div className="container mx-auto px-6">
           <motion.div className="text-center mb-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
-            <h2 className="text-3xl font-bold mb-4">How We Work</h2>
-            <p className="text-muted-foreground">Our proven process for delivering exceptional results</p>
+            <p className="text-primary text-sm font-medium uppercase tracking-wider mb-3">Our Principles</p>
+            <h2 id="values-heading" className="text-3xl md:text-4xl font-display font-bold text-white">How We Operate</h2>
           </motion.div>
-          <motion.div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
-            {process.map((item, index) => (
-              <motion.div key={index} variants={fadeInUp} className="p-6 rounded-xl bg-card border border-border">
-                <span className="text-3xl font-bold text-primary">{item.step}</span>
-                <h3 className="text-lg font-semibold mt-3 mb-2">{item.title}</h3>
-                <p className="text-sm text-muted-foreground">{item.desc}</p>
+          <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
+            {values.map((v, i) => (
+              <motion.div key={i} variants={fadeInUp} className="p-6 rounded-2xl bg-white/[0.02] border border-border/30">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <span className="text-primary font-display font-bold text-sm">{String(i + 1).padStart(2, "0")}</span>
+                </div>
+                <h3 className="text-lg font-display font-semibold text-white mb-2">{v.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{v.desc}</p>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Meet the Founder Section */}
-      <section className="py-24 bg-card/30">
+      {/* Timeline */}
+      <section className="py-24 bg-black border-t border-border/20" aria-labelledby="timeline-heading">
         <div className="container mx-auto px-6">
-          <motion.div
-            className="max-w-4xl mx-auto"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
-            <motion.div variants={fadeInUp} className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Meet the Founder</h2>
-              <p className="text-muted-foreground">The face behind Blue Forge</p>
-            </motion.div>
-            
-            <motion.div 
-              variants={fadeInUp}
-              className="flex flex-col md:flex-row items-center gap-8 md:gap-12"
-            >
-              {/* Profile Image */}
-              <div className="flex-shrink-0">
-                <div className="relative">
-                  <div className="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden ring-4 ring-primary/20 ring-offset-4 ring-offset-background">
-                    <img
-                      src={founderProfile}
-                      alt="Founder of Blue Forge"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  {/* Decorative glow */}
-                  <div className="absolute inset-0 rounded-full bg-primary/10 blur-2xl -z-10" />
+          <motion.div className="text-center mb-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+            <p className="text-primary text-sm font-medium uppercase tracking-wider mb-3">Journey</p>
+            <h2 id="timeline-heading" className="text-3xl md:text-4xl font-display font-bold text-white">Our Timeline</h2>
+          </motion.div>
+          <motion.div className="max-w-3xl mx-auto space-y-8" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
+            {timeline.map((t, i) => (
+              <motion.div key={i} variants={fadeInUp} className="flex gap-6">
+                <div className="shrink-0 w-16 text-right">
+                  <span className="text-primary font-display font-bold">{t.year}</span>
                 </div>
-              </div>
-
-              {/* Bio Content */}
-              <div className="text-center md:text-left">
-                <h3 className="text-2xl font-bold mb-2">Wisdom</h3>
-                <p className="text-primary font-medium mb-4">Founder & Lead Developer</p>
-                <p className="text-muted-foreground leading-relaxed mb-6">
-                  Passionate about crafting exceptional digital experiences, I founded Blue Forge with a vision to help businesses thrive in the digital age. With years of experience in full-stack development and a deep understanding of modern web technologies, I bring a unique blend of technical expertise and creative problem-solving to every project.
-                </p>
-                <p className="text-muted-foreground leading-relaxed mb-6">
-                  My mission is to bridge the gap between complex technology and business needs, delivering solutions that are not only powerful but also intuitive and user-friendly.
-                </p>
-                <Button asChild variant="outline" className="hover:border-primary/50">
-                  <Link to="/contact">
-                    Get in Touch
-                    <ArrowRight className="ml-2 w-4 h-4" />
-                  </Link>
-                </Button>
-              </div>
-            </motion.div>
+                <div className="relative pl-6 border-l border-primary/20 pb-8">
+                  <div className="absolute left-0 top-1 w-3 h-3 rounded-full bg-primary -translate-x-[7px]" />
+                  <h3 className="text-lg font-display font-semibold text-white mb-1">{t.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{t.desc}</p>
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-24">
+      {/* Contact Section */}
+      <section className="py-24 bg-black border-t border-border/20" aria-labelledby="contact-heading" id="contact">
         <div className="container mx-auto px-6">
-          <motion.div
-            className="text-center mb-16"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-          >
-            <h2 className="text-3xl font-bold mb-4">What Our Clients Say</h2>
-            <p className="text-muted-foreground">Trusted by businesses worldwide</p>
+          <motion.div className="text-center mb-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+            <p className="text-primary text-sm font-medium uppercase tracking-wider mb-3">Get in Touch</p>
+            <h2 id="contact-heading" className="text-3xl md:text-4xl font-display font-bold text-white mb-4">Let's Talk About Your Project</h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">Ready to build your custom store? Book a call or send us a message.</p>
           </motion.div>
 
-          <motion.div
-            className="grid md:grid-cols-2 gap-6"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
-            {testimonials.map((testimonial) => (
-              <motion.div
-                key={testimonial.id}
-                variants={fadeInUp}
-                className="p-6 rounded-2xl bg-card border border-border hover:border-primary/20 transition-all"
-              >
-                {/* Header: Avatar + Info */}
+          <motion.div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
+            {/* Contact Info */}
+            <motion.div variants={fadeInUp} className="space-y-6">
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-border/30">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/80 to-primary flex items-center justify-center text-primary-foreground font-semibold">
-                    {getInitials(testimonial.name)}
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <MessageSquare className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-foreground">{testimonial.name}</h4>
-                    <p className="text-sm text-muted-foreground">
-                      {testimonial.role}, {testimonial.company}
-                    </p>
+                    <h3 className="text-white font-semibold">DMs Open</h3>
+                    <p className="text-sm text-muted-foreground">Best way to reach us</p>
                   </div>
                 </div>
+                <a href="https://twitter.com/travasites" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary text-sm font-medium hover:underline">
+                  @travasites on Twitter <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
 
-                {/* Star Rating */}
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-4 h-4 ${
-                        i < testimonial.rating
-                          ? "text-yellow-500 fill-yellow-500"
-                          : "text-muted-foreground"
-                      }`}
-                      aria-hidden="true"
-                    />
-                  ))}
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-border/30">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <Mail className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold">Email</h3>
+                    <a href="mailto:hello@travasites.com" className="text-sm text-muted-foreground hover:text-primary transition-colors">hello@travasites.com</a>
+                  </div>
                 </div>
+              </div>
 
-                {/* Quote */}
-                <p className="text-muted-foreground italic leading-relaxed">
-                  "{testimonial.quote}"
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-border/30">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold">Response Time</h3>
+                    <p className="text-sm text-muted-foreground">Within 24 hours</p>
+                  </div>
+                </div>
+              </div>
 
-      <section className="py-24">
-        <div className="container mx-auto px-6">
-          <motion.div className="text-center mb-12" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
-            <h2 className="text-3xl font-bold mb-4">Our Tech Stack</h2>
-            <p className="text-muted-foreground">Modern, battle-tested technologies we work with</p>
-          </motion.div>
-          <motion.div className="flex flex-wrap justify-center gap-4" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
-            {stack.map((tech, i) => (
-              <motion.div key={i} variants={fadeInUp} whileHover={{ scale: 1.05 }} className="flex items-center gap-3 px-5 py-3 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors">
-                <img 
-                  src={tech.logo} 
-                  alt={tech.name} 
-                  className="w-6 h-6 object-contain"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <span className="font-medium">{tech.name}</span>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+              <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-primary text-white font-semibold hover:shadow-glow transition-all duration-300">
+                Book a Free Call <ArrowRight className="w-5 h-5" />
+              </a>
+            </motion.div>
 
-      <section className="py-24 relative overflow-hidden glass-hero-animated">
-        <div className="container mx-auto px-6 relative z-20">
-          <motion.div className="max-w-2xl mx-auto text-center" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
-            <motion.h2 variants={fadeInUp} className="text-3xl font-bold mb-6">Let's Work Together</motion.h2>
-            <motion.p variants={fadeInUp} className="text-muted-foreground mb-8">Ready to start your project? Get in touch and let's create something amazing.</motion.p>
+            {/* Contact Form */}
             <motion.div variants={fadeInUp}>
-              <Button asChild size="lg" className="bg-accent-gradient text-accent-foreground hover:shadow-glow">
-                <Link to="/contact">Get in Touch<ArrowRight className="ml-2 w-5 h-5" /></Link>
-              </Button>
+              <form onSubmit={handleSubmit} className="p-8 rounded-3xl bg-white/[0.02] border border-border/30 space-y-5">
+                <div>
+                  <label htmlFor="contact-name" className="block text-sm font-medium text-white mb-2">Name</label>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-border/30 text-white placeholder-muted-foreground text-sm focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-colors"
+                    placeholder="Your name"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="contact-email" className="block text-sm font-medium text-white mb-2">Email</label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-border/30 text-white placeholder-muted-foreground text-sm focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-colors"
+                    placeholder="you@company.com"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="contact-message" className="block text-sm font-medium text-white mb-2">Message</label>
+                  <textarea
+                    id="contact-message"
+                    required
+                    rows={5}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-border/30 text-white placeholder-muted-foreground text-sm focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-colors resize-none"
+                    placeholder="Tell us about your project..."
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-white/5 text-white border border-border/30 font-semibold text-sm hover:border-primary/30 hover:bg-primary/10 transition-all duration-300"
+                >
+                  {submitted ? "Message Sent! ✓" : (<>Send Message <Send className="w-4 h-4" /></>)}
+                </button>
+              </form>
             </motion.div>
           </motion.div>
         </div>

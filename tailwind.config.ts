@@ -14,8 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'SF Pro Display', 'Inter', 'Helvetica Neue', 'Arial', 'system-ui', 'sans-serif'],
+        display: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Inter', 'Helvetica Neue', 'system-ui', 'sans-serif'],
+        mono: ['SF Mono', 'JetBrains Mono', 'Fira Code', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -51,17 +52,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        cyan: {
-          DEFAULT: "hsl(var(--cyan))",
-          glow: "hsl(var(--cyan-glow))",
-        },
-        teal: "hsl(var(--teal))",
-        navy: "hsl(var(--navy))",
-        steel: "hsl(var(--steel))",
-        slate: "hsl(var(--slate))",
-        logo: {
-          blue: "hsl(var(--logo-blue))",
-          forge: "hsl(var(--logo-forge))",
+        purple: {
+          DEFAULT: "hsl(var(--purple))",
+          light: "hsl(var(--purple-light))",
+          dark: "hsl(var(--purple-dark))",
+          glow: "hsl(var(--purple-glow))",
+          muted: "hsl(var(--purple-muted))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

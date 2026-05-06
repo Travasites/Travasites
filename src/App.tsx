@@ -7,33 +7,20 @@ import { ThemeProvider } from "next-themes";
 import { AnimatePresence } from "framer-motion";
 import { lazy, Suspense } from "react";
 import ErrorBoundary from "@/components/ErrorBoundary";
-import CookieConsent from "@/components/CookieConsent";
-import { OrganizationSchema, WebsiteSchema } from "@/components/JsonLd";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
-// Lazy load pages for better performance
+// Lazy load pages
 const Index = lazy(() => import("./pages/Index"));
 const Services = lazy(() => import("./pages/Services"));
-const AIStudio = lazy(() => import("./pages/AIStudio"));
-const Products = lazy(() => import("./pages/Products"));
-const Labs = lazy(() => import("./pages/Labs"));
 const Work = lazy(() => import("./pages/Work"));
 const About = lazy(() => import("./pages/About"));
-const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-const Auth = lazy(() => import("./pages/Auth"));
-const Pricing = lazy(() => import("./pages/Pricing"));
-const Terms = lazy(() => import("./pages/Terms"));
-const Privacy = lazy(() => import("./pages/Privacy"));
-const Admin = lazy(() => import("./pages/Admin"));
-const Profile = lazy(() => import("./pages/Profile"));
-const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
 
 const queryClient = new QueryClient();
 
-// Loading fallback component
+// Loading fallback
 const PageLoader = () => (
-  <div className="min-h-screen bg-background flex items-center justify-center">
+  <div className="min-h-screen bg-black flex items-center justify-center">
     <LoadingSpinner size="lg" />
   </div>
 );
@@ -41,26 +28,15 @@ const PageLoader = () => (
 // Animated routes wrapper
 const AnimatedRoutes = () => {
   const location = useLocation();
-  
+
   return (
     <AnimatePresence mode="wait">
       <Suspense fallback={<PageLoader />}>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Index />} />
           <Route path="/services" element={<Services />} />
-          <Route path="/ai-studio" element={<AIStudio />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/labs" element={<Labs />} />
           <Route path="/work" element={<Work />} />
           <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
@@ -73,14 +49,11 @@ const App = () => (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <OrganizationSchema />
-          <WebsiteSchema />
           <Toaster />
           <Sonner />
-          <BrowserRouter>
+          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <AnimatedRoutes />
           </BrowserRouter>
-          <CookieConsent />
         </TooltipProvider>
       </QueryClientProvider>
     </ThemeProvider>

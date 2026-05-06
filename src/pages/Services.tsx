@@ -1,94 +1,101 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Globe, Code2, Palette, Server, Brain, Rocket, ArrowRight, CheckCircle2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, ShoppingCart, Search, Shield, BarChart3, Zap, Palette, Code2, Globe, Smartphone, Database, Lock, Headphones } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
 const services = [
   {
-    icon: Globe,
-    title: "Website Development",
-    description: "Mobile-first, SEO-optimized websites that load lightning fast and convert visitors into customers.",
-    features: ["Responsive Design", "SEO Optimization", "Performance Focused", "CMS Integration"]
+    icon: ShoppingCart,
+    title: "Custom E-Commerce Store",
+    desc: "A fully custom online store built from the ground up with Next.js and Supabase. No templates, no page builders — just clean, performant code tailored to your brand.",
+    features: ["Product catalog with categories & filters", "Shopping cart & wishlist", "Guest & authenticated checkout", "Order tracking & history", "Inventory management"],
   },
   {
-    icon: Code2,
-    title: "Web Application Development",
-    description: "Scalable web applications built with modern frameworks and best practices.",
-    features: ["React/Vite", "Real-time Features", "API Development", "Cloud Deployment"]
+    icon: Search,
+    title: "Lightning-Fast Search",
+    desc: "Custom search modal that queries Supabase instantly with zero page reloads and debounced input. Shopify templates simply can't match this speed.",
+    features: ["Real-time search results", "Debounced input handling", "Category-based filtering", "Search analytics", "Zero page reloads"],
+  },
+  {
+    icon: Shield,
+    title: "Secure Payment Integration",
+    desc: "End-to-end payment processing with Flutterwave or Stripe. Webhook verification, order creation, and secure transaction handling.",
+    features: ["Flutterwave / Stripe integration", "Webhook verification", "Automated order creation", "Payment status tracking", "Refund handling"],
+  },
+  {
+    icon: BarChart3,
+    title: "Admin Dashboard",
+    desc: "A custom-built admin panel to manage your entire store — products, orders, customers, and analytics — all in one place.",
+    features: ["Product CRUD operations", "Order management", "Customer database", "Sales analytics", "Inventory alerts"],
   },
   {
     icon: Palette,
     title: "UI/UX Design",
-    description: "Beautiful, intuitive interfaces that users love to interact with.",
-    features: ["User Research", "Wireframing", "Prototyping", "Design Systems"]
+    desc: "Premium, mobile-first design that makes your brand look world-class. Every pixel is intentional, every interaction is smooth.",
+    features: ["Mobile-first responsive design", "Brand-aligned aesthetics", "Micro-interactions & animations", "Accessibility compliant", "Dark/light mode support"],
   },
   {
-    icon: Server,
-    title: "Backend & APIs",
-    description: "Robust server infrastructure and APIs that power your applications.",
-    features: ["RESTful APIs", "Database Design", "Authentication", "Cloud Infrastructure"]
-  },
-  {
-    icon: Brain,
-    title: "AI Integration",
-    description: "Smart AI-powered features that enhance user experience and automate workflows.",
-    features: ["OpenAI Integration", "Custom AI Models", "Chatbots", "Content Generation"]
-  },
-  {
-    icon: Rocket,
-    title: "MVP & Startup Support",
-    description: "Launch your startup fast with our rapid MVP development process.",
-    features: ["Rapid Prototyping", "Tech Consulting", "Scalable Architecture", "Launch Support"]
+    icon: Headphones,
+    title: "Store Management",
+    desc: "Don't want to manage the tech? We handle updates, monitoring, security patches, and performance optimization monthly.",
+    features: ["Bug fixes & updates", "Performance monitoring", "Security patches", "Content updates", "Monthly reports"],
   },
 ];
 
 const Services = () => {
   usePageMeta({
-    title: "Services | Blue Forge",
-    description: "Full-stack development services including website development, web apps, UI/UX design, AI integration, and MVP support.",
-    canonical: "https://blueforge.dev/services",
+    title: "Services | Travasites — Custom E-Commerce Development",
+    description: "Custom Next.js + Supabase e-commerce stores, payment integration, admin dashboards, and ongoing store management. Real builds, no templates.",
+    canonical: "https://travasites.com/services",
+    keywords: "e-commerce services, custom store, next.js development, supabase, payment integration",
   });
 
   return (
     <Layout>
-      <section className="py-24 relative overflow-hidden glass-hero-animated">
-        <div className="absolute inset-0 bg-glow z-10" aria-hidden="true" />
-        <div className="container mx-auto px-6 relative z-20">
-          <motion.div className="max-w-3xl mx-auto text-center" initial="hidden" animate="visible" variants={staggerContainer}>
-            <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-6">
-              Our <span className="text-primary">Services</span>
+      {/* Hero */}
+      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-black">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl" aria-hidden="true" />
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.div className="max-w-4xl mx-auto text-center" initial="hidden" animate="visible" variants={staggerContainer}>
+            <motion.h1 variants={fadeInUp} className="pixel-text text-5xl sm:text-7xl md:text-8xl font-bold text-white leading-[0.9] mb-6">
+              OUR <span className="text-gradient-purple">SERVICES</span>
             </motion.h1>
-            <motion.p variants={fadeInUp} className="text-lg text-muted-foreground">
-              Full-stack development services to bring your digital vision to life
+            <motion.p variants={fadeInUp} className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+              Everything you need to launch and scale a custom e-commerce platform — built strictly on Next.js + Supabase.
             </motion.p>
+            <motion.div variants={fadeInUp}>
+              <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold hover:shadow-glow transition-all duration-300">
+                Book a Call <ArrowRight className="w-5 h-5" />
+              </a>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-24">
+      {/* Services Grid */}
+      <section className="py-24 bg-black">
         <div className="container mx-auto px-6">
-          <motion.div className="grid gap-8" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
-            {services.map((service, index) => (
-              <motion.div key={index} variants={fadeInUp} className="grid lg:grid-cols-2 gap-8 p-8 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all">
-                <div>
-                  <div className="w-14 h-14 rounded-xl bg-secondary flex items-center justify-center mb-6">
-                    <service.icon className="w-7 h-7 text-primary" aria-hidden="true" />
+          <motion.div className="grid grid-cols-1 lg:grid-cols-2 gap-8" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
+            {services.map((s, i) => (
+              <motion.div key={i} variants={fadeInUp} className="p-8 rounded-3xl bg-white/[0.02] border border-border/30 hover:border-primary/20 transition-all duration-300">
+                <div className="flex items-start gap-5">
+                  <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <s.icon className="w-7 h-7 text-primary" />
                   </div>
-                  <h2 className="text-2xl font-bold mb-4">{service.title}</h2>
-                  <p className="text-muted-foreground text-lg">{service.description}</p>
-                </div>
-                <div className="flex flex-col justify-center">
-                  <ul className="grid grid-cols-2 gap-3">
-                    {service.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2">
-                        <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" aria-hidden="true" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-display font-bold text-white mb-2">{s.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed mb-5">{s.desc}</p>
+                    <ul className="space-y-2">
+                      {s.features.map((f, fi) => (
+                        <li key={fi} className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -96,16 +103,48 @@ const Services = () => {
         </div>
       </section>
 
-      <section className="py-24 relative overflow-hidden glass-hero-animated">
-        <div className="container mx-auto px-6 relative z-20">
-          <motion.div className="max-w-2xl mx-auto text-center" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
-            <motion.h2 variants={fadeInUp} className="text-3xl font-bold mb-6">Let's Build Together</motion.h2>
-            <motion.p variants={fadeInUp} className="text-muted-foreground mb-8">Ready to start your project? Get in touch for a free consultation.</motion.p>
+      {/* Tech we use */}
+      <section className="py-20 bg-black border-y border-border/20">
+        <div className="container mx-auto px-6">
+          <motion.div className="text-center mb-12" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
+            <h2 className="text-2xl font-display font-bold text-white mb-2">Our Tech Stack</h2>
+            <p className="text-muted-foreground text-sm">Built with the tools that power the fastest platforms on the web</p>
+          </motion.div>
+          <motion.div className="flex flex-wrap justify-center gap-4" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
+            {[
+              { n: "Next.js", l: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" },
+              { n: "Supabase", l: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" },
+              { n: "TypeScript", l: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
+              { n: "Vercel", l: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg" },
+              { n: "TailwindCSS", l: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
+              { n: "PostgreSQL", l: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
+            ].map((t, i) => (
+              <motion.div key={i} variants={fadeInUp} className="flex items-center gap-3 px-5 py-3 rounded-xl bg-white/[0.03] border border-border/30">
+                <img src={t.l} alt={t.n} className="w-6 h-6 object-contain" />
+                <span className="font-medium text-white text-sm">{t.n}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-24 bg-black">
+        <div className="container mx-auto px-6">
+          <motion.div className="max-w-3xl mx-auto text-center" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
+            <motion.h2 variants={fadeInUp} className="text-3xl md:text-5xl font-display font-bold text-white mb-4">
+              Ready to Build?
+            </motion.h2>
+            <motion.p variants={fadeInUp} className="text-muted-foreground text-lg mb-8">
+              Custom Next.js + Supabase store starting at <span className="text-white font-semibold">$220</span> (₦300,000). Monthly management for <span className="text-white font-semibold">$44</span> (₦60,000).
+            </motion.p>
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-accent-gradient text-accent-foreground hover:shadow-glow">
-                <Link to="/contact">Get a Quote<ArrowRight className="ml-2 w-5 h-5" /></Link>
-              </Button>
-              <Button asChild size="lg" variant="outline"><Link to="/contact">Book a Call</Link></Button>
+              <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold hover:shadow-glow transition-all">
+                Start Your Project <ArrowRight className="w-5 h-5" />
+              </a>
+              <Link to="/work" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white/5 text-white border border-border/30 font-semibold hover:border-primary/30 transition-all">
+                View Our Work
+              </Link>
             </motion.div>
           </motion.div>
         </div>

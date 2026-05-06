@@ -2,84 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Fonts loaded via index.html for non-blocking render */
-
-/* BLUE FORGE Design System - Dark Mode First */
+/* TRAVASITES Design System — Apple.com Style Typography + Purple/Black Theme */
 
 @layer base {
   :root {
-    /* Dark mode - Default */
-    --background: 220 50% 4%;
-    --foreground: 220 20% 95%;
+    /* Pure black backgrounds */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 95%;
 
-    --card: 220 40% 8%;
-    --card-foreground: 220 20% 95%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 220 40% 6%;
-    --popover-foreground: 220 20% 95%;
+    --popover: 0 0% 3%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 24 100% 50%;
+    /* Purple primary */
+    --primary: 270 80% 60%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 30% 12%;
-    --secondary-foreground: 220 20% 90%;
+    --secondary: 270 20% 10%;
+    --secondary-foreground: 0 0% 90%;
 
-    --muted: 220 25% 10%;
-    --muted-foreground: 220 15% 55%;
+    --muted: 0 0% 8%;
+    --muted-foreground: 0 0% 50%;
 
-    --accent: 24 100% 50%;
+    --accent: 270 80% 60%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 25% 15%;
-    --input: 220 25% 12%;
-    --ring: 24 100% 50%;
+    --border: 0 0% 12%;
+    --input: 0 0% 8%;
+    --ring: 270 80% 60%;
 
     --radius: 0.75rem;
 
-    /* Custom Blue Forge tokens - Dark mode (OLED blacks, deep blues, orange accents) */
-    --cyan: 190 100% 50%;
-    --cyan-glow: 190 100% 60%;
-    --teal: 175 60% 45%;
-    --navy: 220 50% 4%;
-    --steel: 220 30% 12%;
-    --slate: 220 25% 18%;
+    /* Travasite tokens */
+    --purple: 270 80% 60%;
+    --purple-light: 270 90% 70%;
+    --purple-dark: 270 70% 40%;
+    --purple-glow: 270 100% 65%;
+    --purple-muted: 270 30% 20%;
 
-    /* Forge tokens - Dark mode */
-    --forge-orange: 24 100% 50%;
-    --forge-ember: 15 90% 45%;
-    --forge-spark: 35 100% 55%;
-    --forge-steel: 220 30% 10%;
-    --forge-iron: 220 35% 6%;
+    /* Gradients */
+    --gradient-purple: linear-gradient(135deg, hsl(270 80% 60%) 0%, hsl(290 70% 50%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 0%) 0%, hsl(270 20% 4%) 50%, hsl(0 0% 0%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 5%) 0%, hsl(0 0% 2%) 100%);
+    --gradient-glow: radial-gradient(ellipse at 50% 0%, hsl(270 80% 60% / 0.15) 0%, transparent 60%);
 
-    /* Logo colors - Dark mode */
-    --logo-blue: 0 0% 100%;
-    --logo-forge: 19 94% 47%;
+    --shadow-glow: 0 0 40px hsl(270 80% 60% / 0.3);
+    --shadow-card: 0 4px 24px hsl(0 0% 0% / 0.5);
+    --shadow-elevated: 0 8px 32px hsl(0 0% 0% / 0.7);
+    --shadow-purple: 0 0 50px hsl(270 80% 60% / 0.35);
 
-    /* Dark mode gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(220 50% 4%) 0%, hsl(220 40% 8%) 50%, hsl(220 45% 6%) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(24 100% 50%) 0%, hsl(15 90% 45%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(220 30% 12%) 0%, hsl(220 40% 8%) 100%);
-    --gradient-glow: radial-gradient(ellipse at 50% 0%, hsl(24 100% 50% / 0.15) 0%, transparent 60%);
-    --gradient-forge: linear-gradient(135deg, hsl(220 50% 4%) 0%, hsl(220 40% 8%) 50%, hsl(220 35% 6%) 100%);
-    --gradient-forge-accent: linear-gradient(135deg, hsl(24 100% 50%) 0%, hsl(15 90% 40%) 100%);
-    --gradient-forge-glow: radial-gradient(ellipse at 50% 0%, hsl(24 100% 50% / 0.2) 0%, transparent 60%);
-
-    --shadow-glow: 0 0 40px hsl(24 100% 50% / 0.3);
-    --shadow-card: 0 4px 24px hsl(220 50% 2% / 0.5);
-    --shadow-elevated: 0 8px 32px hsl(220 50% 2% / 0.7);
-    --shadow-forge: 0 0 50px hsl(24 100% 50% / 0.35);
-
-    --sidebar-background: 220 35% 6%;
-    --sidebar-foreground: 220 20% 85%;
-    --sidebar-primary: 24 100% 50%;
+    --sidebar-background: 0 0% 3%;
+    --sidebar-foreground: 0 0% 85%;
+    --sidebar-primary: 270 80% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 30% 12%;
-    --sidebar-accent-foreground: 220 20% 90%;
-    --sidebar-border: 220 25% 12%;
-    --sidebar-ring: 24 100% 50%;
+    --sidebar-accent: 0 0% 8%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 0 0% 10%;
+    --sidebar-ring: 270 80% 60%;
   }
 }
 
@@ -90,61 +74,62 @@
 
   html {
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Apple.com style: system SF Pro stack with Inter fallback */
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-background text-foreground antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', system-ui, sans-serif;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', system-ui, sans-serif;
+    letter-spacing: -0.025em;
+    font-weight: 700;
   }
 
   code, pre {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
   }
 }
 
 @layer utilities {
-  .text-gradient {
+  /* Apple-style display font class */
+  .font-display {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Helvetica Neue', system-ui, sans-serif;
+    letter-spacing: -0.03em;
+  }
+
+  /* Hero heading — massive tight tracking like Apple product pages */
+  .hero-heading {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Helvetica Neue', system-ui, sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    text-transform: uppercase;
+  }
+
+  /* Text utilities */
+  .text-gradient-purple {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(var(--cyan)) 0%, hsl(var(--teal)) 100%);
+    background-image: linear-gradient(135deg, hsl(var(--purple)) 0%, hsl(var(--purple-light)) 100%);
   }
 
-  .text-forge-gradient {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(var(--forge-orange)) 0%, hsl(var(--forge-ember)) 100%);
+  /* Background utilities */
+  .bg-pure-black {
+    background-color: #000000;
   }
 
-  /* Logo text colors */
-  .text-logo-blue {
-    color: hsl(var(--logo-blue));
-  }
-
-  .text-logo-forge {
-    color: hsl(var(--logo-forge));
-  }
-
-  /* Theme-aware logo icon with CSS filter - Dark mode only */
-  .logo-icon-themed {
-    @apply transition-all duration-300;
-    /* Dark mode: orange tint (#ea5007) */
-    filter: brightness(0) saturate(100%) invert(41%) sepia(91%) saturate(2064%) hue-rotate(4deg) brightness(99%) contrast(92%);
-  }
-
-  /* Logo hover animation with scale and glow */
-  .logo-hover {
-    @apply transition-all duration-300 ease-out;
-  }
-
-  .logo-hover:hover {
-    @apply scale-110;
-    filter: brightness(0) saturate(100%) invert(41%) sepia(91%) saturate(2064%) hue-rotate(4deg) brightness(110%) contrast(92%) drop-shadow(0 0 8px hsl(var(--logo-forge) / 0.6));
+  .bg-purple-gradient {
+    background: var(--gradient-purple);
   }
 
   .bg-hero-gradient {
     background: var(--gradient-hero);
-  }
-
-  .bg-accent-gradient {
-    background: var(--gradient-accent);
   }
 
   .bg-card-gradient {
@@ -155,42 +140,7 @@
     background: var(--gradient-glow);
   }
 
-  .bg-forge-gradient {
-    background: var(--gradient-forge);
-  }
-
-  .bg-forge-accent {
-    background: var(--gradient-forge-accent);
-  }
-
-  .bg-forge-glow {
-    background: var(--gradient-forge-glow);
-  }
-
-  .bg-forge-steel {
-    background-color: hsl(var(--forge-steel));
-  }
-
-  .bg-forge-iron {
-    background-color: hsl(var(--forge-iron));
-  }
-
-  .text-forge-orange {
-    color: hsl(var(--forge-orange));
-  }
-
-  .text-forge-ember {
-    color: hsl(var(--forge-ember));
-  }
-
-  .border-forge-orange {
-    border-color: hsl(var(--forge-orange));
-  }
-
-  .border-forge-ember {
-    border-color: hsl(var(--forge-ember));
-  }
-
+  /* Shadow utilities */
   .shadow-glow {
     box-shadow: var(--shadow-glow);
   }
@@ -203,93 +153,75 @@
     box-shadow: var(--shadow-elevated);
   }
 
-  .shadow-forge {
-    box-shadow: var(--shadow-forge);
+  .shadow-purple {
+    box-shadow: var(--shadow-purple);
   }
 
+  /* Border utilities */
   .border-glow {
-    border: 1px solid hsl(var(--cyan) / 0.3);
+    border: 1px solid hsl(var(--purple) / 0.3);
   }
 
-  .border-forge-glow {
-    border: 1px solid hsl(var(--forge-orange) / 0.3);
+  .border-purple-glow {
+    border: 1px solid hsl(var(--purple) / 0.4);
   }
 
+  /* Glass effects */
   .glass {
     @apply backdrop-blur-xl bg-card/80 border border-border/50;
   }
 
   .glass-strong {
-    @apply backdrop-blur-2xl bg-card/90 border border-border/60;
+    @apply backdrop-blur-2xl border border-border/60;
+    background: hsl(0 0% 0% / 0.9);
   }
 
-  .glass-forge {
-    @apply backdrop-blur-xl border border-border/40;
-    background: hsl(var(--forge-iron) / 0.9);
+  .glass-purple {
+    @apply backdrop-blur-xl border;
+    background: hsl(0 0% 0% / 0.85);
+    border-color: hsl(var(--purple) / 0.15);
   }
 
-  /* Glass Hero Effect */
-  .glass-hero {
-    @apply backdrop-blur-xl;
-    background: linear-gradient(
-      135deg,
-      hsl(var(--background) / 0.85) 0%,
-      hsl(var(--card) / 0.7) 50%,
-      hsl(var(--background) / 0.85) 100%
-    );
-    border-bottom: 1px solid hsl(var(--border) / 0.5);
-  }
-
-  /* Animated Color Gradient Background */
+  /* Animations */
   @keyframes gradient-shift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
 
-  .animated-gradient-bg {
-    background: linear-gradient(
-      -45deg,
-      hsl(var(--primary) / 0.12),
-      hsl(var(--accent) / 0.12),
-      hsl(var(--forge-orange) / 0.12),
-      hsl(var(--cyan) / 0.12)
-    );
-    background-size: 400% 400%;
-    animation: gradient-shift 4s ease infinite;
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
   }
 
-  /* Combined glass hero with animation */
-  .glass-hero-animated {
-    @apply backdrop-blur-xl relative overflow-hidden;
+  @keyframes pulse-purple {
+    0%, 100% { box-shadow: 0 0 20px hsl(270 80% 60% / 0.2); }
+    50% { box-shadow: 0 0 40px hsl(270 80% 60% / 0.4); }
   }
 
-  .glass-hero-animated::before {
-    content: '';
-    @apply absolute inset-0;
-    background: linear-gradient(
-      135deg,
-      hsl(var(--background) / 0.85) 0%,
-      hsl(var(--card) / 0.7) 50%,
-      hsl(var(--background) / 0.85) 100%
-    );
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
   }
 
-  .glass-hero-animated::after {
-    content: '';
-    @apply absolute inset-0;
-    background: linear-gradient(
-      -45deg,
-      hsl(var(--primary) / 0.10),
-      hsl(var(--accent) / 0.10),
-      hsl(var(--forge-orange) / 0.10),
-      hsl(var(--cyan) / 0.10)
-    );
-    background-size: 400% 400%;
-    animation: gradient-shift 4s ease infinite;
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
   }
 
-  /* Performance Optimization Utilities */
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+
+  .animate-pulse-purple {
+    animation: pulse-purple 3s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Performance Optimization */
   .instant-load {
     content-visibility: auto;
   }
@@ -298,9 +230,15 @@
     transform: translateZ(0);
     backface-visibility: hidden;
   }
+
+  /* Section divider */
+  .section-divider {
+    @apply w-full h-px;
+    background: linear-gradient(90deg, transparent 0%, hsl(var(--purple) / 0.3) 50%, transparent 100%);
+  }
 }
 
-/* Reduce motion for users who prefer it */
+/* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

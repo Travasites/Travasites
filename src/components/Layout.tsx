@@ -13,12 +13,12 @@ interface LayoutProps {
 
 export const Layout = ({ children, hideFooter = false }: LayoutProps): React.ReactNode => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-black">
       <SkipToContent />
       <Navbar />
       <ScrollProgress />
       <PageTransition>
-        <main id="main-content" className="pt-16" tabIndex={-1}>
+        <main id="main-content" className="pt-16 md:pt-20" tabIndex={-1}>
           {children}
         </main>
       </PageTransition>
