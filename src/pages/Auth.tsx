@@ -290,7 +290,7 @@ export default function Auth() {
 
             <Button
               type="submit"
-              className="w-full bg-accent-gradient text-accent-foreground hover:shadow-glow"
+              className="w-full bg-accent-gradient text-accent-foreground"
               disabled={loading}
             >
               {loading ? (

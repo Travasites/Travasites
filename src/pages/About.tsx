@@ -50,7 +50,7 @@ const About = () => {
               Building, managing Next.js + Supabase e-commerce platforms that scale long term. Real builds, no templates. Tips & audits → DMs open.
             </motion.p>
             <motion.div variants={fadeInUp}>
-              <a href="https://twitter.com/travasites" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold hover:shadow-glow transition-all duration-300">
+              <a href="https://twitter.com/travasites" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold hover:bg-primary/90 transition-all duration-300">
                 Follow @travasites <ArrowRight className="w-5 h-5" />
               </a>
             </motion.div>
@@ -205,7 +205,7 @@ const About = () => {
                 </div>
               </div>
 
-              <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-primary text-white font-semibold hover:shadow-glow transition-all duration-300">
+              <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-primary text-white font-semibold hover:bg-primary/90 transition-all duration-300">
                 Book a Free Call <ArrowRight className="w-5 h-5" />
               </a>
             </motion.div>

@@ -139,7 +139,7 @@ export default function Pricing() {
                 variants={fadeInUp}
                 className={`relative p-6 rounded-2xl border ${
                   plan.popular
-                    ? 'bg-card border-primary shadow-glow'
+                    ? 'bg-card border-primary'
                     : 'bg-card border-border'
                 }`}
               >
@@ -180,7 +180,7 @@ export default function Pricing() {
                   asChild
                   className={`w-full ${
                     plan.popular
-                      ? 'bg-accent-gradient text-accent-foreground hover:shadow-glow'
+                      ? 'bg-accent-gradient text-accent-foreground'
                       : ''
                   }`}
                   variant={plan.popular ? 'default' : 'outline'}
@@ -300,7 +300,7 @@ export default function Pricing() {
               Join developers using The Forge to build production-ready apps
             </motion.p>
             <motion.div variants={fadeInUp}>
-              <Button asChild size="lg" className="bg-accent-gradient text-accent-foreground hover:shadow-glow">
+              <Button asChild size="lg" className="bg-accent-gradient text-accent-foreground">
                 <Link to="/auth">
                   Enter The Forge
                   <ArrowRight className="ml-2 w-5 h-5" />

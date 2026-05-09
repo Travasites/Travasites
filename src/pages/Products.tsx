@@ -65,7 +65,7 @@ const Products = () => {
                 <div className="grid lg:grid-cols-3 gap-8">
                   <div className="lg:col-span-2">
                     <div className="flex items-center gap-4 mb-6">
-                      <div className="w-14 h-14 rounded-xl bg-accent-gradient flex items-center justify-center shadow-glow">
+                      <div className="w-14 h-14 rounded-xl bg-accent-gradient flex items-center justify-center">
                         <product.icon className="w-7 h-7 text-accent-foreground" />
                       </div>
                       <div>
@@ -83,7 +83,7 @@ const Products = () => {
                     </div>
                   </div>
                   <div className="flex items-center justify-end">
-                    <Button asChild className="bg-accent-gradient text-accent-foreground hover:shadow-glow">
+                    <Button asChild className="bg-accent-gradient text-accent-foreground">
                       <Link to={product.link}>
                         Enter The Forge
                         <ArrowRight className="ml-2 w-4 h-4" />

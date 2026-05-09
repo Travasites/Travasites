@@ -15,6 +15,14 @@ const projects = [
     highlights: ["Custom search modal with zero page reloads", "Flutterwave checkout integration", "Product catalog with categories", "Mobile-first responsive design"],
   },
   {
+    title: "Dr Wells Skincare",
+    category: "E-Commerce Store",
+    desc: "A full-featured cosmetics e-commerce platform with Flutterwave payment integration, and custom admin dashboard. Built on React.js + Supabase.",
+    tags: ["React.js", "Supabase", "Flutterwave", "TailwindCSS"],
+    link: "https://www.drwellsskincare.com/",
+    highlights: ["Flutterwave checkout integration", "Product catalog with categories", "Mobile-first responsive design"],
+  },
+  {
     title: "Custom B2B Platform",
     category: "Web Application",
     desc: "A business-to-business ordering platform with role-based access, bulk pricing, and automated invoicing. Scalable architecture designed for high-volume transactions.",
@@ -83,7 +91,7 @@ const Work = () => {
               Real builds. Real results. Every project is a custom Next.js + Supabase platform — no templates, no shortcuts.
             </motion.p>
             <motion.div variants={fadeInUp}>
-              <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold hover:shadow-glow transition-all duration-300">
+              <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold hover:bg-primary/90 transition-all duration-300">
                 Book a Call <ArrowRight className="w-5 h-5" />
               </a>
             </motion.div>
@@ -186,7 +194,7 @@ const Work = () => {
               Let's build your custom e-commerce store. Starting at $220 / ₦300,000.
             </motion.p>
             <motion.div variants={fadeInUp}>
-              <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold text-lg hover:shadow-glow transition-all">
+              <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold text-lg hover:bg-primary/90 transition-all">
                 Start Your Project <ArrowRight className="w-5 h-5" />
               </a>
             </motion.div>

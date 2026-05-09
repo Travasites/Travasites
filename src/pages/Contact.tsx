@@ -257,7 +257,7 @@ const Contact = () => {
                   <Button 
                     type="submit" 
                     size="lg" 
-                    className="w-full bg-accent-gradient text-accent-foreground hover:shadow-glow"
+                    className="w-full bg-accent-gradient text-accent-foreground"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (

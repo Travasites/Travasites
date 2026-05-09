@@ -78,7 +78,7 @@ export const Navbar = (): React.ReactNode => {
               href="https://wa.link/70h2f1"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-primary text-white font-medium text-sm hover:bg-primary/90 hover:shadow-glow transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-primary text-white font-medium text-sm hover:bg-primary/90 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               Book a Call
               <ArrowRight className="w-4 h-4" aria-hidden="true" />

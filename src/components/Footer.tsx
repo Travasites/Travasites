@@ -2,8 +2,6 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Twitter, Github, Linkedin, Mail } from "lucide-react";
 
 export const Footer = (): React.ReactNode => {
-  const currentYear = new Date().getFullYear();
-
   return (
     <footer className="bg-black border-t border-border/30" role="contentinfo">
       {/* CTA Banner */}
@@ -23,7 +21,7 @@ export const Footer = (): React.ReactNode => {
               href="https://wa.link/70h2f1"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold text-lg hover:bg-primary/90 hover:shadow-glow transition-all duration-300"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold text-lg hover:bg-primary/90 transition-all duration-300"
             >
               Book a Free Consultation
               <ArrowRight className="w-5 h-5" aria-hidden="true" />
@@ -168,13 +166,13 @@ export const Footer = (): React.ReactNode => {
         {/* Bottom bar */}
         <div className="pt-8 border-t border-border/20 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground">
-            © {currentYear} Travasites. All rights reserved.
+            © 2024 Travasites. All rights reserved.
           </p>
           <div className="flex items-center gap-6 text-xs text-muted-foreground">
-            <Link to="/about" className="hover:text-primary transition-colors duration-300">
+            <Link to="/privacy" className="hover:text-primary transition-colors duration-300">
               Privacy Policy
             </Link>
-            <Link to="/about" className="hover:text-primary transition-colors duration-300">
+            <Link to="/terms" className="hover:text-primary transition-colors duration-300">
               Terms of Service
             </Link>
           </div>

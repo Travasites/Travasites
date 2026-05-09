@@ -5,12 +5,6 @@ import { Layout } from "@/components/Layout";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
-const stats = [
-  { value: "3+", label: "Completed Products" },
-  { value: "2", label: "Years Experience" },
-  { value: "24h", label: "Response Time" },
-  { value: "98%", label: "Client Satisfaction" },
-];
 
 const process = [
   { step: "01", title: "Discovery Call", desc: "We discuss your brand, products, and goals to understand exactly what your store needs." },
@@ -73,21 +67,14 @@ const Index = () => {
   return (
     <Layout>
       {/* ═══════════════ HERO SECTION ═══════════════ */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black -mt-16 md:-mt-20 pt-16 md:pt-20">
         <div className="container mx-auto px-6 relative z-10 py-20">
           {/* Mobile: Video on top, text below. Desktop: overlapping layout */}
           <motion.div initial="hidden" animate="visible" variants={staggerContainer}>
 
             {/* === MOBILE LAYOUT === */}
             <div className="lg:hidden">
-              {/* Video placeholder on top for mobile */}
-              <motion.div variants={fadeInUp} className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8 border border-white/10">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-white/[0.01] flex items-center justify-center">
-                  <span className="text-white/20 text-sm tracking-widest uppercase font-display">Hero Video Placeholder</span>
-                </div>
-              </motion.div>
-
-              {/* Heading below video on mobile */}
+              {/* Heading */}
               <motion.h1 variants={fadeInUp} className="hero-heading text-[3.5rem] sm:text-[4.5rem] text-white mb-6">
                 E-COMM<br />WEB DEV
               </motion.h1>
@@ -120,7 +107,7 @@ const Index = () => {
                   href="https://wa.link/70h2f1"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold text-lg hover:bg-primary/90 hover:shadow-glow transition-all duration-300"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold text-lg hover:bg-primary/90 transition-all duration-300"
                 >
                   Book a Call
                   <ArrowRight className="w-5 h-5" aria-hidden="true" />
@@ -145,15 +132,7 @@ const Index = () => {
                 E-COMM<br />WEB DEV
               </motion.h1>
 
-              {/* Video placeholder — overlapping the text */}
-              <motion.div
-                variants={fadeInUp}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55%] aspect-video rounded-2xl overflow-hidden border border-white/10 z-[5]"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-white/[0.01] flex items-center justify-center">
-                  <span className="text-white/15 text-xs tracking-[0.3em] uppercase font-display">Hero Video Placeholder</span>
-                </div>
-              </motion.div>
+
 
               {/* TRAVASITES wordmark badge — bottom center */}
               <motion.div variants={fadeInUp} className="flex justify-center mt-6 relative z-20">
@@ -208,19 +187,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ═══════════════ STATS ═══════════════ */}
-      <section className="py-20 bg-black border-y border-white/[0.06]">
-        <div className="container mx-auto px-6">
-          <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-8" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
-            {stats.map((stat, i) => (
-              <motion.div key={i} variants={fadeInUp} className="text-center">
-                <div className="text-4xl md:text-5xl font-display font-bold text-white mb-2">{stat.value}</div>
-                <div className="text-sm text-white/40">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+
+
 
       {/* ═══════════════ WHAT WE BUILD ═══════════════ */}
       <section className="py-24 bg-black" aria-labelledby="features-heading">
@@ -331,7 +299,7 @@ const Index = () => {
                   rel="noopener noreferrer"
                   className={`flex items-center justify-center gap-2 w-full py-3.5 rounded-full font-semibold text-sm transition-all duration-300 ${
                     plan.popular
-                      ? "bg-primary text-white hover:bg-primary/90 hover:shadow-glow"
+                      ? "bg-primary text-white hover:bg-primary/90"
                       : "bg-white/5 text-white border border-white/[0.06] hover:border-primary/30 hover:bg-primary/10"
                   }`}
                 >

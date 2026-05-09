@@ -1,130 +1,145 @@
-import { motion } from 'framer-motion';
-import { Layout } from '@/components/Layout';
-import { usePageMeta } from '@/hooks/usePageMeta';
-import { fadeInUp, stagger } from '@/lib/animations';
+import { motion } from "framer-motion";
+import { Layout } from "@/components/Layout";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { fadeInUp, staggerContainer } from "@/lib/animations";
 
 export default function Privacy() {
   usePageMeta({
-    title: 'Privacy Policy | Blue Forge',
-    description: 'Read the Privacy Policy for Blue Forge AI Studio.',
+    title: "Privacy Policy | Travasites",
+    description: "Read the Privacy Policy for Travasites e-commerce development services.",
   });
 
   return (
     <Layout>
-      <section className="py-24 bg-hero-gradient relative overflow-hidden">
-        <div className="absolute inset-0 bg-glow" aria-hidden="true" />
+      {/* Hero */}
+      <section className="relative py-28 bg-black overflow-hidden">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl" aria-hidden="true" />
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             className="max-w-3xl mx-auto text-center"
             initial="hidden"
             animate="visible"
-            variants={stagger}
+            variants={staggerContainer}
           >
-            <motion.h1 variants={fadeInUp} className="text-4xl md:text-5xl font-bold mb-6">
-              Privacy <span className="text-gradient">Policy</span>
+            <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl font-display font-bold text-white mb-4">
+              Privacy <span className="text-gradient-purple">Policy</span>
             </motion.h1>
             <motion.p variants={fadeInUp} className="text-muted-foreground">
-              Last updated: January 2026
+              Last updated: May 2024
             </motion.p>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-24">
+      {/* Content */}
+      <section className="py-24 bg-black">
         <div className="container mx-auto px-6">
           <motion.div
-            className="max-w-3xl mx-auto prose prose-invert"
+            className="max-w-3xl mx-auto"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            variants={stagger}
+            variants={staggerContainer}
           >
-            <motion.div variants={fadeInUp} className="space-y-8">
+            <motion.div variants={fadeInUp} className="space-y-10">
               <div>
-                <h2 className="text-2xl font-bold mb-4">1. Information We Collect</h2>
-                <p className="text-muted-foreground mb-4">We collect information you provide directly:</p>
+                <h2 className="text-2xl font-display font-bold text-white mb-4">1. Introduction</h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  Welcome to Travasites ("we," "our," or "us"). We are committed to protecting and respecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information when you engage our e-commerce web development services, visit our website, or communicate with us in any capacity.
+                </p>
+              </div>
+
+              <div>
+                <h2 className="text-2xl font-display font-bold text-white mb-4">2. Information We Collect</h2>
+                <p className="text-muted-foreground leading-relaxed mb-4">When you engage our services, we may collect the following information:</p>
                 <ul className="list-disc pl-6 text-muted-foreground space-y-2">
-                  <li>Account information (email, name, password)</li>
-                  <li>Payment information (processed securely by Stripe)</li>
-                  <li>Content you create using our tools</li>
-                  <li>Usage data and preferences</li>
+                  <li>Contact information (name, email address, phone number)</li>
+                  <li>Business information (brand name, business type, website requirements)</li>
+                  <li>Payment and billing details (processed securely through third-party payment processors)</li>
+                  <li>Project files, assets, and content you provide for your website build</li>
+                  <li>Communication records (emails, messages, and call notes)</li>
+                  <li>Website analytics data (anonymized usage data from our website)</li>
                 </ul>
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold mb-4">2. How We Use Your Information</h2>
-                <p className="text-muted-foreground mb-4">We use your information to:</p>
+                <h2 className="text-2xl font-display font-bold text-white mb-4">3. How We Use Your Information</h2>
+                <p className="text-muted-foreground leading-relaxed mb-4">We use the information collected strictly for the following purposes:</p>
                 <ul className="list-disc pl-6 text-muted-foreground space-y-2">
-                  <li>Provide and improve our services</li>
-                  <li>Process payments and manage subscriptions</li>
-                  <li>Send important updates about your account</li>
-                  <li>Analyze usage patterns to improve our AI models</li>
-                  <li>Respond to support requests</li>
+                  <li>To deliver, manage, and maintain the e-commerce platforms we build for you</li>
+                  <li>To communicate with you regarding project progress, updates, and support</li>
+                  <li>To process payments and manage billing</li>
+                  <li>To improve our services and develop new features</li>
+                  <li>To comply with legal obligations</li>
                 </ul>
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold mb-4">3. Data Security</h2>
-                <p className="text-muted-foreground">
-                  We implement industry-standard security measures to protect your data. All data is encrypted in transit and at rest. We regularly audit our security practices and maintain compliance with applicable regulations.
+                <h2 className="text-2xl font-display font-bold text-white mb-4">4. Data Security</h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  We take the security of your data seriously. All project files, credentials, and sensitive information are stored securely using industry-standard encryption and access controls. We use trusted third-party services (Supabase, Vercel, Flutterwave) that maintain their own robust security protocols. While we implement reasonable safeguards, no method of electronic storage or transmission is 100% secure, and we cannot guarantee absolute security.
                 </p>
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold mb-4">4. Data Sharing</h2>
-                <p className="text-muted-foreground mb-4">We do not sell your personal data. We may share data with:</p>
+                <h2 className="text-2xl font-display font-bold text-white mb-4">5. Data Sharing & Third Parties</h2>
+                <p className="text-muted-foreground leading-relaxed mb-4">We do not sell, trade, or rent your personal data to third parties. We may share limited information with:</p>
                 <ul className="list-disc pl-6 text-muted-foreground space-y-2">
-                  <li>Service providers who help operate our platform</li>
-                  <li>Payment processors (Stripe)</li>
-                  <li>Analytics providers (anonymized data only)</li>
-                  <li>Legal authorities when required by law</li>
+                  <li>Hosting and deployment providers (Vercel) — strictly for project deployment</li>
+                  <li>Payment processors (Flutterwave, Stripe) — strictly for billing purposes</li>
+                  <li>Database providers (Supabase) — strictly for application functionality</li>
+                  <li>Legal authorities — only when required by applicable law</li>
                 </ul>
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold mb-4">5. Your Rights</h2>
-                <p className="text-muted-foreground mb-4">You have the right to:</p>
+                <h2 className="text-2xl font-display font-bold text-white mb-4">6. Ownership of Project Assets</h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  Any brand assets, product images, content, and materials you provide remain your property. The custom code, design systems, and technical architecture created by Travasites during the project are licensed to you for use on your platform upon full payment. Travasites retains the right to showcase the completed project in our portfolio unless otherwise agreed in writing.
+                </p>
+              </div>
+
+              <div>
+                <h2 className="text-2xl font-display font-bold text-white mb-4">7. Cookies</h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  Our website uses essential cookies for basic functionality and analytics cookies to understand how visitors interact with our site. These cookies do not collect personally identifiable information. You may disable cookies in your browser settings at any time.
+                </p>
+              </div>
+
+              <div>
+                <h2 className="text-2xl font-display font-bold text-white mb-4">8. Data Retention</h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  We retain your project data and communication records for the duration of our working relationship and for a reasonable period afterward (up to 12 months) for support and reference purposes. After this period, data may be securely deleted. Payment records may be retained longer as required by applicable tax and financial regulations.
+                </p>
+              </div>
+
+              <div>
+                <h2 className="text-2xl font-display font-bold text-white mb-4">9. Your Rights</h2>
+                <p className="text-muted-foreground leading-relaxed mb-4">You have the right to:</p>
                 <ul className="list-disc pl-6 text-muted-foreground space-y-2">
-                  <li>Access your personal data</li>
-                  <li>Correct inaccurate data</li>
-                  <li>Delete your account and data</li>
-                  <li>Export your data</li>
-                  <li>Opt out of marketing communications</li>
+                  <li>Request access to the personal data we hold about you</li>
+                  <li>Request correction of inaccurate information</li>
+                  <li>Request deletion of your data (subject to legal retention requirements)</li>
+                  <li>Withdraw consent to data processing at any time</li>
                 </ul>
-              </div>
-
-              <div>
-                <h2 className="text-2xl font-bold mb-4">6. Cookies</h2>
-                <p className="text-muted-foreground">
-                  We use essential cookies for authentication and preferences. We also use analytics cookies to understand how you use our service. You can manage cookie preferences in your browser settings.
+                <p className="text-muted-foreground leading-relaxed mt-4">
+                  To exercise any of these rights, please contact us at hello@travasites.com.
                 </p>
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold mb-4">7. Data Retention</h2>
-                <p className="text-muted-foreground">
-                  We retain your data for as long as your account is active. After account deletion, we may retain some data for legal compliance or legitimate business purposes for up to 90 days.
+                <h2 className="text-2xl font-display font-bold text-white mb-4">10. Changes to This Policy</h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated revision date. Continued use of our services after changes constitutes acceptance of the revised policy. We encourage you to review this page periodically.
                 </p>
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold mb-4">8. Children's Privacy</h2>
-                <p className="text-muted-foreground">
-                  Our Service is not intended for users under 13 years of age. We do not knowingly collect personal information from children.
-                </p>
-              </div>
-
-              <div>
-                <h2 className="text-2xl font-bold mb-4">9. Changes to This Policy</h2>
-                <p className="text-muted-foreground">
-                  We may update this Privacy Policy from time to time. We will notify you of significant changes via email or through the Service.
-                </p>
-              </div>
-
-              <div>
-                <h2 className="text-2xl font-bold mb-4">10. Contact Us</h2>
-                <p className="text-muted-foreground">
-                  For privacy-related questions, please contact us at privacy@blueforge.ai
+                <h2 className="text-2xl font-display font-bold text-white mb-4">11. Contact Us</h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  If you have any questions about this Privacy Policy, please contact us at{" "}
+                  <a href="mailto:hello@travasites.com" className="text-primary hover:underline">hello@travasites.com</a> or reach out via{" "}
+                  <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">WhatsApp</a>.
                 </p>
               </div>
             </motion.div>

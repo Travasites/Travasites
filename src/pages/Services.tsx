@@ -66,7 +66,7 @@ const Services = () => {
               Everything you need to launch and scale a custom e-commerce platform — built strictly on Next.js + Supabase.
             </motion.p>
             <motion.div variants={fadeInUp}>
-              <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold hover:shadow-glow transition-all duration-300">
+              <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold hover:bg-primary/90 transition-all duration-300">
                 Book a Call <ArrowRight className="w-5 h-5" />
               </a>
             </motion.div>
@@ -139,7 +139,7 @@ const Services = () => {
               Custom Next.js + Supabase store starting at <span className="text-white font-semibold">$220</span> (₦300,000). Monthly management for <span className="text-white font-semibold">$44</span> (₦60,000).
             </motion.p>
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold hover:shadow-glow transition-all">
+              <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold hover:bg-primary/90 transition-all">
                 Start Your Project <ArrowRight className="w-5 h-5" />
               </a>
               <Link to="/work" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white/5 text-white border border-border/30 font-semibold hover:border-primary/30 transition-all">
