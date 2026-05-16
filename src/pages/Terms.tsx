@@ -185,7 +185,7 @@ export default function Terms() {
                 <h2 className="text-2xl font-display font-bold text-white mb-4">15. Contact</h2>
                 <p className="text-muted-foreground leading-relaxed">
                   For any questions regarding these Terms of Service, please contact us at{" "}
-                  <a href="mailto:hello@travasites.com" className="text-primary hover:underline">hello@travasites.com</a> or reach out via{" "}
+                  <a href="mailto:travasites@gmail.com" className="text-primary hover:underline">travasites@gmail.com</a> or reach out via{" "}
                   <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">WhatsApp</a>.
                 </p>
               </div>

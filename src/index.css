@@ -249,3 +249,48 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Marquee infinite scroll animations */
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+.animate-marquee-left {
+  animation: marquee-left 25s linear infinite;
+}
+.animate-marquee-right {
+  animation: marquee-right 25s linear infinite;
+}
+
+/* Process step number sequential glow animation */
+@keyframes process-glow {
+  0%, 100% { opacity: 0.1; }
+  5% { opacity: 1; }
+  20% { opacity: 1; }
+  30% { opacity: 0.1; }
+}
+
+.process-step-number {
+  background: linear-gradient(90deg, hsl(270 80% 60%), hsl(290 70% 50%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: process-glow 4s ease-in-out infinite;
+}
+
+.process-step-number[data-step="0"] {
+  animation-delay: 0s;
+}
+.process-step-number[data-step="1"] {
+  animation-delay: 1s;
+}
+.process-step-number[data-step="2"] {
+  animation-delay: 2s;
+}
+.process-step-number[data-step="3"] {
+  animation-delay: 3s;
+}

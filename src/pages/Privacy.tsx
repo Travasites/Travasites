@@ -123,7 +123,7 @@ export default function Privacy() {
                   <li>Withdraw consent to data processing at any time</li>
                 </ul>
                 <p className="text-muted-foreground leading-relaxed mt-4">
-                  To exercise any of these rights, please contact us at hello@travasites.com.
+                  To exercise any of these rights, please contact us at travasites@gmail.com.
                 </p>
               </div>
 
@@ -138,7 +138,7 @@ export default function Privacy() {
                 <h2 className="text-2xl font-display font-bold text-white mb-4">11. Contact Us</h2>
                 <p className="text-muted-foreground leading-relaxed">
                   If you have any questions about this Privacy Policy, please contact us at{" "}
-                  <a href="mailto:hello@travasites.com" className="text-primary hover:underline">hello@travasites.com</a> or reach out via{" "}
+                  <a href="mailto:travasites@gmail.com" className="text-primary hover:underline">travasites@gmail.com</a> or reach out via{" "}
                   <a href="https://wa.link/70h2f1" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">WhatsApp</a>.
                 </p>
               </div>

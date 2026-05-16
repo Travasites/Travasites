@@ -1,27 +1,38 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Twitter, Github, Linkedin, Mail } from "lucide-react";
+import sectionBg from "@/assets/Home_Section_Image.jpeg";
 
 export const Footer = (): React.ReactNode => {
   return (
     <footer className="bg-black border-t border-border/30" role="contentinfo">
       {/* CTA Banner */}
       <div className="container mx-auto px-6 py-20">
-        <div className="relative rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/5 via-black to-primary/5 p-12 md:p-16 text-center overflow-hidden">
-          {/* Glow effects */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl" aria-hidden="true" />
+        <div className="relative rounded-3xl border border-primary/20 p-8 pt-48 sm:pt-56 md:p-16 overflow-hidden bg-black min-h-[400px] md:min-h-0 flex items-end md:items-center justify-center">
+          {/* Background image with edge blending */}
+          <div className="absolute inset-0 z-0" aria-hidden="true">
+            <img
+              src={sectionBg}
+              alt=""
+              className="w-full h-full object-cover opacity-40"
+              style={{
+                maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 75%)',
+                WebkitMaskImage: 'radial-gradient(ellipse at center, black 30%, transparent 75%)'
+              }}
+            />
+          </div>
           
-          <div className="relative z-10">
-            <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-4">
+          <div className="relative z-10 text-center w-full">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-display font-bold text-white mb-3 md:mb-4">
               Ready to Launch Your Store?
             </h2>
-            <p className="text-muted-foreground text-lg max-w-xl mx-auto mb-8">
+            <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-xl md:mx-auto mb-6 md:mb-8">
               Let&apos;s build an e-commerce platform that actually converts. No templates, no shortcuts — just clean, custom code.
             </p>
             <a
               href="https://wa.link/70h2f1"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold text-lg hover:bg-primary/90 transition-all duration-300"
+              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-primary text-white font-semibold text-base sm:text-lg hover:bg-primary/90 transition-all duration-300"
             >
               Book a Free Consultation
               <ArrowRight className="w-5 h-5" aria-hidden="true" />
@@ -138,8 +149,8 @@ export const Footer = (): React.ReactNode => {
             <ul className="space-y-3 text-sm text-muted-foreground">
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-primary" aria-hidden="true" />
-                <a href="mailto:hello@travasites.com" className="hover:text-primary transition-colors duration-300">
-                  hello@travasites.com
+                <a href="mailto:travasites@gmail.com" className="hover:text-primary transition-colors duration-300">
+                  travasites@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-2">

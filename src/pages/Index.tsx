@@ -4,6 +4,11 @@ import { ArrowRight, Check, Star, Zap, Shield, Code2, Palette, Rocket, ShoppingC
 import { Layout } from "@/components/Layout";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
+import heroBg from "@/assets/Home_Hero_Background _Image.jpeg";
+import sectionVideo from "@/assets/Section_Video.gif";
+import sectionUnderHero from "@/assets/Section_Under_Hero.mp4";
+import priceVideo from "@/assets/Price_Video.mp4";
+import RotatingText from "@/components/RotatingText";
 
 
 const process = [
@@ -67,7 +72,27 @@ const Index = () => {
   return (
     <Layout>
       {/* ═══════════════ HERO SECTION ═══════════════ */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black -mt-16 md:-mt-20 pt-16 md:pt-20">
+      <section className="relative min-h-[85vh] lg:min-h-screen flex items-center justify-center overflow-hidden bg-black -mt-16 md:-mt-20 pt-16 md:pt-20">
+        {/* Hero background image — MOBILE: flipped, right-aligned, bigger */}
+        <div className="absolute inset-0 flex items-start justify-end z-0 pointer-events-none lg:hidden" aria-hidden="true">
+          <img
+            src={heroBg}
+            alt=""
+            className="w-[500px] sm:w-[600px] md:w-[700px] h-auto object-contain opacity-50 select-none scale-x-[-1] -mr-36 sm:-mr-28 mt-8"
+            style={{ maskImage: 'linear-gradient(to bottom, black 30%, transparent 85%)', WebkitMaskImage: 'linear-gradient(to bottom, black 30%, transparent 85%)' }}
+          />
+        </div>
+
+        {/* Hero background image — DESKTOP: centered, head near navbar */}
+        <div className="absolute inset-0 items-center justify-center z-0 pointer-events-none -translate-y-20 md:-translate-y-28 lg:-translate-y-32 hidden lg:flex" aria-hidden="true">
+          <img
+            src={heroBg}
+            alt=""
+            className="w-[900px] xl:w-[1000px] h-auto object-contain opacity-70 select-none"
+          />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_25%,black_70%)]" />
+          <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-black via-black/80 to-transparent" />
+        </div>
         <div className="container mx-auto px-6 relative z-10 py-20">
           {/* Mobile: Video on top, text below. Desktop: overlapping layout */}
           <motion.div initial="hidden" animate="visible" variants={staggerContainer}>
@@ -76,7 +101,7 @@ const Index = () => {
             <div className="lg:hidden">
               {/* Heading */}
               <motion.h1 variants={fadeInUp} className="hero-heading text-[3.5rem] sm:text-[4.5rem] text-white mb-6">
-                E-COMM<br />WEB DEV
+                E-COMM<br /><RotatingText />
               </motion.h1>
 
               {/* Stats row */}
@@ -129,7 +154,7 @@ const Index = () => {
                 variants={fadeInUp}
                 className="hero-heading text-[8rem] xl:text-[10rem] 2xl:text-[12rem] text-white text-center leading-[0.85] relative z-10 select-none"
               >
-                E-COMM<br />WEB DEV
+                E-COMM<br /><RotatingText />
               </motion.h1>
 
 
@@ -191,8 +216,24 @@ const Index = () => {
 
 
       {/* ═══════════════ WHAT WE BUILD ═══════════════ */}
-      <section className="py-24 bg-black" aria-labelledby="features-heading">
-        <div className="container mx-auto px-6">
+      <section className="relative py-12 md:py-24 bg-black overflow-hidden" aria-labelledby="features-heading">
+        {/* Video background — centered with radial mask */}
+        <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+          <video
+            src={sectionUnderHero}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover opacity-30 select-none"
+            style={{
+              maskImage: 'radial-gradient(ellipse at center, black 25%, transparent 70%)',
+              WebkitMaskImage: 'radial-gradient(ellipse at center, black 25%, transparent 70%)'
+            }}
+          />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div className="text-center mb-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
             <p className="text-primary text-sm font-medium uppercase tracking-wider mb-3">What You Get</p>
             <h2 id="features-heading" className="text-3xl md:text-5xl font-display font-bold text-white mb-4">Everything Your Store Needs</h2>
@@ -201,7 +242,7 @@ const Index = () => {
 
           <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
             {features.map((f, i) => (
-              <motion.div key={i} variants={fadeInUp} whileHover={{ y: -4 }} className="group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-primary/30 transition-all duration-300">
+              <motion.div key={i} variants={fadeInUp} whileHover={{ y: -4 }} className="group p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-primary/30 transition-all duration-300 backdrop-blur-sm">
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                   <f.icon className="w-6 h-6 text-primary" aria-hidden="true" />
                 </div>
@@ -218,14 +259,14 @@ const Index = () => {
         <div className="container mx-auto px-6">
           <motion.div className="text-center mb-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
             <p className="text-primary text-sm font-medium uppercase tracking-wider mb-3">The Process</p>
-            <h2 id="process-heading" className="text-3xl md:text-5xl font-display font-bold text-white mb-4">How We Build Your Store</h2>
+            <h2 id="process-heading" className="text-3xl md:text-5xl font-display font-bold text-white mb-4">How We <RotatingText words={["Build", "Manage", "Ship"]} /> Your Store</h2>
             <p className="text-white/40 max-w-2xl mx-auto">From first call to launch day — here's the exact roadmap.</p>
           </motion.div>
 
           <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
             {process.map((p, i) => (
               <motion.div key={i} variants={fadeInUp} className="relative">
-                <div className="text-6xl font-display font-bold text-primary/10 mb-4">{p.step}</div>
+                <div className="text-6xl font-display font-bold mb-4 process-step-number" data-step={i}>{p.step}</div>
                 <h3 className="text-xl font-display font-semibold text-white mb-2">{p.title}</h3>
                 <p className="text-sm text-white/40 leading-relaxed">{p.desc}</p>
                 {i < process.length - 1 && (
@@ -244,21 +285,68 @@ const Index = () => {
             <h2 id="tech-heading" className="text-2xl font-display font-bold text-white mb-2">Built With Modern Tech</h2>
             <p className="text-white/40 text-sm">The same stack powering the fastest e-commerce platforms</p>
           </motion.div>
+        </div>
 
-          <motion.div className="flex flex-wrap justify-center gap-4" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
-            {techStack.map((t, i) => (
-              <motion.div key={i} variants={fadeInUp} whileHover={{ scale: 1.05 }} className="flex items-center gap-3 px-5 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-primary/30 transition-colors">
+        {/* DESKTOP: Single row marquee, left to right */}
+        <div className="hidden md:block overflow-hidden relative">
+          {/* Edge fade masks */}
+          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+          <div className="animate-marquee-left flex w-max gap-4">
+            {[...techStack, ...techStack, ...techStack, ...techStack].map((t, i) => (
+              <div key={i} className="flex items-center gap-3 px-5 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] shrink-0">
                 <img src={t.logo} alt={t.name} className="w-6 h-6 object-contain" />
-                <span className="font-medium text-white text-sm">{t.name}</span>
-              </motion.div>
+                <span className="font-medium text-white text-sm whitespace-nowrap">{t.name}</span>
+              </div>
             ))}
-          </motion.div>
+          </div>
+        </div>
+
+        {/* MOBILE: Two rows — top L-R, bottom R-L */}
+        <div className="md:hidden overflow-hidden relative space-y-4">
+          {/* Edge fade masks */}
+          <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+          {/* Row 1: left to right */}
+          <div className="animate-marquee-left flex w-max gap-3">
+            {[...techStack.slice(0, 4), ...techStack.slice(0, 4), ...techStack.slice(0, 4), ...techStack.slice(0, 4)].map((t, i) => (
+              <div key={i} className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] shrink-0">
+                <img src={t.logo} alt={t.name} className="w-5 h-5 object-contain" />
+                <span className="font-medium text-white text-sm whitespace-nowrap">{t.name}</span>
+              </div>
+            ))}
+          </div>
+          {/* Row 2: right to left */}
+          <div className="animate-marquee-right flex w-max gap-3">
+            {[...techStack.slice(4), ...techStack.slice(4), ...techStack.slice(4), ...techStack.slice(4)].map((t, i) => (
+              <div key={i} className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] shrink-0">
+                <img src={t.logo} alt={t.name} className="w-5 h-5 object-contain" />
+                <span className="font-medium text-white text-sm whitespace-nowrap">{t.name}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ═══════════════ PRICING ═══════════════ */}
-      <section className="py-24 bg-black" aria-labelledby="pricing-heading">
-        <div className="container mx-auto px-6">
+      <section className="relative py-24 bg-black overflow-hidden" aria-labelledby="pricing-heading">
+        {/* Video background — Price_Video */}
+        <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+          <video
+            src={priceVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover opacity-20 select-none"
+            style={{
+              maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
+            }}
+          />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div className="text-center mb-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
             <p className="text-primary text-sm font-medium uppercase tracking-wider mb-3">Transparent Pricing</p>
             <h2 id="pricing-heading" className="text-3xl md:text-5xl font-display font-bold text-white mb-4">Simple, Honest Pricing</h2>
@@ -267,7 +355,7 @@ const Index = () => {
 
           <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
             {pricing.map((plan, i) => (
-              <motion.div key={i} variants={fadeInUp} className={`relative p-8 rounded-3xl border ${plan.popular ? "border-primary/40 bg-primary/[0.03]" : "border-white/[0.06] bg-white/[0.02]"}`}>
+              <motion.div key={i} variants={fadeInUp} className={`relative p-8 rounded-3xl border backdrop-blur-sm ${plan.popular ? "border-primary/40 bg-primary/[0.03]" : "border-white/[0.06] bg-white/[0.02]"}`}>
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-primary text-white text-xs font-semibold">
                     Most Popular
@@ -313,8 +401,21 @@ const Index = () => {
       </section>
 
       {/* ═══════════════ WHY TRAVASITES ═══════════════ */}
-      <section className="py-24 bg-black" aria-labelledby="why-heading">
-        <div className="container mx-auto px-6">
+      <section className="relative py-24 bg-black overflow-hidden" aria-labelledby="why-heading">
+        {/* Video background — centered */}
+        <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+          <img
+            src={sectionVideo}
+            alt=""
+            className="w-full h-full object-cover opacity-30 select-none"
+            style={{
+              maskImage: 'radial-gradient(ellipse at center, black 25%, transparent 70%)',
+              WebkitMaskImage: 'radial-gradient(ellipse at center, black 25%, transparent 70%)'
+            }}
+          />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div className="max-w-4xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
             <motion.div variants={fadeInUp} className="text-center mb-16">
               <p className="text-primary text-sm font-medium uppercase tracking-wider mb-3">Why Us</p>
@@ -328,7 +429,7 @@ const Index = () => {
                 { icon: Headphones, title: "Direct Communication", desc: "You talk directly to the developer. No account managers, no middlemen, no waiting." },
                 { icon: Star, title: "Proven Results", desc: "From Glowhite Cosmetics to custom B2B platforms — our builds convert and scale." },
               ].map((item, i) => (
-                <motion.div key={i} variants={fadeInUp} className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+                <motion.div key={i} variants={fadeInUp} className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] backdrop-blur-sm">
                   <item.icon className="w-8 h-8 text-primary mb-4" aria-hidden="true" />
                   <h3 className="text-lg font-display font-semibold text-white mb-2">{item.title}</h3>
                   <p className="text-sm text-white/40 leading-relaxed">{item.desc}</p>

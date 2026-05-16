@@ -4,6 +4,10 @@ import { Layout } from "@/components/Layout";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { useState } from "react";
+import FloatingText from "@/components/FloatingText";
+import sectionFemale from "@/assets/Section_Female.jpeg";
+import sectionVideo from "@/assets/Section_Video.gif";
+import boxAnimation from "@/assets/Box_Animation.mp4";
 
 const timeline = [
   { year: "2024", title: "Started Building", desc: "Began freelancing as a full-stack developer, specializing in React and Node.js projects." },
@@ -39,21 +43,99 @@ const About = () => {
   return (
     <Layout>
       {/* Hero */}
-      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-black">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl" aria-hidden="true" />
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div className="max-w-4xl mx-auto text-center" initial="hidden" animate="visible" variants={staggerContainer}>
-            <motion.h1 variants={fadeInUp} className="hero-heading text-5xl sm:text-7xl md:text-8xl text-white mb-6">
-              ABOUT <span className="text-gradient-purple">US</span>
-            </motion.h1>
-            <motion.p variants={fadeInUp} className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              Building, managing Next.js + Supabase e-commerce platforms that scale long term. Real builds, no templates. Tips & audits → DMs open.
-            </motion.p>
-            <motion.div variants={fadeInUp}>
-              <a href="https://twitter.com/travasites" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-primary text-white font-semibold hover:bg-primary/90 transition-all duration-300">
-                Follow @travasites <ArrowRight className="w-5 h-5" />
-              </a>
-            </motion.div>
+      <section className="relative min-h-[60vh] md:min-h-[85vh] flex items-end overflow-hidden bg-black pb-6 md:pb-16">
+        {/* Hero background — Section_Female */}
+        <div className="absolute inset-0 z-0 flex items-start justify-end pointer-events-none" aria-hidden="true">
+          <img
+            src={sectionFemale}
+            alt=""
+            className="w-[170%] sm:w-[110%] lg:w-[55%] xl:w-[50%] h-auto object-contain opacity-35 select-none mt-14 sm:mt-10 lg:-mt-8 -mr-24 sm:-mr-14 lg:-mr-12"
+            style={{
+              transform: 'scaleX(-1)',
+              maskImage: 'linear-gradient(to bottom, black 50%, transparent 88%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 88%)'
+            }}
+          />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10 pt-24 md:pt-40">
+          <motion.div initial="hidden" animate="visible" variants={staggerContainer}>
+
+            {/* === MOBILE / TABLET LAYOUT === */}
+            <div className="lg:hidden">
+              <motion.p variants={fadeInUp} className="text-sm md:text-base text-white/60 font-display mb-3">
+                Get to know us
+              </motion.p>
+              <motion.h1 variants={fadeInUp} className="hero-heading text-[3.2rem] sm:text-[4.5rem] md:text-[5.5rem] text-white mb-8">
+                About<br /><FloatingText text="Us" />
+              </motion.h1>
+              <motion.div variants={fadeInUp} className="mb-10">
+                <h2 className="text-xl sm:text-2xl font-display font-bold text-white mb-3">
+                  We build platforms that actually convert.
+                </h2>
+                <p className="text-sm sm:text-base text-white/50 leading-relaxed max-w-md">
+                  From concept to deployment, we craft e-commerce experiences with Next.js + Supabase.
+                </p>
+              </motion.div>
+              <motion.div variants={fadeInUp} className="grid grid-cols-2 gap-y-6 gap-x-4 pt-8 border-t border-white/10">
+                {[
+                  { num: "#01", label: "No Templates" },
+                  { num: "#02", label: "Direct Access" },
+                  { num: "#03", label: "Transparent Pricing" },
+                  { num: "#04", label: "Ship in 2 Weeks" },
+                ].map((item, i) => (
+                  <div key={i}>
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="text-sm font-display font-bold text-primary">{item.num}</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-primary" />
+                    </div>
+                    <span className="text-sm text-white/80">{item.label}</span>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* === DESKTOP LAYOUT === */}
+            <div className="hidden lg:block">
+              {/* Top row: subtitle + heading left, statement right */}
+              <div className="flex items-end justify-between gap-16 mb-16">
+                <div className="flex-1 max-w-[60%]">
+                  <motion.p variants={fadeInUp} className="text-base text-white/60 font-display mb-4">
+                    Get to know us
+                  </motion.p>
+                  <motion.h1 variants={fadeInUp} className="hero-heading text-[7rem] xl:text-[9rem] 2xl:text-[10rem] text-white leading-[0.85]">
+                    About<br /><FloatingText text="Us" />
+                  </motion.h1>
+                </div>
+                <motion.div variants={fadeInUp} className="flex-1 max-w-md pb-4">
+                  <h2 className="text-2xl xl:text-3xl font-display font-bold text-white mb-4 leading-tight">
+                    We build platforms that actually convert.
+                  </h2>
+                  <p className="text-base text-white/50 leading-relaxed">
+                    From concept to deployment, we craft e-commerce experiences with Next.js + Supabase.
+                  </p>
+                </motion.div>
+              </div>
+
+              {/* Bottom row: 4 numbered items */}
+              <motion.div variants={fadeInUp} className="grid grid-cols-4 gap-8 pt-8 border-t border-white/10">
+                {[
+                  { num: "#01", label: "No Templates" },
+                  { num: "#02", label: "Direct Access" },
+                  { num: "#03", label: "Transparent Pricing" },
+                  { num: "#04", label: "Ship in 2 Weeks" },
+                ].map((item, i) => (
+                  <div key={i}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-sm font-display font-bold text-primary">{item.num}</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-primary" />
+                    </div>
+                    <span className="text-sm text-white/80">{item.label}</span>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+
           </motion.div>
         </div>
       </section>
@@ -110,15 +192,28 @@ const About = () => {
       </section>
 
       {/* Values */}
-      <section className="py-24 bg-black border-t border-border/20" aria-labelledby="values-heading">
-        <div className="container mx-auto px-6">
+      <section className="relative py-24 bg-black border-t border-border/20 overflow-hidden" aria-labelledby="values-heading">
+        {/* Video background — centered */}
+        <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+          <img
+            src={sectionVideo}
+            alt=""
+            className="w-full h-full object-cover opacity-30 select-none"
+            style={{
+              maskImage: 'radial-gradient(ellipse at center, black 25%, transparent 70%)',
+              WebkitMaskImage: 'radial-gradient(ellipse at center, black 25%, transparent 70%)'
+            }}
+          />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div className="text-center mb-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
             <p className="text-primary text-sm font-medium uppercase tracking-wider mb-3">Our Principles</p>
             <h2 id="values-heading" className="text-3xl md:text-4xl font-display font-bold text-white">How We Operate</h2>
           </motion.div>
           <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
             {values.map((v, i) => (
-              <motion.div key={i} variants={fadeInUp} className="p-6 rounded-2xl bg-white/[0.02] border border-border/30">
+              <motion.div key={i} variants={fadeInUp} className="p-6 rounded-2xl bg-white/[0.02] border border-border/30 backdrop-blur-sm">
                 <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <span className="text-primary font-display font-bold text-sm">{String(i + 1).padStart(2, "0")}</span>
                 </div>
@@ -155,8 +250,24 @@ const About = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="py-24 bg-black border-t border-border/20" aria-labelledby="contact-heading" id="contact">
-        <div className="container mx-auto px-6">
+      <section className="relative py-24 bg-black border-t border-border/20 overflow-hidden" aria-labelledby="contact-heading" id="contact">
+        {/* Video background — Box_Animation */}
+        <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+          <video
+            src={boxAnimation}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover opacity-20 select-none"
+            style={{
+              maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
+            }}
+          />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div className="text-center mb-16" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp}>
             <p className="text-primary text-sm font-medium uppercase tracking-wider mb-3">Get in Touch</p>
             <h2 id="contact-heading" className="text-3xl md:text-4xl font-display font-bold text-white mb-4">Let's Talk About Your Project</h2>
@@ -166,7 +277,7 @@ const About = () => {
           <motion.div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12" initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
             {/* Contact Info */}
             <motion.div variants={fadeInUp} className="space-y-6">
-              <div className="p-6 rounded-2xl bg-white/[0.02] border border-border/30">
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-border/30 backdrop-blur-sm">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                     <MessageSquare className="w-5 h-5 text-primary" />
@@ -181,19 +292,19 @@ const About = () => {
                 </a>
               </div>
 
-              <div className="p-6 rounded-2xl bg-white/[0.02] border border-border/30">
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-border/30 backdrop-blur-sm">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                     <Mail className="w-5 h-5 text-primary" />
                   </div>
                   <div>
                     <h3 className="text-white font-semibold">Email</h3>
-                    <a href="mailto:hello@travasites.com" className="text-sm text-muted-foreground hover:text-primary transition-colors">hello@travasites.com</a>
+                    <a href="mailto:travasites@gmail.com" className="text-sm text-muted-foreground hover:text-primary transition-colors">travasites@gmail.com</a>
                   </div>
                 </div>
               </div>
 
-              <div className="p-6 rounded-2xl bg-white/[0.02] border border-border/30">
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-border/30 backdrop-blur-sm">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                     <Clock className="w-5 h-5 text-primary" />
@@ -212,7 +323,7 @@ const About = () => {
 
             {/* Contact Form */}
             <motion.div variants={fadeInUp}>
-              <form onSubmit={handleSubmit} className="p-8 rounded-3xl bg-white/[0.02] border border-border/30 space-y-5">
+              <form onSubmit={handleSubmit} className="p-8 rounded-3xl bg-white/[0.02] border border-border/30 space-y-5 backdrop-blur-sm">
                 <div>
                   <label htmlFor="contact-name" className="block text-sm font-medium text-white mb-2">Name</label>
                   <input
