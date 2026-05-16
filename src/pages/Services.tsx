@@ -5,6 +5,8 @@ import { Layout } from "@/components/Layout";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import FloatingText from "@/components/FloatingText";
+import SafeVideo from "@/components/SafeVideo";
+import { techIcons } from "@/lib/techIcons";
 import sectionFemale from "@/assets/Section_Female.jpeg";
 import riseServiceSection from "@/assets/Rise_Service_Section.mp4";
 
@@ -159,18 +161,7 @@ const Services = () => {
       <section className="relative py-24 bg-black overflow-hidden">
         {/* Video background — Rise_Service_Section */}
         <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
-          <video
-            src={riseServiceSection}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover opacity-20 select-none"
-            style={{
-              maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
-            }}
-          />
+          <SafeVideo src={riseServiceSection} opacity={0.2} maskType="vertical" />
         </div>
 
         <div className="container mx-auto px-6 relative z-10">
@@ -216,12 +207,12 @@ const Services = () => {
           <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
           <div className="animate-marquee-left flex w-max gap-4">
             {[...Array(4)].flatMap(() => [
-              { n: "Next.js", l: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" },
-              { n: "Supabase", l: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" },
-              { n: "TypeScript", l: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
-              { n: "Vercel", l: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg" },
-              { n: "TailwindCSS", l: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
-              { n: "PostgreSQL", l: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
+              { n: "Next.js", l: techIcons.nextjs },
+              { n: "Supabase", l: techIcons.supabase },
+              { n: "TypeScript", l: techIcons.typescript },
+              { n: "Vercel", l: techIcons.vercel },
+              { n: "TailwindCSS", l: techIcons.tailwindcss },
+              { n: "PostgreSQL", l: techIcons.postgresql },
             ]).map((t, i) => (
               <div key={i} className="flex items-center gap-3 px-5 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] shrink-0">
                 <img src={t.l} alt={t.n} className="w-6 h-6 object-contain" />
@@ -239,9 +230,9 @@ const Services = () => {
           {/* Row 1: left to right */}
           <div className="animate-marquee-left flex w-max gap-3">
             {[...Array(4)].flatMap(() => [
-              { n: "Next.js", l: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" },
-              { n: "Supabase", l: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" },
-              { n: "TypeScript", l: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
+              { n: "Next.js", l: techIcons.nextjs },
+              { n: "Supabase", l: techIcons.supabase },
+              { n: "TypeScript", l: techIcons.typescript },
             ]).map((t, i) => (
               <div key={i} className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] shrink-0">
                 <img src={t.l} alt={t.n} className="w-5 h-5 object-contain" />
@@ -252,9 +243,9 @@ const Services = () => {
           {/* Row 2: right to left */}
           <div className="animate-marquee-right flex w-max gap-3">
             {[...Array(4)].flatMap(() => [
-              { n: "Vercel", l: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg" },
-              { n: "TailwindCSS", l: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
-              { n: "PostgreSQL", l: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
+              { n: "Vercel", l: techIcons.vercel },
+              { n: "TailwindCSS", l: techIcons.tailwindcss },
+              { n: "PostgreSQL", l: techIcons.postgresql },
             ]).map((t, i) => (
               <div key={i} className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] shrink-0">
                 <img src={t.l} alt={t.n} className="w-5 h-5 object-contain" />

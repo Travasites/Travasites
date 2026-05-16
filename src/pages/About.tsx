@@ -5,6 +5,7 @@ import { usePageMeta } from "@/hooks/usePageMeta";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { useState } from "react";
 import FloatingText from "@/components/FloatingText";
+import SafeVideo from "@/components/SafeVideo";
 import sectionFemale from "@/assets/Section_Female.jpeg";
 import sectionVideo from "@/assets/Section_Video.gif";
 import boxAnimation from "@/assets/Box_Animation.mp4";
@@ -253,18 +254,7 @@ const About = () => {
       <section className="relative py-24 bg-black border-t border-border/20 overflow-hidden" aria-labelledby="contact-heading" id="contact">
         {/* Video background — Box_Animation */}
         <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
-          <video
-            src={boxAnimation}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover opacity-20 select-none"
-            style={{
-              maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
-            }}
-          />
+          <SafeVideo src={boxAnimation} opacity={0.2} maskType="vertical" />
         </div>
 
         <div className="container mx-auto px-6 relative z-10">

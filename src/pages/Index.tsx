@@ -4,11 +4,13 @@ import { ArrowRight, Check, Star, Zap, Shield, Code2, Palette, Rocket, ShoppingC
 import { Layout } from "@/components/Layout";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
+import SafeVideo from "@/components/SafeVideo";
 import heroBg from "@/assets/Home_Hero_Background _Image.jpeg";
 import sectionVideo from "@/assets/Section_Video.gif";
 import sectionUnderHero from "@/assets/Section_Under_Hero.mp4";
 import priceVideo from "@/assets/Price_Video.mp4";
 import RotatingText from "@/components/RotatingText";
+import { techIcons } from "@/lib/techIcons";
 
 
 const process = [
@@ -27,15 +29,16 @@ const features = [
   { icon: Palette, title: "Pixel-Perfect Design", desc: "Mobile-first, responsive design that looks premium on every device." },
 ];
 
+
 const techStack = [
-  { name: "Next.js", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" },
-  { name: "React", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
-  { name: "TypeScript", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
-  { name: "Supabase", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" },
-  { name: "Vercel", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg" },
-  { name: "TailwindCSS", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
-  { name: "PostgreSQL", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
-  { name: "Node.js", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
+  { name: "Next.js", logo: techIcons.nextjs },
+  { name: "React", logo: techIcons.react },
+  { name: "TypeScript", logo: techIcons.typescript },
+  { name: "Supabase", logo: techIcons.supabase },
+  { name: "Vercel", logo: techIcons.vercel },
+  { name: "TailwindCSS", logo: techIcons.tailwindcss },
+  { name: "PostgreSQL", logo: techIcons.postgresql },
+  { name: "Node.js", logo: techIcons.nodejs },
 ];
 
 const pricing = [
@@ -219,18 +222,7 @@ const Index = () => {
       <section className="relative py-12 md:py-24 bg-black overflow-hidden" aria-labelledby="features-heading">
         {/* Video background — centered with radial mask */}
         <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
-          <video
-            src={sectionUnderHero}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover opacity-30 select-none"
-            style={{
-              maskImage: 'radial-gradient(ellipse at center, black 25%, transparent 70%)',
-              WebkitMaskImage: 'radial-gradient(ellipse at center, black 25%, transparent 70%)'
-            }}
-          />
+          <SafeVideo src={sectionUnderHero} opacity={0.3} maskType="radial" />
         </div>
 
         <div className="container mx-auto px-6 relative z-10">
@@ -332,18 +324,7 @@ const Index = () => {
       <section className="relative py-24 bg-black overflow-hidden" aria-labelledby="pricing-heading">
         {/* Video background — Price_Video */}
         <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
-          <video
-            src={priceVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover opacity-20 select-none"
-            style={{
-              maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
-            }}
-          />
+          <SafeVideo src={priceVideo} opacity={0.2} maskType="vertical" />
         </div>
 
         <div className="container mx-auto px-6 relative z-10">

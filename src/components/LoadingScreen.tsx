@@ -7,6 +7,7 @@ interface LoadingScreenProps {
 }
 
 const VIDEO_SOLO_DURATION = 2500; // ms the video plays alone before loading UI appears
+const VIDEO_TIMEOUT = 4000; // ms to wait for video before proceeding without it
 
 const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
   const [progress, setProgress] = useState(0);
@@ -18,6 +19,7 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
   const progressRef = useRef(0);
   const rafRef = useRef<number | null>(null);
   const startTimeRef = useRef<number | null>(null);
+  const videoReadyFiredRef = useRef(false);
 
   // Smooth progress animation using requestAnimationFrame
   const animateProgress = useCallback(() => {
@@ -47,12 +49,33 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
 
   // Start video as soon as it's ready
   const handleVideoReady = useCallback(() => {
-    if (videoReady) return; // prevent double-fire
+    if (videoReadyFiredRef.current) return; // prevent double-fire
+    videoReadyFiredRef.current = true;
+
     if (videoRef.current) {
-      videoRef.current.play().catch(() => {});
+      // iOS Safari: must use play() promise pattern
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay blocked — proceed without video
+        });
+      }
     }
     setVideoReady(true);
-  }, [videoReady]);
+  }, []);
+
+  // CRITICAL FIX: Timeout fallback for iOS Safari and other browsers
+  // where video events may never fire (autoplay restrictions, slow load, etc.)
+  useEffect(() => {
+    const fallbackTimer = setTimeout(() => {
+      if (!videoReadyFiredRef.current) {
+        videoReadyFiredRef.current = true;
+        setVideoReady(true);
+      }
+    }, VIDEO_TIMEOUT);
+
+    return () => clearTimeout(fallbackTimer);
+  }, []);
 
   // After video plays solo for VIDEO_SOLO_DURATION, transition to loading phase
   useEffect(() => {
@@ -119,9 +142,13 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
           muted
           loop
           playsInline
+          // @ts-expect-error — webkit-playsinline is needed for older iOS Safari
+          webkit-playsinline="true"
           preload="auto"
+          disablePictureInPicture
           onCanPlayThrough={handleVideoReady}
           onLoadedData={handleVideoReady}
+          onLoadedMetadata={handleVideoReady}
           className="w-full h-full object-cover select-none"
           style={{
             opacity: phase === "videoSolo" ? 0.35 : 0.25,
@@ -169,7 +196,7 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
         className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] z-[10000]"
         style={{
           background:
-            "linear-gradient(90deg, transparent 5%, hsl(270 80% 60% / 0.6) 30%, hsl(290 70% 50% / 0.6) 70%, transparent 95%)",
+            "linear-gradient(90deg, transparent 5%, hsl(270, 80%, 60%, 0.6) 30%, hsl(290, 70%, 50%, 0.6) 70%, transparent 95%)",
         }}
         animate={{
           opacity: phase === "splitOpen" ? 0 : phase === "fadeContent" ? 1 : 0,
@@ -240,7 +267,7 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
                   style={{
                     width: `${progress}%`,
                     background:
-                      "linear-gradient(90deg, hsl(270 80% 60%), hsl(290 70% 50%))",
+                      "linear-gradient(90deg, hsl(270, 80%, 60%), hsl(290, 70%, 50%))",
                     transition: "width 60ms linear",
                   }}
                 />
@@ -275,7 +302,7 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
               className="absolute bottom-12 left-1/2 -translate-x-1/2 w-24 h-px origin-center"
               style={{
                 background:
-                  "linear-gradient(90deg, transparent, hsl(270 80% 60% / 0.4), transparent)",
+                  "linear-gradient(90deg, transparent, hsl(270, 80%, 60%, 0.4), transparent)",
               }}
               aria-hidden="true"
             />

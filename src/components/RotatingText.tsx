@@ -22,7 +22,7 @@ const RotatingText = ({ words = defaultWords, interval = 2500, gradient = true }
 
   const gradientStyle = gradient
     ? {
-        background: "linear-gradient(90deg, hsl(270 80% 60%), hsl(290 70% 50%))",
+        background: "linear-gradient(90deg, hsl(270, 80%, 60%), hsl(290, 70%, 50%))",
         WebkitBackgroundClip: "text" as const,
         WebkitTextFillColor: "transparent",
         backgroundClip: "text" as const,

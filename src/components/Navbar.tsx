@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowRight } from "lucide-react";
@@ -13,14 +13,36 @@ const navLinks = [
 export const Navbar = (): React.ReactNode => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+  const lastScrollY = useRef(0);
   const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      // Get scroll position from either window or body (depending on overflow settings)
+      const currentScrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+      
+      setIsScrolled(currentScrollY > 10);
+
+      // Auto-hide logic
+      if (currentScrollY > lastScrollY.current && currentScrollY > 150) {
+        // Scrolling down past 150px
+        setIsHidden(true);
+      } else if (currentScrollY < lastScrollY.current) {
+        // Scrolling up
+        setIsHidden(false);
+      }
+
+      lastScrollY.current = currentScrollY;
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    document.body.addEventListener("scroll", handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.body.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   // Close mobile menu on route change
@@ -30,11 +52,18 @@ export const Navbar = (): React.ReactNode => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "glass-strong shadow-card"
-          : "bg-transparent"
+      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
+        isHidden ? "-translate-y-full" : "translate-y-0"
+      } ${
+        isScrolled && !isHidden
+          ? "shadow-card border-b border-white/[0.06]"
+          : ""
       }`}
+      style={{
+        backgroundColor: isScrolled ? 'rgba(0, 0, 0, 0.95)' : 'transparent',
+        backdropFilter: isScrolled ? 'blur(20px)' : 'none',
+        WebkitBackdropFilter: isScrolled ? 'blur(20px)' : 'none',
+      }}
       role="navigation"
       aria-label="Main navigation"
     >

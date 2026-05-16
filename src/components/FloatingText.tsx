@@ -14,7 +14,7 @@ const FloatingText = ({ text }: FloatingTextProps) => {
           key={`${letter}-${i}`}
           className="inline-block"
           style={{
-            background: "linear-gradient(90deg, hsl(270 80% 60%), hsl(290 70% 50%))",
+            background: "linear-gradient(90deg, hsl(270, 80%, 60%), hsl(290, 70%, 50%))",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",

@@ -46,15 +46,15 @@
     --purple-muted: 270 30% 20%;
 
     /* Gradients */
-    --gradient-purple: linear-gradient(135deg, hsl(270 80% 60%) 0%, hsl(290 70% 50%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(0 0% 0%) 0%, hsl(270 20% 4%) 50%, hsl(0 0% 0%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 5%) 0%, hsl(0 0% 2%) 100%);
-    --gradient-glow: radial-gradient(ellipse at 50% 0%, hsl(270 80% 60% / 0.15) 0%, transparent 60%);
+    --gradient-purple: linear-gradient(135deg, hsl(270, 80%, 60%) 0%, hsl(290, 70%, 50%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(0, 0%, 0%) 0%, hsl(270, 20%, 4%) 50%, hsl(0, 0%, 0%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0, 0%, 5%) 0%, hsl(0, 0%, 2%) 100%);
+    --gradient-glow: radial-gradient(ellipse at 50% 0%, hsla(270, 80%, 60%, 0.15) 0%, transparent 60%);
 
-    --shadow-glow: 0 0 40px hsl(270 80% 60% / 0.3);
-    --shadow-card: 0 4px 24px hsl(0 0% 0% / 0.5);
-    --shadow-elevated: 0 8px 32px hsl(0 0% 0% / 0.7);
-    --shadow-purple: 0 0 50px hsl(270 80% 60% / 0.35);
+    --shadow-glow: 0 0 40px hsla(270, 80%, 60%, 0.3);
+    --shadow-card: 0 4px 24px hsla(0, 0%, 0%, 0.5);
+    --shadow-elevated: 0 8px 32px hsla(0, 0%, 0%, 0.7);
+    --shadow-purple: 0 0 50px hsla(270, 80%, 60%, 0.35);
 
     --sidebar-background: 0 0% 3%;
     --sidebar-foreground: 0 0% 85%;
@@ -70,12 +70,19 @@
 @layer base {
   * {
     @apply border-border;
+    /* Prevent iOS Safari text size adjustment */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Prevent horizontal overflow on all platforms */
+    overflow-x: hidden;
+    /* iOS momentum scrolling */
+    -webkit-overflow-scrolling: touch;
   }
 
   /* Apple.com style: system SF Pro stack with Inter fallback */
@@ -84,6 +91,13 @@
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', system-ui, sans-serif;
     font-weight: 400;
     letter-spacing: -0.01em;
+    /* Prevent horizontal overflow */
+    overflow-x: hidden;
+    /* Safe area padding for notched devices (iPhone X+) */
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    /* Prevent iOS Safari bounce/overscroll background bleed */
+    background-color: #000000;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -94,6 +108,61 @@
 
   code, pre {
     font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  /* ─── iOS Safari form element fixes ─── */
+  input, textarea, select, button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    font-size: 16px; /* Prevents iOS Safari zoom on focus */
+  }
+
+  /* Restore border-radius where intended */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="number"],
+  textarea {
+    border-radius: 0.75rem;
+  }
+
+  button {
+    border-radius: inherit;
+  }
+
+  /* ─── Scrollbar styling (WebKit + Firefox) ─── */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsla(0, 0%, 100%, 0.15);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsla(0, 0%, 100%, 0.25);
+  }
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsla(0, 0%, 100%, 0.15) transparent;
+  }
+
+  /* ─── Remove iOS tap highlight ─── */
+  a, button, [role="button"], input, textarea, select {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ─── Improve text rendering across all browsers ─── */
+  p, span, li, a {
+    text-rendering: optimizeLegibility;
   }
 }
 
@@ -111,11 +180,15 @@
     letter-spacing: -0.04em;
     line-height: 0.9;
     text-transform: uppercase;
+    /* Prevent text overflow on smaller screens */
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   /* Text utilities */
   .text-gradient-purple {
     @apply bg-clip-text text-transparent;
+    -webkit-background-clip: text;
     background-image: linear-gradient(135deg, hsl(var(--purple)) 0%, hsl(var(--purple-light)) 100%);
   }
 
@@ -166,19 +239,22 @@
     border: 1px solid hsl(var(--purple) / 0.4);
   }
 
-  /* Glass effects */
+  /* Glass effects — with Safari-compatible backdrop-filter */
   .glass {
     @apply backdrop-blur-xl bg-card/80 border border-border/50;
+    -webkit-backdrop-filter: blur(24px);
   }
 
   .glass-strong {
     @apply backdrop-blur-2xl border border-border/60;
-    background: hsl(0 0% 0% / 0.9);
+    -webkit-backdrop-filter: blur(40px);
+    background: hsla(0, 0%, 0%, 0.9);
   }
 
   .glass-purple {
     @apply backdrop-blur-xl border;
-    background: hsl(0 0% 0% / 0.85);
+    -webkit-backdrop-filter: blur(24px);
+    background: hsla(0, 0%, 0%, 0.85);
     border-color: hsl(var(--purple) / 0.15);
   }
 
@@ -195,8 +271,8 @@
   }
 
   @keyframes pulse-purple {
-    0%, 100% { box-shadow: 0 0 20px hsl(270 80% 60% / 0.2); }
-    50% { box-shadow: 0 0 40px hsl(270 80% 60% / 0.4); }
+    0%, 100% { box-shadow: 0 0 20px hsla(270, 80%, 60%, 0.2); }
+    50% { box-shadow: 0 0 40px hsla(270, 80%, 60%, 0.4); }
   }
 
   @keyframes shimmer {
@@ -221,20 +297,52 @@
     animation: float 6s ease-in-out infinite;
   }
 
-  /* Performance Optimization */
+  /* Performance Optimization — with fallback for older Safari */
   .instant-load {
     content-visibility: auto;
   }
 
+  /* Safari < 17.4 fallback: ignore content-visibility if unsupported */
+  @supports not (content-visibility: auto) {
+    .instant-load {
+      /* no-op — just render normally */
+    }
+  }
+
   .gpu-accelerated {
     transform: translateZ(0);
+    -webkit-transform: translateZ(0);
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
   /* Section divider */
   .section-divider {
     @apply w-full h-px;
-    background: linear-gradient(90deg, transparent 0%, hsl(var(--purple) / 0.3) 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, hsla(270, 80%, 60%, 0.3) 50%, transparent 100%);
+  }
+}
+
+/* ─── Touch-friendly hover states ─── */
+/* Only apply hover effects on devices that actually support hover */
+@media (hover: hover) and (pointer: fine) {
+  /* Enable hover effects only for mouse/trackpad users */
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+}
+
+/* ─── iOS Safe Area insets for fixed elements ─── */
+@supports (padding: env(safe-area-inset-top)) {
+  /* Fixed navbar — respect notch */
+  nav[role="navigation"] {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  /* Fixed bottom elements — respect home indicator */
+  .fixed.bottom-6,
+  .fixed.bottom-8 {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }
 
@@ -261,9 +369,14 @@
 }
 .animate-marquee-left {
   animation: marquee-left 25s linear infinite;
+  /* GPU acceleration for smooth scrolling on mobile */
+  will-change: transform;
+  -webkit-transform: translateZ(0);
 }
 .animate-marquee-right {
   animation: marquee-right 25s linear infinite;
+  will-change: transform;
+  -webkit-transform: translateZ(0);
 }
 
 /* Process step number sequential glow animation */
@@ -275,7 +388,7 @@
 }
 
 .process-step-number {
-  background: linear-gradient(90deg, hsl(270 80% 60%), hsl(290 70% 50%));
+  background: linear-gradient(90deg, hsl(270, 80%, 60%), hsl(290, 70%, 50%));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -293,4 +406,31 @@
 }
 .process-step-number[data-step="3"] {
   animation-delay: 3s;
+}
+
+/* ─── Cross-browser video element fixes ─── */
+video {
+  /* Prevent iOS Safari from showing native controls */
+  -webkit-media-controls: none !important;
+  /* Ensure videos fill their containers properly */
+  max-width: 100%;
+  height: auto;
+}
+
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+video::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+
+/* ─── Print styles — hide decorative elements ─── */
+@media print {
+  video,
+  .animate-marquee-left,
+  .animate-marquee-right,
+  .fixed {
+    display: none !important;
+  }
 }
